@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layouts/mainLayout}">
+<div layout:fragment="contents" th:remove="tag">
+	<!-- 페이지 상단 메뉴명 작성 시작 -->
+	<div class="page-top">
+		<h1 class="page-title">공지사항 관리</h1>
+		<nav aria-label="breadcrumb">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item">홈페이지 관리</li>
+				<li class="breadcrumb-item">공지사항 관리</li>
+			</ol>
+		</nav>
+	</div>
+	<!-- 페이지 상단 메뉴명 작성 끝 -->
+	<div class="card">
+		<div class="card-body">
+			<div class="table-responsive-xxl">
+				<input type="hidden" id="noticeDetailSeq" th:value="${detail.noticeSeq}" />
+				<input type="hidden" id="noticeFileSeq" th:value="${detail.fileSeq}" />
+				<table class="table table-bordered mb-0">
+					<colgroup>
+						<col style="width: 15%" />
+						<col style="width: 35%" />
+						<col style="width: 15%" />
+						<col style="width: 35%" />
+					</colgroup>
+					<tbody>
+					<tr>
+						<th class="text-center">공지 종류</th>
+						<td>
+							<p th:text="${detail.noticeCd}"></p>
+						</td>
+					</tr>
+					<tr>
+						<th class="text-center">등록일</th>
+						<td>
+							<p th:text="${detail.createDt}"></p>
+						</td>
+					</tr>
+					<tr>
+						<th class="text-center">공지 제목</th>
+						<td colspan="3">
+							<p th:text="${detail.title}"></p>
+						</td>
+					</tr>
+					<tr>
+						<th class="text-center">공지 내용</th>
+						<td colspan="3" th:utext="${detail.content}"></td>
+					</tr>
+					<tr>
+						<th class="text-center">첨부파일</th>
+						<td colspan="3">
+							<th:block th:if="${file ne null}">
+								<th:block th:unless="${#lists.isEmpty(file)}" th:each="list : ${file}">
+									<a th:text="${list.originName}" th:href="${list.path}" target="_blank"></a>
+								</th:block>
+							</th:block>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="hstack gap-2 justify-content-end mt-4">
+		<button type="button" class="btn btn-dark" style="width: 100px" data-role="update">수정</button>
+		<button type="button" class="btn btn-outline-dark" style="width: 100px" data-role="delete">삭제</button>
+		<button type="button" class="btn btn-secondary" style="width: 100px" data-role="list">목록</button>
+	</div>
+</div>
+</html>

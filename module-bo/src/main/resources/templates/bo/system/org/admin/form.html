@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/mainLayout}">
+<div layout:fragment="contents" th:remove="tag">
+    <div class="page-top">
+        <h1 class="page-title">관리자 등록</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">시스템 관리</li>
+                <li class="breadcrumb-item">관리자 관리</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive-xxl">
+                <form name="insertForm">
+                    <table class="table table-bordered mb-0">
+                        <colgroup>
+                            <col style="width: 15%"/>
+                            <col style="width: 35%"/>
+                            <col style="width: 15%"/>
+                            <col style="width: 35%"/>
+                        </colgroup>
+                        <tbody>
+                        <tr>
+                            <th class="text-center">관리자 그룹</th>
+                            <td colspan="3">
+                                <select class="form-select w-auto" id="groupCd" name="groupCd"
+                                        data-url="/bo/cd/ADMIN_GROUP"></select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">관리자 이름</th>
+                            <td colspan="3">
+                                <input type="text" class="form-control w-auto" id="adminNm" name="adminNm"
+                                       placeholder="이름을 입력하세요."/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">관리자 이메일</th>
+                            <td colspan="3">
+                                <input type="text" class="form-control w-auto" id="email" name="email"
+                                       placeholder="이메일을 입력하세요."/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">관리자 아이디</th>
+                            <td>
+                                <div class="input-group">
+                                    <input type="text" class="form-control w-auto" id="adminId" name="adminId"
+                                           placeholder="아이디를 입력하세요."/>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-danger" data-role="idDupCheck">중복검사
+                                        </button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">관리자 상태</th>
+                            <td colspan="3">
+                                <select class="form-select w-auto" id="adminStatusCd" name="adminStatusCd"
+                                        data-url="/bo/cd/ADMIN_STATUS"></select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">비밀번호</th>
+                            <td colspan="3">
+                                <input type="password" class="form-control w-auto" id="adminPassword"
+                                       name="adminPassword" placeholder="비밀번호를 입력하세요." maxlength="15"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">비밀번호 확인</th>
+                            <td colspan="3">
+                                <input type="password" class="form-control w-auto" id="adminPasswordChk"
+                                       name="adminPasswordChk" placeholder="비밀번호를 한번 더 입력하세요." maxlength="15"/>
+                                <div id="pwChkMsgN" name="pwChkMsgN"
+                                     style="display: none; color: red;">비밀번호가 일치하지 않습니다.
+                                </div>
+                                <div id="pwChkMsgY" name="pwChkMsgY"
+                                     style="display: none; color: blue;">비밀번호가 일치합니다.
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">사용일시</th>
+                            <td colspan="3">
+                                <input type="text" class="form-control" placeholder="사용 시작일" id="useStartDt"
+                                       name="useStartDt" data-picker="date"/>
+                                &nbsp;~&nbsp;
+                                <input type="text" class="form-control" placeholder="사용 종료일" id="useEndDt"
+                                       name="useEndDt" data-picker="date"/>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="hstack gap-2 justify-content-end mt-4">
+        <button class="btn btn-dark" style="width: 100px" data-role="register">등록 </button>
+        <button class="btn btn-outline-dark" style="width: 100px" onclick="history.back()">목록</button>
+    </div>
+</div>
+</html>

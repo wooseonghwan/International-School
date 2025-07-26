@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/mainLayout}">
+<div layout:fragment="contents" th:remove="tag">
+    <div id="container">
+        <div class="page-top mb-lg-1">
+            <h1 class="page-title">고객게시판 답변</h1>
+            <input type="hidden" th:value="${dto.qnaId}" th:id="qnaId"/>
+            <input type="hidden" th:value="${adminDto.adminNm}" id="replyId"/>
+        </div>
+        <div class="detail-table mt-6">
+            <table class="table table-bordered">
+                <colgroup>
+                    <col style="width: 10%;">
+                    <col style="width: 30%;">
+                    <col style="width: 10%;">
+                    <col style="width: 30%;">
+                </colgroup>
+
+                <tbody>
+                <tr>
+                    <th>문의자</th>
+                    <td th:text="${dto.custName}"></td>
+                </tr>
+                <tr>
+                    <th>작성일</th>
+                    <td colspan="3" th:text="${dto.createDt}"></td>
+                </tr>
+                <tr>
+                    <th>제목</th>
+                    <td colspan="3" th:text="${dto.title}">1</td>
+                </tr>
+                <tr>
+                    <th>내용</th>
+                    <td colspan="3" th:text="${dto.content}">1</td>
+                </tr>
+                <tr>
+                    <th>답변</th>
+                    <td colspan="3">
+                        <textarea id="reply" rows="6" cols="250" th:text="${dto.reply}"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th>답변 작성자</th>
+                    <td colspan="3" th:text="${dto.replyId}">1</td>
+                </tr>
+                <tr>
+                    <th>답변일시</th>
+                    <td colspan="3" th:text="${dto.replyDt}">1</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row align-items-center" style="margin-top: 20px;">
+            <div class="col-auto ms-0 ms-lg-auto" style="margin-left: auto">
+                <div class="gap-2 hstack">
+                    <button type="button" class="btn btn-dark" data-role="btnUpdate"
+                            style="min-width: 80px">저장
+                    </button>
+                    <button type="button" class="btn btn-dark" data-role="btnList"
+                            style="min-width: 80px">목록
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

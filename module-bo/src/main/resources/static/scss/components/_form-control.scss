@@ -1,0 +1,43 @@
+[data-picker="date"],
+[data-picker="datetime"]{
+  background-image: url('../images/icon-calendar.svg'); background-repeat: no-repeat; background-position: right .75rem top 50%;
+  display: inline-block;
+  & ~ img{vertical-align: middle;margin-left: 5px;cursor: pointer;}
+}
+[data-picker="date"]{
+  width: 140px;
+}
+[data-picker="datetime"]{
+  width: 205px;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.form-control-wrapper {
+  display: flex; background-color: $body-bg; border-radius: 0.375rem; align-items: center; width: 250px; min-width: 150px; border: 1px solid $border-color;
+  &:focus-within {
+    outline: 0;
+    border-color: $input-focus-border-color;
+    box-shadow: $input-focus-box-shadow;
+  }
+  input {
+    border: 0; background-color: $body-bg; width: 100%;
+    &:focus {
+      outline: none; box-shadow: none;
+    }
+    &[type="text"]{
+      &.filled ~ .icon-del{
+        display: block;
+      }
+    }
+  }
+  .icon-del {display: none;  margin-right: 0.75rem;}
+}
+
+.form-control {
+  min-width: 60px;
+}

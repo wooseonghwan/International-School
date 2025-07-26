@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/mainLayout}">
+<div layout:fragment="contents" th:remove="tag">
+    <!-- 페이지 상단 메뉴명 작성 시작 -->
+    <div class="page-top">
+        <h1 class="page-title">공지사항 관리</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">홈페이지 관리</li>
+                <li class="breadcrumb-item">공지사항 관리</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- 페이지 상단 메뉴명 작성 끝 -->
+    <div class="card mb-3">
+        <div class="card-body">
+            <form name="searchForm">
+                <input type="hidden" name="page" th:value="${searchInfo.page}"/>
+                <input type="hidden" name="rowSize" th:value="${searchInfo.rowSize}"/>
+                <input type="hidden" id="startDt" th:value="${searchInfo.searchStart}"/>
+                <input type="hidden" id="endDt" th:value="${searchInfo.searchEnd}"/>
+                <!-- 필터 영역 -->
+                <div class="filter-area">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="row g-2 g-lg-3 align-items-center">
+                            <div class="col-auto">
+                                <input type="text" id="searchStart" name="searchStart" class="form-control"
+                                       placeholder="YYYY.MM.DD"
+                                       data-picker="date" autocomplete="off"/>
+                            </div>
+                            <div class="col-auto">~</div>
+                            <div class="col-auto">
+                                <input type="text" id="searchEnd" name="searchEnd" class="form-control"
+                                       placeholder="YYYY.MM.DD"
+                                       data-picker="date" autocomplete="off"/>
+                            </div>
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-dark" data-role="btn-search-form"
+                                        style="min-width: 80px">검색
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row justify-content-end">
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-dark" data-role="form"
+                                        style="min-width: 80px;margin-bottom: 10px">공지사항 등록
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- //필터 영역 -->
+            </form>
+        </div>
+    </div>
+    <div class="card mb-3">
+        <div class="card-header">
+            <div class="card-title">공지사항 목록</div>
+        </div>
+        <div class="card-body">
+            <!-- table 상단 -->
+            <div class="row align-items-center justify-content-between mb-3">
+                <div class="col-auto">Total <strong th:text="${searchInfo.totalCount}">-</strong></div>
+                <div class="col-auto">
+                    <div class="hstack gap-2">
+                        <select class="form-select form-select-sm" data-role="select-row">
+                            <option value="10" th:selected="${searchInfo.rowSize} eq '10'">10개</option>
+                            <option value="30" th:selected="${searchInfo.rowSize} eq '30'">30개</option>
+                            <option value="50" th:selected="${searchInfo.rowSize} eq '50'">50개</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <!-- //table 상단 -->
+            <div class="table-responsive-xxl">
+                <table class="table table-bordered table-hover mb-0">
+                    <thead>
+                    <tr>
+                        <th class="text-center">NO</th>
+                        <th class="text-center">종류</th>
+                        <th class="text-center">제목</th>
+                        <th class="text-center">등록자</th>
+                        <th class="text-center">등록일시</th>
+                        <th class="text-center">조회수</th>
+                    </tr>
+                    </thead>
+                    <tbody class="table-group-divider">
+                    <tr th:each="item : ${list}">
+                        <td class="text-center"
+                            th:text="${searchInfo.totalCount-(searchInfo.rowSize*(searchInfo.page-1))-itemStat.index}"></td>
+                        <td class="text-center" th:text="${item.noticeTypeCd}"></td>
+                        <td class="text-center">
+                            <a th:href="@{/bo/system/homepage/notice/detail(noticeSeq=${item.noticeSeq})}"
+                               th:text="${item.title}"></a>
+                        </td>
+                        <td class="text-center" th:text="${item.writer}"></td>
+                        <td class="text-center" th:text="${item.createDt}"></td>
+                        <td class="text-center" th:text="${item.hit}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="d-flex justify-content-center mt-5">
+                <th:block th:replace="fragments/paging :: paging_Fragment"/>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

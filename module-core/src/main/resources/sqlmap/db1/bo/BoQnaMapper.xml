@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fw.core.mapper.db1.bo.BoQnaMapper">
+
+    <select id="selectQnaList" parameterType="BoQnaDTO" resultType="BoQnaDTO">
+        SELECT  ROW_NUMBER() OVER (ORDER BY tq.QNA_ID ASC) AS rowNum
+             , tq.QNA_ID
+             , date_format(tq.CREATE_DT, '%Y-%m-%d %H:%i') as createDt
+             , tq.CREATE_ID
+             , tq.TITLE
+             , tq.VIEW_CNT
+             , ut.custName
+        FROM t_qna tq
+    INNER JOIN user_tb ut ON ut.webId = tq.create_id
+        <where>
+            <if test="searchValue != null and searchValue != '' and searchType != null and searchType != ''">
+                <choose>
+                    <when test="searchType == 'TITLE'">
+                        tq.TITLE LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+                    <when test="searchType == 'CONTENT'">
+                        tq.CONTENT LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+                    <otherwise>
+                        1=1
+                    </otherwise>
+                </choose>
+            </if>
+        </where>
+        ORDER BY tq.QNA_ID DESC
+        <include refid="common.paging"/>
+    </select>
+
+    <select id="selectQnaListCnt" parameterType="BoQnaDTO" resultType="int">
+        SELECT COUNT(*)
+        FROM t_qna tq
+        INNER JOIN user_tb ut ON ut.webId = tq.create_id
+        <where>
+            <if test="searchValue != null and searchValue != '' and searchType != null and searchType != ''">
+                <choose>
+                    <when test="searchType == 'TITLE'">
+                        tq.TITLE LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+                    <when test="searchType == 'CONTENT'">
+                        tq.CONTENT LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+                    <otherwise>
+                        1=1
+                    </otherwise>
+                </choose>
+            </if>
+        </where>
+    </select>
+
+    <select id="selectQnaDetail" parameterType="String" resultType="BoQnaDTO">
+        SELECT tq.QNA_ID
+             , tq.CREATE_ID
+             , date_format(tq.CREATE_DT, '%Y-%m-%d %H:%i') as createDt
+             , tq.TITLE
+             , tq.CONTENT
+             , tq.REPLY
+             , tq.REPLY_ID
+             , date_format(tq.REPLY_DT, '%Y-%m-%d %H:%i') as replyDt
+             , ut.custName
+             , ta.admin_nm
+        FROM t_qna tq
+    INNER JOIN user_tb ut ON ut.webId = tq.create_id
+    LEFT JOIN t_admin ta ON ta.admin_seq = tq.reply_id
+        WHERE tq.QNA_ID = #{qnaId}
+    </select>
+
+    <update id="updateQnaReply" parameterType="BoQnaDTO">
+        UPDATE t_qna
+        SET REPLY = #{reply}
+          , REPLY_ID = '1'
+          , REPLY_DT = now()
+        WHERE QNA_ID = #{qnaId}
+    </update>
+
+</mapper>

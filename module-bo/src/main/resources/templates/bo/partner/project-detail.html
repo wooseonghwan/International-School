@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/mainLayout}">
+<div layout:fragment="contents" th:remove="tag">
+    <div id="container">
+        <input type="hidden" id="projectId" th:value="${detail.projectId}"/>
+        <div class="project-content-list">
+            <div class="project-content">
+                <input type="hidden" id="fileId" th:value="${detail.fileId}">
+                <div class="project-content-info">
+                    <div class="img-file-wrap" style="width: 200px">
+                        <!-- 각 파일 선택 영역 -->
+                        <div class="file-upload-container w-100">
+                            <div class="file-content">
+                                <input type="file" class="file-upload-input" id="fileInput1" style="display: none;" accept="image/*"/>
+                                <label for="fileInput1" class="file-upload-button">
+                                    <i class="icon-p-plus"></i>
+                                    <span>이미지 추가</span>
+                                </label>
+                                <!-- 이미지 미리보기 -->
+                                <div class="file-preview" id="filePreview1">
+                                    <img id="previewImage"
+                                         th:if="${detail.fileUrl != null}"
+                                         th:src="@{${detail.fileUrl}}"
+                                         style="max-width: 100%; max-height: 210px; cursor: pointer;"
+                                         alt="대표 이미지"
+                                         onclick="triggerFileInput()" />
+                                </div>
+                                <!-- 이미지 삭제 버튼 -->
+                                <button type="button" class="img-close-btn" onclick="removePreview()">
+                                    <i class="icon-img-close"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info-list">
+                        <div class="d-flex align-items-center gap-4" style="margin-bottom: 35px;">
+                            <span class="flex-shrink-0">상태 :</span>
+                            <div class="select-wrap">
+                                <select class="form-select form" name="status" id="status" style="width: 200px !important;">
+                                    <option value="OPEN" th:selected="${detail.status eq 'OPEN'}">모집중</option>
+                                    <option value="CLOSE" th:selected="${detail.status eq 'CLOSE'}">모집종료</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center gap-4">
+                            <span class="flex-shrink-0">제목 :</span>
+                            <input type="text" class="form-control remove-form" name="title" id="title" th:value="${detail.title}" style="width: 200px;"/>
+                        </div>
+                        <div class="company">
+                            <div class="d-flex align-items-center gap-4">
+                                <span class="flex-shrink-0">개요 :</span>
+                                <input type="text" class="form-control remove-form" name="summary" id="summary" th:value="${detail.summary}" style="width: 500px;"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="info-group">
+                    <ul>
+                        <li>
+                            <p class="title"><i class="icon-budget"></i>예산</p>
+                            <input type="text" class="form-control remove-form" name="budget" id="budget" th:value="${detail.budget}"/>
+                        </li>
+                        <li>
+                            <p class="title"><i class="icon-period"></i>기간</p>
+                            <div class="select-wrap">
+                                <select class="form-select form" name="adDate" id="adDate" style="width: 260px !important;">
+                                    <option value="1TIME" th:selected="${detail.adDate eq '1TIME'}">일회성</option>
+                                    <option value="24H" th:selected="${detail.adDate eq '24H'}">24시간</option>
+                                    <option value="1WEEK" th:selected="${detail.adDate eq '1WEEK'}">1주일</option>
+                                    <option value="1MONTH" th:selected="${detail.adDate eq '1MONTH'}">1개월</option>
+                                    <option value="ETC" th:selected="${detail.adDate eq 'ETC'}">기타(직접입력)</option>
+                                </select>
+                            </div>
+                            <!-- 기타 선택 시 보여질 input 영역 (기본은 hidden) -->
+                            <div id="adDateEtcWrap"
+                                 th:attr="style=${detail.adDate == 'ETC'} ? 'margin-top: 8px;' : 'margin-top: 8px; display: none;'">
+                                <input type="text" class="form-control remove-form" name="adDateEtc" id="adDateEtc"
+                                       th:value="${detail.adDateEtc}" placeholder="직접 입력" />
+                            </div>
+                        </li>
+                        <li>
+                            <p class="title"><i class="icon-deadline"></i>마감</p>
+                            <input type="date" class="form-control remove-form" name="closeDt" id="closeDt" th:value="${detail.closeDt}" />
+                        </li>
+                        <li>
+                            <p class="title"><i class="icon-deadline"></i>조회수</p>
+                            <input type="text" class="form-control remove-form" name="viewCount" id="viewCount" th:value="${detail.viewCount}"/>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <table class="table table-hover mt-6">
+            <colgroup>
+                <col width="20%"/>
+                <col width="80%"/>
+            </colgroup>
+
+            <tbody>
+            <tr>
+                <th>클라이언트 정보​</th>
+                <td>
+                    <input type="text" class="form-control remove-form" placeholder="" th:value="${detail.name}" style="width: 150px !important" readonly/>
+                    <textarea class="form-control remove-form" id="userIntro" th:text="${detail.userIntro}" style="margin-top: 5px; height: 100px; vertical-align: top; padding-top: 10px;"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <th>견적 정보​</th>
+                <td>
+                    <input type="text" class="form-control remove-form" placeholder="" th:value="${detail.name + '(' + detail.platform + '>' + detail.platformDetail + '>' + detail.adType + ')'}" readonly/>
+                </td>
+            </tr>
+            <tr>
+                <th>설명​</th>
+                <td>
+                    <textarea class="form-control remove-form" id="content" th:text="${detail.content}" style="margin-top: 5px; height: 150px; vertical-align: top; padding-top: 10px;"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <th>요청 서비스</th>
+                <td>
+                    <textarea class="form-control remove-form" id="serviceRequest" th:text="${detail.serviceRequest}" style="margin-top: 5px; height: 150px; vertical-align: top; padding-top: 10px;"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <th>업무 요청 사항</th>
+                <td>
+                    <textarea class="form-control remove-form" id="taskRequest" th:text="${detail.taskRequest}" style="margin-top: 5px; height: 150px; vertical-align: top; padding-top: 10px;"></textarea>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <table class="table table-hover mt-6">
+            <colgroup>
+                <col width="20%"/>
+                <col width="80%"/>
+            </colgroup>
+            <tbody>
+            <!-- 리스트가 비어 있을 때 -->
+            <tr th:if="${#lists.isEmpty(applyPartnerList)}">
+                <th>지원한 파트너스</th>
+                <td colspan="2">지원한 파트너스가 없습니다.</td>
+            </tr>
+            <!-- 리스트가 있을 때 -->
+            <tr th:if="${!#lists.isEmpty(applyPartnerList)}">
+                <!-- th는 한 번만 출력, td는 첫 번째 항목 -->
+                <th th:rowspan="${applyPartnerList.size()}">지원한 파트너스</th>
+                <td>
+                    <input class="form-control" th:value="${applyPartnerList[0].name}" readonly/>
+                </td>
+            </tr>
+            <!-- 나머지 항목 반복 출력 -->
+            <tr th:each="partnersList, iterStat : ${applyPartnerList}" th:if="${!iterStat.first}">
+                <td>
+                    <input class="form-control" th:value="${partnersList.name}" readonly/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="hstack justify-content-end gap-4 mt-lg-6">
+            <button type="button" class="btn btn-gray" data-role="cancel">취소​</button>
+            <button type="button" class="btn btn-danger" data-role="delete">삭제​</button>
+            <button type="button" class="btn btn-primary" data-role="update">수정​</button>
+        </div>
+        <!-- //container -->
+    </div>
+</div>
+</html>

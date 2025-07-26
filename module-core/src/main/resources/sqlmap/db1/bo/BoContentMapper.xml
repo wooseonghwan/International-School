@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fw.core.mapper.db1.bo.BoContentMapper">
+
+    <!-- 카테고리 리스트 -->
+    <select id="selectCategoryList" parameterType="BoContentDTO" resultType="BoContentDTO">
+        SELECT ROW_NUMBER() OVER(ORDER BY CREATE_DT DESC) AS rowNum
+             , CATEGORY_ID
+             , CATEGORY_NAME
+             , SUB_CATEGORY_NAME
+             , date_format(CREATE_DT, '%Y-%m-%d') AS createDt
+             , USE_YN
+             , CASE WHEN USE_YN = 'Y' THEN '활성화'
+                    WHEN USE_YN = 'N' THEN '비활성화' END AS useYnNm
+        FROM t_category
+        <where>
+            DEL_YN = 'N'
+            <if test="searchText != null and searchText != ''">
+                AND (CATEGORY_NAME LIKE CONCAT('%', #{searchText}, '%'))
+            </if>
+        </where>
+        ORDER BY CATEGORY_ID DESC
+        <include refid="common.paging" />
+    </select>
+
+    <!-- 카테고리 리스트 카운트 -->
+    <select id="selectCategoryListCnt" parameterType="BoContentDTO" resultType="int">
+        SELECT COUNT(*)
+        FROM t_category
+        <where>
+            DEL_YN = 'N'
+            <if test="searchText != null and searchText != ''">
+                AND (CATEGORY_NAME LIKE CONCAT('%', #{searchText}, '%'))
+            </if>
+        </where>
+    </select>
+
+    <!-- 카테고리 등록 -->
+    <insert id="insertCategory" parameterType="BoContentDTO">
+        INSERT INTO t_category (
+               CATEGORY_NAME
+             , SUB_CATEGORY_NAME
+             , USE_YN
+             , CREATE_ID
+             , CREATE_DT
+             ) VALUES (
+               #{categoryName}
+             , #{subCategoryName}
+             , #{useYn}
+             , #{adminSession.adminSeq}
+             , NOW()
+        )
+    </insert>
+
+    <!-- 카테고리 상세 -->
+    <select id="selectCategoryDetail" parameterType="String" resultType="BoContentDTO">
+        SELECT CATEGORY_ID
+             , CATEGORY_NAME
+             , SUB_CATEGORY_NAME
+             , USE_YN
+             , date_format(UPDATE_DT, '%Y-%m-%d %H:%i') AS updateDt
+        FROM t_category
+        WHERE CATEGORY_ID = #{categoryId}
+    </select>
+
+    <!-- 카테고리 수정 -->
+    <update id="updateCategory" parameterType="BoContentDTO">
+        UPDATE t_category
+        SET USE_YN = #{useYn}
+          , CATEGORY_NAME = #{categoryName}
+          , SUB_CATEGORY_NAME = #{subCategoryName}
+          , UPDATE_ID = #{adminSession.adminSeq}
+          , UPDATE_DT = NOW()
+        WHERE CATEGORY_ID = #{categoryId}
+    </update>
+
+    <!-- 카테고리 삭제 -->
+    <update id="deleteCategory" parameterType="BoContentDTO">
+        UPDATE t_category
+        SET DEL_YN = 'Y',
+            UPDATE_ID = #{adminSession.adminSeq},
+            UPDATE_DT = NOW()
+        WHERE CATEGORY_ID = #{categoryId}
+    </update>
+
+    <!-- 카테고리 엑셀 다운로드 -->
+    <select id="selectCategoryListForExcel" parameterType="BoContentDTO" resultType="BoContentDTO">
+        SELECT CATEGORY_NAME
+             , SUB_CATEGORY_NAME
+             , date_format(create_dt, '%Y-%m-%d') AS createDt
+             , USE_YN
+             , CASE WHEN USE_YN = 'Y' THEN '활성화'
+                    WHEN USE_YN = 'N' THEN '비활성화' END AS useYnNm
+        FROM t_category
+        <where>
+            DEL_YN = 'N'
+        </where>
+        ORDER BY CATEGORY_ID DESC
+    </select>
+
+    <!-- 광고 상품 리스트 -->
+    <select id="selectAdProductList" parameterType="BoContentDTO" resultType="BoContentDTO">
+        SELECT ROW_NUMBER() OVER(ORDER BY CREATE_DT DESC) AS rowNum
+             , PRODUCT_ID
+             , MEDIA
+             , CASE WHEN MEDIA = 'NAVER' THEN '네이버'
+                    WHEN MEDIA = 'INSTAR' THEN '인스타그램'
+                    WHEN MEDIA = 'YOUTUBE' THEN '유튜브'
+                    WHEN MEDIA = 'KAKAO' THEN '카카오톡' END AS mediaNm
+             , TITLE
+             , AMOUNT
+             , date_format(CREATE_DT, '%Y-%m-%d') AS createDt
+        FROM t_ad_product
+        <where>
+            DEL_YN = 'N'
+            <if test="searchText != null and searchText != ''">
+                AND (TITLE LIKE CONCAT('%', #{searchText}, '%'))
+            </if>
+        </where>
+        ORDER BY PRODUCT_ID DESC
+        <include refid="common.paging" />
+    </select>
+
+    <!-- 광고 상품 리스트 카운트 -->
+    <select id="selectAdProductListCnt" parameterType="BoContentDTO" resultType="int">
+        SELECT COUNT(*)
+        FROM t_ad_product
+        <where>
+            DEL_YN = 'N'
+            <if test="searchText != null and searchText != ''">
+                AND (TITLE LIKE CONCAT('%', #{searchText}, '%'))
+            </if>
+        </where>
+    </select>
+
+    <!-- 광고 상품 상세 -->
+    <select id="selectAdProductDetail" parameterType="BoContentDTO" resultType="BoContentDTO">
+        SELECT tap.PRODUCT_ID,
+               tap.MEDIA,
+               tap.MEDIA_DETAIL,
+               tap.TITLE,
+               tap.CONTENT,
+               tap.MAIN_CONTENT,
+               tap.AMOUNT_CONTENT,
+               tap.ETC_CONTENT,
+               tap.AMOUNT,
+               tap.WORK_DT,
+               tf.file_url,
+               tap.file_id
+        FROM t_ad_product tap
+    LEFT JOIN T_FILE tf ON tf.file_id = tap.file_id
+        WHERE PRODUCT_ID = #{productId}
+    </select>
+
+    <select id="selectProductSubContents" parameterType="String" resultType="String">
+        SELECT PRODUCT_SUB_CONTENT
+        FROM t_ad_product_sub_content
+        WHERE PRODUCT_ID = #{productId}
+    </select>
+
+    <!-- 광고 상품 등록 -->
+    <insert id="insertAdProduct" parameterType="BoContentDTO">
+        INSERT INTO t_ad_product ( MEDIA,
+                                   MEDIA_DETAIL,
+                                   TITLE,
+                                   CONTENT,
+                                   MAIN_CONTENT,
+                                   AMOUNT_CONTENT,
+                                   ETC_CONTENT,
+                                   AMOUNT,
+                                   WORK_DT,
+                                   DEL_YN,
+                                   CREATE_ID,
+                                   CREATE_DT,
+                                   FILE_ID
+        ) VALUES ( #{media}
+                 , #{mediaDetail}
+                 , #{title}
+                 , #{content}
+                 , #{mainContent}
+                 , #{amountContent}
+                 , #{etcContent}
+                 , #{amount}
+                 , #{workDt}
+                 , 'N'
+                 , #{adminSession.adminSeq}
+                 , NOW()
+                 , #{fileId}
+        )
+        <selectKey resultType="String" keyProperty="productId" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <!-- 광고 상품 부가 설명 등록 -->
+    <insert id="insertProductSubContent" parameterType="BoContentDTO">
+        INSERT INTO t_ad_product_sub_content ( PRODUCT_ID
+                                             , PRODUCT_SUB_CONTENT
+                                             , CREATE_DT
+        ) VALUES ( #{productId}
+                 , #{productSubContent}
+                 , NOW()
+        )
+    </insert>
+
+    <!-- 광고 상품 부가 설명 삭제 -->
+    <delete id="deleteProductSubContent" parameterType="String">
+        DELETE FROM t_ad_product_sub_content
+        WHERE PRODUCT_ID = #{productId}
+    </delete>
+
+    <!-- 광고 상품 수정 -->
+    <update id="updateAdProduct" parameterType="BoContentDTO">
+        UPDATE t_ad_product
+        SET MEDIA = #{media}
+          , MEDIA_DETAIL = #{mediaDetail}
+          , TITLE = #{title}
+          , CONTENT = #{content}
+          , MAIN_CONTENT = #{mainContent}
+          , AMOUNT_CONTENT = #{amountContent}
+          , ETC_CONTENT = #{etcContent}
+          , FILE_ID = #{fileId}
+          , AMOUNT = #{amount}
+          , WORK_DT = #{workDt}
+          , UPDATE_ID = #{adminSession.adminSeq}
+          , UPDATE_DT = NOW()
+        WHERE PRODUCT_ID = #{productId}
+    </update>
+
+
+    <!-- 광고 상품 삭제 -->
+    <update id="deleteAdProduct" parameterType="BoContentDTO">
+        UPDATE t_ad_product
+        SET DEL_YN = 'Y',
+            UPDATE_ID = #{adminSession.adminSeq},
+            UPDATE_DT = NOW()
+        WHERE PRODUCT_ID = #{productId}
+    </update>
+
+    <!-- 패키지 리스트 -->
+    <select id="selectPackageList" parameterType="BoContentDTO" resultType="BoContentDTO">
+        /* com.fw.core.mapper.db1.bo.BoContentMapper.selectPackageList, 패키지 리스트 조회, 24.11.11, WSH, BoContentMapper.xml */
+        SELECT ROW_NUMBER() OVER(ORDER BY CREATE_DT DESC) AS rowNum
+             , package_id
+             , media
+             , CASE WHEN media = 'NAVER' THEN '네이버'
+                    WHEN media = 'INSTAR' THEN '인스타그램'
+                    WHEN media = 'YOUTUBE' THEN '유튜브'
+                    WHEN media = 'KAKAO' THEN '카카오톡' END AS mediaNm
+             , package_name
+             , price
+        FROM t_package
+        <where>
+            del_yn = 'N'
+            <if test="searchText != null and searchText != ''">
+                AND (package_name LIKE CONCAT('%', #{searchText}, '%'))
+            </if>
+            <if test="searchDate != null and searchDate != ''">
+                AND date_format(create_dt, '%Y-%m') = #{searchDate}
+            </if>
+        </where>
+        ORDER BY package_id DESC
+        <include refid="common.paging" />
+    </select>
+    <!-- 패키지 리스트 카운트 -->
+    <select id="selectPackageListCnt" parameterType="BoContentDTO" resultType="int">
+        /* com.fw.core.mapper.db1.bo.BoContentMapper.selectPackageListCnt, 패키지 리스트 카운트, 24.11.11, WSH, BoContentMapper.xml */
+        SELECT COUNT(1)
+        FROM t_package
+        <where>
+            del_yn = 'N'
+            <if test="searchText != null and searchText != ''">
+                AND (package_name LIKE CONCAT('%', #{searchText}, '%'))
+            </if>
+            <if test="searchDate != null and searchDate != ''">
+                AND date_format(create_dt, '%Y-%m') = #{searchDate}
+            </if>
+        </where>
+    </select>
+    <!-- 패키지 상세 -->
+    <select id="selectPackageDetail" parameterType="BoContentDTO" resultType="BoContentDTO">
+        /* com.fw.core.mapper.db1.bo.BoContentMapper.selectPackageDetail, 24.11.11, wsh, BoContentMapper.xml */
+        SELECT package_id
+             , media
+             , media_detail
+             , media_detail_2
+             , package_name
+             , content
+             , price
+             , file_id
+             , date_format(create_dt, '%Y-%m-%d') AS createDt
+             , date_format(update_dt, '%Y-%m-%d') AS updateDt
+        FROM t_package
+        WHERE package_id = #{packageId}
+    </select>
+    <!-- 패키지 등록 -->
+    <insert id="insertPackage" parameterType="BoContentDTO">
+        /* com.fw.core.mapper.db1.bo.BoContentMapper.insertPackage, 24.11.11, wsh , BoContentMapper.xml */
+        INSERT INTO t_package (
+               media
+             , media_detail
+             , media_detail_2
+             , package_name
+             , content
+             , price
+        <if test=" fileSeq!=null and fileSeq!='' ">
+             , file_id
+        </if>
+             , create_id
+             , create_dt
+        ) VALUES (
+               #{media}
+             , #{mediaDetail}
+             , #{mediaDetail2}
+             , #{packageName}
+             , #{content}
+             , #{price}
+             <if test=" fileId!=null and fileId!='' ">
+             , #{fileId}
+             </if>
+             , '1'
+             , NOW()
+        )
+    </insert>
+    <!-- 패키지 수정 -->
+    <update id="updatePackage" parameterType="BoContentDTO">
+        /* com.fw.core.mapper.db1.bo.BoContentMapper.updatePackage, 24.11.11, wsh , BoContentMapper.xml */
+        UPDATE t_package
+        SET media = #{media}
+          , media_detail = #{mediaDetail}
+          , media_detail_2 = #{mediaDetail2}
+          , package_name = #{packageName}
+          , content = #{content}
+          , price = #{price}
+          <if test="fileId != null and fileId != ''">
+          , file_id = #{fileId}
+          </if>
+          , update_id = '1'
+          , update_dt = NOW()
+        WHERE package_id = #{packageId}
+    </update>
+    <!-- 패키지 삭제 -->
+    <update id="deletePackage" parameterType="BoContentDTO">
+        /* com.fw.core.mapper.db1.bo.BoContentMapper.deletePackage, 24.11.11, wsh , BoContentMapper.xml */
+        UPDATE t_package
+        SET del_yn = 'Y'
+        WHERE package_id = #{packageId}
+    </update>
+</mapper>

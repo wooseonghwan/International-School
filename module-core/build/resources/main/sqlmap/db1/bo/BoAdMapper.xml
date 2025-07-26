@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fw.core.mapper.db1.bo.BoAdMapper">
+
+    <!-- 광고 리스트 -->
+    <select id="selectAdHistoryList" parameterType="BoAdDTO" resultType="BoAdDTO">
+        SELECT ROW_NUMBER() OVER(ORDER BY tapr.CREATE_DT DESC) AS rowNum
+             , tapr.PRODUCT_REQUEST_ID
+             , tapr.STATUS
+             , CASE WHEN tapr.STATUS = 'PENDING' THEN '상품의뢰'
+                    WHEN tapr.STATUS = 'SUCCESS' THEN '구매완료'
+                    WHEN tapr.STATUS = 'CANCEL' THEN '구매취소'
+                    WHEN tapr.STATUS = 'AD-PROGRESS' THEN '광고진행중' END AS statusNm
+             , tap.TITLE
+             , tu.NAME
+             , date_format(tapr.CREATE_DT, '%Y-%m-%d %H:%i') AS createDt
+             , date_format(tapr.START_DT, '%Y-%m-%d %H:%i') AS startDt
+        FROM t_ad_product_request tapr
+    INNER JOIN t_user tu on tapr.USER_ID = tu.USER_ID
+    INNER JOIN t_ad_product tap ON tap.PRODUCT_ID = tapr.PRODUCT_ID
+        <where>
+            <if test="searchText != null and searchText != ''">
+                (tu.NAME LIKE CONCAT('%', #{searchText}, '%'))
+            </if>
+            <if test="searchStart != null and searchStart != ''">
+                AND date_format(tapr.CREATE_DT, '%Y-%m-%d') >= #{searchStart}
+            </if>
+            <if test="searchEnd != null and searchEnd != ''">
+                AND date_format(tapr.CREATE_DT, '%Y-%m-%d') &lt;= #{searchEnd}
+            </if>
+            <if test="searchType != null and searchType != ''">
+                AND tapr.STATUS = #{searchType}
+            </if>
+        </where>
+        ORDER BY tapr.CREATE_DT DESC
+        <include refid="common.paging" />
+    </select>
+
+    <!-- 광고 리스트 카운트 -->
+    <select id="selectAdHistoryListCnt" parameterType="BoAdDTO" resultType="int">
+        SELECT COUNT(*)
+        FROM t_ad_product_request tapr
+    INNER JOIN t_user tu on tapr.USER_ID = tu.USER_ID
+    INNER JOIN t_ad_product tap ON tap.PRODUCT_ID = tapr.PRODUCT_ID
+        <where>
+            <if test="searchText != null and searchText != ''">
+                (tu.NAME LIKE CONCAT('%', #{searchText}, '%'))
+            </if>
+            <if test="searchStart != null and searchStart != ''">
+                AND date_format(tapr.CREATE_DT, '%Y-%m-%d') >= #{searchStart}
+            </if>
+            <if test="searchEnd != null and searchEnd != ''">
+                AND date_format(tapr.CREATE_DT, '%Y-%m-%d') &lt;= #{searchEnd}
+            </if>
+            <if test="searchType != null and searchType != ''">
+                AND tapr.STATUS = #{searchType}
+            </if>
+        </where>
+    </select>
+
+    <!-- 광고 내역 상세 -->
+    <select id="selectAdHistoryDetail" parameterType="BoAdDTO" resultType="BoAdDTO">
+        SELECT tapr.PRODUCT_REQUEST_ID
+             , tapr.STATUS
+             , CASE WHEN tapr.STATUS = 'PENDING' THEN '상품의뢰'
+                    WHEN tapr.STATUS = 'SUCCESS' THEN '구매완료'
+                    WHEN tapr.STATUS = 'CANCEL' THEN '구매취소'
+                    WHEN tapr.STATUS = 'AD-PROGRESS' THEN '광고진행중' END AS statusNm
+             , tap.TITLE
+             , tu.NAME
+             , tu.PHONE
+             , tu.EMAIL
+             , tu.LOGIN_ID
+             , tap.CONTENT
+             , tap.AMOUNT
+             , date_format(tapr.CREATE_DT, '%Y-%m-%d %H:%i') AS createDt
+             , date_format(tapr.START_DT, '%Y-%m-%d %H:%i') AS startDt
+             , tapr.PRODUCT_ID
+             , tapr.USER_ID
+        FROM t_ad_product_request tapr
+    INNER JOIN t_user tu on tapr.USER_ID = tu.USER_ID
+    INNER JOIN t_ad_product tap ON tap.PRODUCT_ID = tapr.PRODUCT_ID
+        AND tapr.PRODUCT_REQUEST_ID = #{productRequestId}
+    </select>
+
+    <update id="updateAdHistory" parameterType="BoAdDTO">
+        UPDATE t_ad_product_request
+        SET STATUS = #{status}
+        <if test="startDt != null">
+            , START_DT = NOW()
+        </if>
+        WHERE PRODUCT_REQUEST_ID = #{productRequestId}
+    </update>
+
+    <insert id="insertAdPayment" parameterType="BoAdDTO">
+        INSERT INTO t_payment (
+                                ad_product_id
+                              , user_id
+                              , product_type
+                              , status
+                              , price
+                              , pay_method
+                              , update_dt
+        ) VALUES (
+                     #{productId}
+                 , #{userId}
+                 , 'A'
+                 , 'NO-SUCCESS'
+                 , #{amount}
+                 , 'TRANSFER'
+                 , NULL
+                 )
+    </insert>
+
+
+</mapper>

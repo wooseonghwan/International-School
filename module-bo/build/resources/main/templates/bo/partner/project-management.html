@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/mainLayout}">
+<div layout:fragment="contents" th:remove="tag">
+    <div id="container">
+        <div class="hstack justify-content-end gap-4 mt-lg-6">
+            <button type="button" class="btn btn-primary" data-role="form">신규 등록</button>
+        </div>
+        <form name="searchForm">
+            <input type="hidden" name="page" th:value="${searchInfo.page}"/>
+            <div class="row align-items-center justify-content-between mb-3">
+                <div class="col-auto">Total <strong th:text="${searchInfo.totalCount}">-</strong></div>
+                <!--<div class="col-auto">
+                    <div class="hstack gap-2">
+                        <select class="form-select form-select-sm" data-role="select-row">
+                            <option value="10" th:selected="${searchInfo.rowSize} eq '10'">10개</option>
+                            <option value="30" th:selected="${searchInfo.rowSize} eq '30'">30개</option>
+                            <option value="50" th:selected="${searchInfo.rowSize} eq '50'">50개</option>
+                        </select>
+                    </div>
+                </div>-->
+            </div>
+            <div class="project-content-list">
+                <div class="project-content" th:each="list : ${projectList}" data-role="detail" th:data-project-id="${list.projectId}">
+                    <div class="project-content-info">
+                        <div class="info-img">
+                            <img th:src="${list.fileUrl}" alt="">
+                        </div>
+                        <div class="info-list">
+                            <div class="status">
+                                <span class="badge rounded-pill bg-primary badge-lg" th:if="${list.status == 'OPEN'}">모집중</span>
+                                <span class="badge rounded-pill bg-gray badge-lg" th:if="${list.status == 'CLOSE'}" style="background-color: #cdd1d6 !important;">모집종료</span>
+                                <span class="badge rounded-pill bg-yellow500 badge-lg" th:if="${list.createDt == today}">NEW</span>
+                                <!--<span class="badge rounded-pill bg-green500 badge-lg">블로그 상위노출</span>-->
+                            </div>
+                            <p class="title" th:text="${list.title}">의류 브랜드 해외 인플루언서 마케팅</p>
+                            <p class="desc" th:text="${list.summary}">키성장건강식품 드림키 및 청소년두피케어샴푸 드림틴즈를 제조,판매하고 있습니다.키성장건강식품
+                                드림키
+                                및 청소년두피케어샴푸 드림틴즈를 제조,판매하고
+                                있습니다.키성장건강식품 드림키 및 청소년두피케어샴푸 드림틴즈를 제조,판매하고 있습니다.</p>
+                            <div class="company">
+                                <div class="profile">
+                                    <div class="ring">
+                                        <img src="/static/images/profile-img.svg" alt="프로필 이미지"/>
+                                    </div>
+                                    <p class="name" th:text="${list.name}">소프트**</p>
+                                </div>
+                                <p class="date" th:text="${list.createDt}">2024.09.12</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info-group">
+                        <ul>
+                            <li>
+                                <p class="title"><i class="icon-budget"></i>예산</p>
+                                <p class="desc" th:text="${#numbers.formatInteger(list.budget, 0, 'COMMA') + '원'}">
+                                    15,000,000원</p>
+                            </li>
+                            <li>
+                                <p class="title"><i class="icon-period"></i>기간</p>
+                                <th:block th:if="${list.adDate != 'ETC'}">
+                                    <p class="desc" th:text="${list.adDateName}">1개월 미만</p>
+                                </th:block>
+                                <th:block th:if="${list.adDate == 'ETC'}">
+                                    <p class="desc" th:text="${list.adDateEtc}">1개월 미만</p>
+                                </th:block>
+                            </li>
+                            <li>
+                                <p class="title"><i class="icon-deadline"></i>마감</p>
+                                <p class="desc" th:text="${list.closeDt + '(' + list.dDay + ')'}">7월 16일(D-15)</p>
+                            </li>
+                            <li>
+                                <p class="title"><i class="icon-deadline"></i>조회수</p>
+                                <p class="desc" th:text="${list.viewCount}">12</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="d-flex justify-content-center mt-5">
+            <th:block th:replace="fragments/paging :: paging_Fragment"/>
+        </div>
+    </div>
+</div>
+</html>

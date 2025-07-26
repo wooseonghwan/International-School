@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fw.core.mapper.db1.common.CommonFileMapper">
+
+    <!-- tb_file insert -->
+    <select id="getFile" resultType="FileDTO">
+        /* 파일 조회 */
+        SELECT FILE_ID
+             , PAGE_TYPE
+             , FILE_NM
+             , FILE_SAVE_NM
+             , FILE_SIZE
+             , FILE_TYPE
+             , EXT
+             , ACCESS_IP
+             , CREATE_ID
+             , CREATE_DT
+             , UPDATE_ID
+             , UPDATE_DT
+        FROM T_FILE
+        WHERE FILE_ID = #{fileId} AND DEL_YN = 'N'
+    </select>
+
+    <insert id="insertFile" parameterType="FileDTO" useGeneratedKeys="true" keyProperty="fileId">
+        /* 파일 업로드 */
+        INSERT INTO T_FILE
+                ( PAGE_TYPE
+                , FILE_NM
+                , FILE_SAVE_NM
+                , FILE_URL
+                , FILE_SIZE
+                , FILE_TYPE
+                , EXT
+                , ACCESS_IP
+                , CREATE_ID
+                , UPDATE_ID)
+                VALUES (
+                  #{pageType}
+                , #{fileNm}
+                , #{fileSaveNm}
+                , #{fileUrl}
+                , #{fileSize}
+                , #{fileType}
+                , #{ext}
+                , #{accessIp}
+                , #{createId}
+                , #{updateId})
+    </insert>
+
+    <update id="deleteFile" parameterType="Long">
+        /* 파일 삭제 */
+        UPDATE T_FILE
+        SET DEL_YN = 'Y'
+        WHERE FILE_ID = #{fileId}
+    </update>
+
+</mapper>

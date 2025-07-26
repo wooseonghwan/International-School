@@ -1,0 +1,143 @@
+package com.fw.bo.login.controller;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fw.bo.config.security.BoLoginService;
+import com.fw.bo.dashboard.service.BoDashboardService;
+import com.fw.bo.homepage.service.BoNoticeService;
+import com.fw.core.code.ResponseCode;
+import com.fw.core.dto.bo.BoAdminDTO;
+import com.fw.core.dto.bo.BoMainDTO;
+import com.fw.core.dto.bo.BoNoticeDTO;
+import com.fw.core.vo.ResponseVO;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.util.stream.Collectors;
+
+/**
+ * 로그인 Controller
+ */
+@Controller
+@Slf4j
+@RequiredArgsConstructor
+public class LoginController {
+
+    private final BoLoginService boLoginService;
+    private final BoDashboardService boDashboardService;
+    private final BoNoticeService boNoticeService;
+    /**
+     * BO Dashboard 페이지
+     */
+    @GetMapping({"/", "/bo"})
+    public String bo(ModelMap model, BoMainDTO boMainDTO, BoNoticeDTO boNoticeDTO) throws JsonProcessingException {
+        /*LocalDate today = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd (E)", Locale.KOREA);
+        String formattedDate = today.format(formatter);
+        // 오늘 날짜
+        model.addAttribute("today", formattedDate);
+        // 오늘의 할일 카운트
+        model.addAttribute("todayInfo", boDashboardService.selectTodayTaskInfo(boMainDTO));
+        // 공지사항
+        model.addAttribute("noticeList", boNoticeService.selectNoticeList(boNoticeDTO));
+        // 유입경로
+        List<BoMainDTO> inflowList = boDashboardService.getInflowStats(); // INFLOW_PATH_NAME, COUNT 포함
+        model.addAttribute("inflowStats", inflowList);
+        Map<String, String> colorMap = new HashMap<>();
+        colorMap.put("블로그", "#0076f3");
+        colorMap.put("GFA", "#0076f3");
+        colorMap.put("플레이스", "#cdd1d6");
+        colorMap.put("홈페이지", "#00f382");
+        colorMap.put("다음", "#55f300");
+        colorMap.put("인스타", "#00f382");
+        colorMap.put("유튜브", "blue");
+        model.addAttribute("colorMap", colorMap);
+        // 일별 매출
+        List<BoMainDTO> dailyStats = boDashboardService.selectDailySales();
+        List<String> labels = new ArrayList<>();
+        List<Long> data = new ArrayList<>();
+        for (BoMainDTO dto : dailyStats) {
+            labels.add(String.valueOf(dto.getDay())); // x축 레이블
+            data.add(dto.getTotalPrice());            // y축 데이터
+        }
+        model.addAttribute("barLabels", labels);
+        model.addAttribute("barData", data);
+        // 방문자 수
+        ObjectMapper mapper = new ObjectMapper();
+
+        List<BoMainDTO> dailyVisitStats = boDashboardService.selectDailyVisitStats();   // 시간별 (0~23)
+        List<BoMainDTO> weeklyVisitStats = boDashboardService.selectWeeklyVisitStats(); // 날짜별
+        List<BoMainDTO> monthlyVisitStats = boDashboardService.selectMonthlyVisitStats(); // 날짜별
+
+        // 일간
+        model.addAttribute("dailyLabels", mapper.writeValueAsString(
+                dailyVisitStats.stream().map(BoMainDTO::getLabel).collect(Collectors.toList())));
+        model.addAttribute("dailyData", mapper.writeValueAsString(
+                dailyVisitStats.stream().map(BoMainDTO::getCount).collect(Collectors.toList())));
+
+        // 주간
+        model.addAttribute("weeklyLabels", mapper.writeValueAsString(
+                weeklyVisitStats.stream().map(BoMainDTO::getLabel).collect(Collectors.toList())));
+        model.addAttribute("weeklyData", mapper.writeValueAsString(
+                weeklyVisitStats.stream().map(BoMainDTO::getCount).collect(Collectors.toList())));
+
+        // 월간
+        model.addAttribute("monthlyLabels", mapper.writeValueAsString(
+                monthlyVisitStats.stream().map(BoMainDTO::getLabel).collect(Collectors.toList())));
+        model.addAttribute("monthlyData", mapper.writeValueAsString(
+                monthlyVisitStats.stream().map(BoMainDTO::getCount).collect(Collectors.toList())));
+        // 상품별 판매율
+        List<BoMainDTO> productSalesList = boDashboardService.selectProductSales();
+        List<String> productLabels = new ArrayList<>();
+        List<Long> productCounts = new ArrayList<>();
+        for (BoMainDTO dto : productSalesList) {
+            productLabels.add(dto.getTitle());        // TITLE을 labels로
+            productCounts.add(dto.getProductCnt());   // 판매 건수
+        }
+        model.addAttribute("productSalesLabels", new ObjectMapper().writeValueAsString(productLabels));
+        model.addAttribute("productSalesCounts", new ObjectMapper().writeValueAsString(productCounts));*/
+        return "/bo/dashboard";
+    }
+    /**
+     * BO 로그인 페이지
+     */
+    @GetMapping("/bo/login")
+    public String login(
+            @ModelAttribute("errorMessage") String errorMessage
+            , ModelMap modelMap) throws Exception {
+        log.info("errorMessage :: {}", errorMessage);
+        return "/bo/login";
+    }
+
+    @PostMapping("/email/check")
+    @ResponseBody
+    public int emailCheck(String email) {
+        try {
+            return boLoginService.selectEmailCheck(email);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+    @PostMapping("/change/password")
+    @ResponseBody
+    public ResponseEntity<ResponseVO> updatePassword(@RequestBody BoAdminDTO boadminDTO) {
+        ResponseCode code = ResponseCode.SUCCESS;
+        try {
+            boLoginService.updatePassword(boadminDTO);
+        } catch (Exception e) {
+            log.error("error", e);
+            code = ResponseCode.INTERNAL_SERVER_ERROR;
+        }
+        return ResponseEntity.status(code.getHttpStatus()).body(ResponseVO.builder(code).build());
+    }
+
+
+}

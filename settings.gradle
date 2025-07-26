@@ -1,0 +1,5 @@
+rootProject.name = 'International-School'
+
+include 'module-bo'
+include 'module-core'
+

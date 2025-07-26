@@ -1,0 +1,22 @@
+// 대쉬보드
+.dashboard-wrap{
+  grid-template-columns: 1fr 1fr;
+  .dashboard-area:last-child{
+    grid-column-end: span 2;
+  }
+
+  .card{
+    min-height: 180px;
+  }
+  .dashboard-area{
+  }
+  .detail-card-list{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    &.whide{
+      grid-template-columns: repeat(6, 1fr);
+    }
+  }
+  .fa-minus{font-size: 10px;}
+}

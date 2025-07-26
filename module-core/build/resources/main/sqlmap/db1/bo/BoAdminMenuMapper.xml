@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fw.core.mapper.db1.bo.BoAdminMenuMapper">
+
+    <!-- 메뉴 리스트 취득 -->
+    <select id="selectMenuList" resultType="BoAdminMenuDTO">
+        /* com.fw.core.mapper.db1.bo.BoAdminMenuMapper.selectFirstNodeList, 메뉴 리스트 취득, 22.09.15, skayhlj@gmail.com, BoAdminMenuMapper.xml */
+        SELECT menu_cd
+             , upper_menu_cd
+             , menu_nm
+             , menu_icon_cd
+             , menu_url
+             , menu_open_type_cd
+             , menu_order
+             , menu_level
+             , use_flag
+             , access_able_start_dt
+             , access_able_end_dt
+             , block_start_dt
+             , block_end_dt
+             , create_seq
+             , create_dt
+        FROM t_admin_menu
+        WHERE use_flag = 'Y'
+        ORDER BY menu_cd
+    </select>
+    <select id="getUpperMenuName" resultType="String">
+        SELECT
+            (CASE
+                 WHEN t.menu_level = 3 THEN (SELECT menu_nm FROM t_admin_menu WHERE menu_cd = (
+                     SELECT upper_menu_cd FROM t_admin_menu WHERE menu_cd = t.upper_menu_cd
+                 ))
+                 WHEN t.menu_level = 2 THEN (SELECT menu_nm FROM t_admin_menu WHERE menu_cd = t.upper_menu_cd)
+                END)
+        FROM t_admin_menu t
+        WHERE menu_url = #{menuUrl}
+    </select>
+    <select id="getMenuName" resultType="String">
+        SELECT
+            (CASE
+                 WHEN t.menu_level = 3 THEN (SELECT menu_nm FROM t_admin_menu WHERE menu_cd = t.upper_menu_cd)
+                 WHEN t.menu_level = 2 THEN t.menu_nm
+                END)
+        FROM t_admin_menu t
+        WHERE menu_url = #{menuUrl}
+    </select>
+    <select id="getDetailMenuName" resultType="String">
+        SELECT menu_nm
+        FROM t_admin_menu
+        WHERE menu_url = #{menuUrl} and menu_level = 3
+    </select>
+    <!--메뉴 추가,삭제-->
+    <insert id="insertUpdateMenu" parameterType="BoAdminMenuDTO">
+        /* com.fw.core.mapper.db1.bo.BoAdminMenuMapper.selectThirdNodeList, insertMenu, 22.09.15, skayhlj@gmail.com, BoAdminMenuMapper.xml */
+        <selectKey resultType="String" keyProperty="menuCd" order="BEFORE">
+            SELECT DISTINCT
+            <choose>
+                <when test="menuCd !=null and menuCd !=''">
+                    #{menuCd}
+                </when>
+                <otherwise>
+                    <![CDATA[
+                  CASE WHEN SUBSTR(#{upperMenuCd},10,11)<>0
+                       THEN CONCAT('MENU00',SUBSTR(SUB.max_menu_cd,5)+1)
+                       WHEN SUBSTR(#{upperMenuCd},7,8)<>0
+                       THEN CONCAT('MENU00',SUBSTR(SUB.max_menu_cd,5)+1000)
+                       ELSE CONCAT('MENU00',SUBSTR(SUB.max_menu_cd,5)+1000000) END AS menuCd ]]>
+                    FROM t_admin_menu menu,
+                    (SELECT
+                    CASE WHEN menu_cd IS NULL THEN #{upperMenuCd}
+                    ELSE MAX (menu_cd) END max_menu_cd FROM t_admin_menu WHERE upper_menu_cd = #{upperMenuCd} ) SUB
+                </otherwise>
+            </choose>
+        </selectKey>
+        INSERT INTO t_admin_menu (
+        menu_cd
+        , upper_menu_cd
+        , menu_nm
+        , menu_icon_cd
+        , menu_url
+        , menu_open_type_cd
+        , menu_order
+        , menu_level
+        , use_flag
+        , access_able_start_dt
+        , access_able_end_dt
+        , block_start_dt
+        , block_end_dt
+        , create_seq
+        , create_dt
+        ) VALUES (
+        #{menuCd}
+        , #{upperMenuCd}
+        , #{menuNm}
+        , #{menuIconCd}
+        , #{menuUrl}
+        , #{menuOpenTypeCd}
+        , #{menuOrder}
+        , #{menuLevel}
+        , #{useFlag}
+        , #{accessAbleStartDt}
+        , #{accessAbleEndDt}
+        , #{blockStartDt}
+        , #{blockEndDt}
+        , #{createSeq}
+        , now()
+        )
+        ON DUPLICATE KEY UPDATE
+        menu_nm = #{menuNm}
+        , menu_icon_cd = #{menuIconCd}
+        , menu_url = #{menuUrl}
+        , menu_open_type_cd = #{menuOpenTypeCd}
+        , use_flag = #{useFlag}
+        , access_able_start_dt = #{accessAbleStartDt}
+        , access_able_end_dt = #{accessAbleEndDt}
+        , block_start_dt = #{blockStartDt}
+        , block_end_dt = #{blockEndDt}
+    </insert>
+
+    <!--메뉴삭제-->
+    <delete id="deleteMenu" parameterType="BoAdminMenuDTO">
+        /* com.fw.core.mapper.db1.bo.BoAdminMenuMapper.deleteMenu, deleteMenu, 22.09.20, skayhlj@gmail.com, BoAdminMenuMapper.xml */
+        DELETE
+        FROM t_admin_menu
+        WHERE menu_cd = #{menuCd}
+           OR upper_menu_cd = #{menuCd}
+    </delete>
+
+    <!-- 요청 URL로 상위 메뉴코드 조회 -->
+    <select id="selectUpperMenuCdByUrl" parameterType="java.lang.String" resultType="java.lang.String">
+        /* com.fw.core.mapper.db1.bo.BoAdminMenuMapper.selectUpperMenuCdByUrl, selectUpperMenuCdByUrl, 23.09.25, YJW, BoAdminMenuMapper.xml */
+        SELECT DISTINCT upper_menu_cd
+        FROM t_admin_menu
+        WHERE (menu_url = #{url} OR #{url} LIKE CONCAT(menu_url, '%')) AND use_flag = 'Y'
+    </select>
+
+    <!-- 메뉴 권한 리스트 조회 -->
+    <select id="selectMenuAuthList" parameterType="BoAdminMenuDTO" resultType="BoAdminMenuDTO">
+        /* com.fw.core.mapper.db1.bo.BoAdminMenuMapper.selectMenuAuthList, selectMenuAuthList, 23.09.25, YJW, BoAdminMenuMapper.xml */
+        SELECT B.menu_cd
+             , B.menu_url
+             , B.upper_menu_cd
+             , B.menu_nm
+             , B.menu_icon_cd
+             , B.menu_open_type_cd
+             , B.menu_order
+             , B.menu_level
+             , B.use_flag
+             , B.access_able_start_dt
+             , B.access_able_end_dt
+             , B.block_start_dt
+             , B.block_end_dt
+             , B.create_seq
+             , B.create_dt
+        FROM t_admin_group_auth A
+                 INNER JOIN t_admin_menu B ON A.menu_cd = B.menu_cd AND B.use_flag = 'Y'
+        WHERE group_cd = #{groupCd}
+    </select>
+
+</mapper>

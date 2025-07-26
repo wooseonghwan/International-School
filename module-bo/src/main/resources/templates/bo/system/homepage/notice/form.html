@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layouts/mainLayout}">
+<div layout:fragment="contents" th:remove="tag">
+	<!-- 페이지 상단 메뉴명 작성 시작 -->
+	<div class="page-top">
+		<h1 class="page-title">공지사항 관리</h1>
+		<nav aria-label="breadcrumb">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item">홈페이지 관리</li>
+				<li class="breadcrumb-item">공지사항 관리</li>
+			</ol>
+		</nav>
+	</div>
+	<!-- 페이지 상단 메뉴명 작성 끝 -->
+	<div class="card">
+		<div class="card-body">
+			<div class="table-responsive-xxl">
+				<form id="insertNotice" name="insertNotice">
+					<table class="table table-bordered mb-0">
+						<colgroup>
+							<col style="width: 15%" />
+							<col style="width: *" />
+						</colgroup>
+						<tbody>
+						<tr>
+							<th class="text-center">공지 종류</th>
+							<td>
+								<select id="selectType" name="selectType" class="form-select w-auto" data-url="/bo/cd/BOARD_TYPE"></select>
+							</td>
+						</tr>
+						<tr>
+							<th class="text-center">공지 제목</th>
+							<td>
+								<div class="form-control-wrapper w-100">
+									<input type="text" class="form-control" id="noticeTitle" name="noticeTitle" placeholder="제목을 입력하세요"/>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<th class="text-center">내용</th>
+							<td colspan="3">
+								<textarea  id="noticeContent" name= "noticeContent" placeholder="내용을 입력하세요" class="form-control" rows="13" cols="50"></textarea>
+							</td>
+						</tr>
+						<tr>
+							<th class="text-center">첨부파일</th>
+							<td colspan="3">
+								<input type="file" id="notice-upload" multiple="multiple"  name="file">
+							</td>
+						</tr>
+						</tbody>
+					</table>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="hstack gap-2 justify-content-end mt-4">
+		<button type="button" class="btn btn-outline-dark" style="width: 100px" data-role="list">취소</button>
+		<button type="button" class="btn btn-dark" style="width: 100px" data-role="save">등록</button>
+	</div>
+</div>
+</html>

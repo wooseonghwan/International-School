@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/mainLayout}">
+<div layout:fragment="contents" th:remove="tag">
+    <div id="container">
+        <div class="page-top mb-lg-1">
+            <h1 class="page-title">자주묻는 질문 등록</h1>
+        </div>
+        <div class="detail-table mt-6">
+            <table class="table table-bordered">
+                <colgroup>
+                    <col style="width: 20%;">
+                    <col style="width: 80%;">
+                </colgroup>
+                <tbody>
+                <tr>
+                    <th>FAQ 제목</th>
+                    <td>
+                        <input class="form-control" type="text" id="title">
+                    </td>
+                </tr>
+                <tr>
+                    <th>카테고리</th>
+                    <td>
+                        <select id="category" class="form-select" style="width:20%">
+                            <option value="">선택</option>
+                            <option value="ESTIMATE">견적관련</option>
+                            <option value="PAYMENT">결제관련</option>
+                            <option value="SIGNUP">회원가입</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>내용</th>
+                    <td>
+                        <textarea rows="2" class="form-control form-textarea" id="content" name="content"
+                                  placeholder=""></textarea>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row align-items-center" style="margin-top: 20px;">
+            <div class="col-auto ms-0 ms-lg-auto" style="margin-left: auto">
+                <div class="gap-2 hstack">
+                    <button type="button" class="btn btn-dark" data-role="btnSave"
+                            style="min-width: 80px">저장
+                    </button>
+                    <button type="button" class="btn btn-dark" data-role="btnList"
+                            style="min-width: 80px">목록
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

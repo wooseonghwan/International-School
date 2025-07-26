@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/mainLayout}">
+<div layout:fragment="contents" th:remove="tag">
+    <div id="container">
+        <!-- PC 메인 -->
+        <!--<div class="dashboard d-none d-lg-block">
+            <div class="row mt-6">
+                &lt;!&ndash; 금일 현황 &ndash;&gt;
+                <div class="col-12">
+                    <div class="card today-current-situation">
+                        <div class="today-current-head">
+                            <p class="date" th:text="${today}">2023.12.16 (토)</p>
+                            <p class="today-title">오늘의 할일​</p>
+                        </div>
+                        <ul class="today-list">
+                            <li>
+                                <p class="cnt" th:text="${todayInfo.estimateCnt}">3</p>
+                                <p class="title">견적문의</p>
+                            </li>
+                            <li>
+                                <p class="cnt" th:text="${todayInfo.approvalCnt}">2</p>
+                                <p class="title">파트너스 가입신청</p>
+                            </li>
+                            <li>
+                                <p class="cnt" th:text="${todayInfo.progressCnt}">10</p>
+                                <p class="title">파트너스 진행중 광고</p>
+                            </li>
+                            <li>
+                                <p class="cnt text-danger" th:text="${todayInfo.qnaCnt}">2</p>
+                                <p class="title">1:1 문의</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-6 mt-4">
+                <div class="col-4">
+                    &lt;!&ndash; 방문자 수 차트 카드 &ndash;&gt;
+                    <div class="card mb-2 people-wrap">
+                        <div class="card-header">
+                            <p class="title">방문자 수<span>(단위: 명)</span></p>
+                            <ul class="tabs">
+                                <li class="tab active">일간</li>
+                                <li class="tab">주간</li>
+                                <li class="tab">월간</li>
+                            </ul>
+                        </div>
+                        <div class="card-body">
+                            <div class="people-container" style="height: 300px;">
+                                <canvas id="rawMaterialSales"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    &lt;!&ndash; 방문자 수 데이터 hidden 영역 (data-* 속성으로 JSON 전달) &ndash;&gt;
+                    <div id="visit-data"
+                         th:data-daily-labels="${dailyLabels}"
+                         th:data-daily-data="${dailyData}"
+                         th:data-weekly-labels="${weeklyLabels}"
+                         th:data-weekly-data="${weeklyData}"
+                         th:data-monthly-labels="${monthlyLabels}"
+                         th:data-monthly-data="${monthlyData}"
+                         style="display: none;">
+                    </div>
+                    &lt;!&ndash; 공지사항 &ndash;&gt;
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="hstack align-items-center justify-content-between gap-2">
+                                <div class="card-title">공지사항</div>
+                            </div>
+                        </div>
+                        <div class="notice-wrap">
+                            <ul>
+                                <li th:each="noticeList : ${noticeList}" data-bs-toggle="modal" data-bs-target="#modal-notice">
+                                    <span class="desc" th:text="${noticeList.title}" th:data-notice-id="${noticeList.noticeId}" data-role="noticeDetail">할인 이벤트</span>
+                                </li>
+                                <li th:if="${noticeList == null or #lists.isEmpty(noticeList)}">
+                                    <span class="desc text-muted">등록된 공지사항이 없습니다</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-8">
+                    <div class="card mb-2">
+                        <div class="card-header">
+                            <div class="hstack align-items-center justify-content-between gap-2">
+                                <div class="card-title">일별 매출표</div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row align-items-center g-6">
+                                <div class="col-12">
+                                    <div class="barChart">
+                                        <canvas id="mybarChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="bar-data-list" style="display: none;">
+                            <li th:each="label, iterStat : ${barLabels}"
+                                th:data-label="${label}"
+                                th:data-count="${barData[iterStat.index]}">
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="row">
+                        &lt;!&ndash; 상품별 판매율 &ndash;&gt;
+                        <div class="col-12 col-xl-6">
+                            <div class="card h-100">
+                                <div class="card-header">
+                                    <div class="hstack align-items-center justify-content-between gap-2">
+                                        <div class="card-title">상품별 판매율</div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="dashboard-cs">
+                                        <div class="dashboard-cs-body">
+                                            <div class="doughnut-chart">
+                                                <canvas id="cs-pie-chart"></canvas>
+                                                <div id="product-sales-data"
+                                                     th:data-labels="${productSalesLabels}"
+                                                     th:data-counts="${productSalesCounts}"
+                                                     style="display: none;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="legend-list">
+                                            <ul class="product"></ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        &lt;!&ndash; //상품별 판매율 &ndash;&gt;
+                        &lt;!&ndash; 유입경로 &ndash;&gt;
+                        <div class="col-12 col-xl-6">
+                            <div class="card h-100">
+                                <div class="card-header">
+                                    <div class="hstack align-items-center justify-content-between gap-2">
+                                        <div class="card-title">유입경로</div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="dashboard-cs">
+                                        <div class="dashboard-cs-body">
+                                            <div class="doughnut-chart">
+                                                <canvas id="traffic-pie-chart"></canvas>
+                                            </div>
+                                        </div>
+                                        <div class="legend-list">
+                                            <ul class="traffic">
+                                                <li th:each="item : ${inflowStats}" th:data-count="${item.inflowCnt}">
+                                                <span class="box" th:style="'background-color:' + ${colorMap[item.inflowPathName] ?: '#999'}"></span>
+                                                    <span class="title" th:text="${item.inflowPathName}">유입경로명</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        &lt;!&ndash; //유입경로 &ndash;&gt;
+                    </div>
+                </div>
+            </div>
+        </div>-->
+    </div>
+</div>
+</html>

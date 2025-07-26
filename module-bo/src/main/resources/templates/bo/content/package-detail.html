@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/mainLayout}">
+<div layout:fragment="contents" th:remove="tag">
+    <div id="container">
+        <div class="page-top">
+            <h1 class="page-title">패키지 상세/수정</h1>
+        </div>
+        <form name="updatePackage">
+            <input type="hidden" id="packageId" name="packageId" th:value="${detail.packageId}" />
+            <input type="hidden" id="fileId" name="fileId" th:value="${detail.fileId}" />
+            <input type="hidden" name="editorContent" th:value="${detail.content}" />
+            <input type="hidden" name="fileChangeFlag" value="N" />
+            <div class="detail-table mt-6">
+                <table class="table table-bordered">
+                    <colgroup>
+                        <col style="width: 10%"/>
+                        <col/>
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                        <th>매체</th>
+                        <td>
+                            <div class="select-wrap">
+                                <select class="form-select form-sm" name="media" id="media">
+                                    <option value="NAVER" th:selected="${detail.media eq 'NAVER'}">네이버</option>
+                                    <option value="INSTAR" th:selected="${detail.media eq 'INSTAR'}">인스타그램</option>
+                                    <option value="YOUTUBE" th:selected="${detail.media eq 'YOUTUBE'}">유튜브</option>
+                                    <option value="KAKAO" th:selected="${detail.media eq 'KAKAO'}">카카오톡</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- 네이버 상세 옵션 -->
+                    <tr class="mediaDetailRow" id="naverDetails">
+                        <th>매체 상세</th>
+                        <td>
+                            <div class="select-wrap">
+                                <select class="form-select form-sm" name="mediaDetail">
+                                    <option value="BLOG" th:selected="${detail.mediaDetail eq 'BLOG'}">블로그</option>
+                                    <option value="PLACE" th:selected="${detail.mediaDetail eq 'PLACE'}">플레이스</option>
+                                    <option value="CAFE" th:selected="${detail.mediaDetail eq 'CAFE'}">카페</option>
+                                    <option value="JISICK" th:selected="${detail.mediaDetail eq 'JISICK'}">지식인</option>
+                                    <option value="IMAGE" th:selected="${detail.mediaDetail eq 'IMAGE'}">이미지</option>
+                                    <option value="NEWS" th:selected="${detail.mediaDetail eq 'NEWS'}">뉴스</option>
+                                    <option value="AUTO" th:selected="${detail.mediaDetail eq 'AUTO'}">자동완성</option>
+                                    <option value="SEARCH-AD" th:selected="${detail.mediaDetail eq 'SEARCH-AD'}">검색광고</option>
+                                    <option value="TOP-SITE" th:selected="${detail.mediaDetail eq 'TOP-SITE'}">사이트 상위</option>
+                                    <option value="ACCOUNT" th:selected="${detail.mediaDetail eq 'ACCOUNT'}">네이버 계정</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- 인스타그램 상세 옵션 -->
+                    <tr class="mediaDetailRow" id="instarDetails">
+                        <th>매체 상세</th>
+                        <td>
+                            <div class="select-wrap">
+                                <select class="form-select form-sm" name="mediaDetail">
+                                    <option value="MANAGEMENT" th:selected="${detail.mediaDetail eq 'MANAGEMENT'}">계정관리</option>
+                                    <option value="POPULAR" th:selected="${detail.mediaDetail eq 'POPULAR'}">인기</option>
+                                    <option value="SPONSOR" th:selected="${detail.mediaDetail eq 'SPONSOR'}">스폰서</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- 유튜브 상세 옵션 -->
+                    <tr class="mediaDetailRow" id="youtubeDetails">
+                        <th>매체 상세</th>
+                        <td>
+                            <div class="select-wrap">
+                                <select class="form-select form-sm" name="mediaDetail">
+                                    <option value="PRODUCT" th:selected="${detail.mediaDetail eq 'PRODUCT'}">상품</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- 카카오톡 상세 옵션 -->
+                    <tr class="mediaDetailRow" id="kakaoDetails">
+                        <th>매체 상세</th>
+                        <td>
+                            <div class="select-wrap">
+                                <select class="form-select form-sm" name="mediaDetail">
+                                    <option value="KAKAOTALK" th:selected="${detail.mediaDetail eq 'KAKAOTALK'}">카카오톡</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- 네이버 / 블로그 -->
+                    <tr class="mediaDetailRow naverDetails" id="naverBlogDetails">
+                        <th>매체 상세 옵션</th>
+                        <td>
+                            <div class="select-wrap">
+                                <select class="form-select form-sm" name="mediaDetail2">
+                                    <option value="NB1" th:selected="${detail.mediaDetail2 eq 'NB1'}">브랜드 블로그</option>
+                                    <option value="NB2" th:selected="${detail.mediaDetail2 eq 'NB2'}">상위노출(준최)-최소</option>
+                                    <option value="NB3" th:selected="${detail.mediaDetail2 eq 'NB3'}">상위노출(최적)-최소</option>
+                                    <option value="NB4" th:selected="${detail.mediaDetail2 eq 'NB4'}">기자단(준최배포)</option>
+                                    <option value="NB5" th:selected="${detail.mediaDetail2 eq 'NB5'}">기자단(최적배포)</option>
+                                    <option value="NB6" th:selected="${detail.mediaDetail2 eq 'NB6'}">체험단(체험형)</option>
+                                    <option value="NB7" th:selected="${detail.mediaDetail2 eq 'NB7'}">체험단(배송형)</option>
+                                    <option value="NB8" th:selected="${detail.mediaDetail2 eq 'NB8'}">아이피(블로그1개당1개)</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- 네이버 / 플레이스 -->
+                    <tr class="mediaDetailRow naverDetails" id="naverPlaceDetails">
+                        <th>매체 상세 옵션</th>
+                        <td>
+                            <div class="select-wrap">
+                                <select class="form-select form-sm" name="mediaDetail2">
+                                    <option value="NP1" th:selected="${detail.mediaDetail2 eq 'NP1'}">플레이스 리뷰(블로그)</option>
+                                    <option value="NP2" th:selected="${detail.mediaDetail2 eq 'NP2'}">플레이스 리뷰(영수증)</option>
+                                    <option value="NP3" th:selected="${detail.mediaDetail2 eq 'NP3'}">저장하기</option>
+                                    <option value="NP4" th:selected="${detail.mediaDetail2 eq 'NP4'}">알림</option>
+                                    <option value="NP5" th:selected="${detail.mediaDetail2 eq 'NP5'}">트래픽</option>
+                                    <option value="NP6" th:selected="${detail.mediaDetail2 eq 'NP6'}">길찾기</option>
+                                    <option value="NP7" th:selected="${detail.mediaDetail2 eq 'NP7'}">상위노출 - 최소</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- 네이버 / 카페 -->
+                    <tr class="mediaDetailRow naverDetails" id="naverCafeDetails">
+                        <th>매체 상세 옵션</th>
+                        <td>
+                            <div class="select-wrap">
+                                <select class="form-select form-sm" name="mediaDetail2">
+                                    <option value="NC1" th:selected="${detail.mediaDetail2 eq 'NC1'}">카페침투</option>
+                                    <option value="NC2" th:selected="${detail.mediaDetail2 eq 'NC2'}">핫딜</option>
+                                    <option value="NC3" th:selected="${detail.mediaDetail2 eq 'NC3'}">카페상위노출</option>
+                                    <option value="NC4" th:selected="${detail.mediaDetail2 eq 'NC4'}">카페 회원수 늘리기</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- 네이버 / 지식인 -->
+                    <tr class="mediaDetailRow naverDetails" id="naverJisickDetails">
+                        <th>매체 상세 옵션</th>
+                        <td>
+                            <div class="select-wrap">
+                                <select class="form-select form-sm" name="mediaDetail2">
+                                    <option value="NJ1" th:selected="${detail.mediaDetail2 eq 'NJ1'}">상위노출</option>
+                                    <option value="NJ2" th:selected="${detail.mediaDetail2 eq 'NJ2'}">배포</option>
+                                    <option value="NJ3" th:selected="${detail.mediaDetail2 eq 'NJ3'}">전문가 계정관리</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- 네이버 / 이미지 -->
+                    <tr class="mediaDetailRow naverDetails" id="naverImageDetails">
+                        <th>매체 상세 옵션</th>
+                        <td>
+                            <div class="select-wrap">
+                                <select class="form-select form-sm" name="mediaDetail2">
+                                    <option value="NI1" th:selected="${detail.mediaDetail2 eq 'NI1'}">1페이지 노출</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- 네이버 / 뉴스 -->
+                    <tr class="mediaDetailRow naverDetails" id="naverNewsDetails">
+                        <th>매체 상세 옵션</th>
+                        <td>
+                            <div class="select-wrap">
+                                <select class="form-select form-sm" name="mediaDetail2">
+                                    <option value="NN1" th:selected="${detail.mediaDetail2 eq 'NN1'}">배포 - 최소</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- 네이버 / 자동완성 -->
+                    <tr class="mediaDetailRow naverDetails" id="naverAutoDetails">
+                        <th>매체 상세 옵션</th>
+                        <td>
+                            <div class="select-wrap">
+                                <select class="form-select form-sm" name="mediaDetail2">
+                                    <option value="NA1" th:selected="${detail.mediaDetail2 eq 'NA1'}">건당</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- 네이버 / 검색광고 -->
+                    <tr class="mediaDetailRow naverDetails" id="naverSearchDetails">
+                        <th>매체 상세 옵션</th>
+                        <td>
+                            <div class="select-wrap">
+                                <select class="form-select form-sm" name="mediaDetail2">
+                                    <option value="NS1" th:selected="${detail.mediaDetail2 eq 'NS1'}">파워링크</option>
+                                    <option value="NS2" th:selected="${detail.mediaDetail2 eq 'NS2'}">GFA</option>
+                                    <option value="NS3" th:selected="${detail.mediaDetail2 eq 'NS3'}">브랜드 검색광고</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- 네이버 / 사이트 상위 -->
+                    <tr class="mediaDetailRow naverDetails" id="naverTopDetails">
+                        <th>매체 상세 옵션</th>
+                        <td>
+                            <div class="select-wrap">
+                                <select class="form-select form-sm" name="mediaDetail2">
+                                    <option value="NT1" th:selected="${detail.mediaDetail2 eq 'NT1'}">1-3위 노출(최소)</option>
+                                    <option value="NT2" th:selected="${detail.mediaDetail2 eq 'NT2'}">트래픽</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- 인스타그램 / 계정관리 -->
+                    <tr class="mediaDetailRow instarDetails" id="instarManagerDetails">
+                        <th>매체 상세 옵션</th>
+                        <td>
+                            <div class="select-wrap">
+                                <select class="form-select form-sm" name="mediaDetail2">
+                                    <option value="IM1" th:selected="${detail.mediaDetail2 eq 'IM1'}">브랜드 계정관리 팔/좋 자동</option>
+                                    <option value="IM2" th:selected="${detail.mediaDetail2 eq 'IM2'}">브랜드 계정관리 팔/요 포스팅</option>
+                                    <option value="IM3" th:selected="${detail.mediaDetail2 eq 'IM3'}">브랜드 계정관리 최적화 계정</option>
+                                    <option value="IM4" th:selected="${detail.mediaDetail2 eq 'IM4'}">좋아요(외국인)</option>
+                                    <option value="IM5" th:selected="${detail.mediaDetail2 eq 'IM5'}">팔로워(외국인)</option>
+                                    <option value="IM6" th:selected="${detail.mediaDetail2 eq 'IM6'}">댓글(외국인)</option>
+                                    <option value="IM7" th:selected="${detail.mediaDetail2 eq 'IM7'}">좋아요(한국인)</option>
+                                    <option value="IM8" th:selected="${detail.mediaDetail2 eq 'IM8'}">팔로워(한국인)</option>
+                                    <option value="IM9" th:selected="${detail.mediaDetail2 eq 'IM9'}">댓글(한국인)</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- 인스타그램 / 인스타그램 인기 -->
+                    <tr class="mediaDetailRow instarDetails" id="instarPopularDetails">
+                        <th>매체 상세 옵션</th>
+                        <td>
+                            <div class="select-wrap">
+                                <select class="form-select form-sm" name="mediaDetail2">
+                                    <option value="IP1" th:selected="${detail.mediaDetail2 eq 'IP1'}">연관검색어(계정)</option>
+                                    <option value="IP2" th:selected="${detail.mediaDetail2 eq 'IP2'}">인기 게시글</option>
+                                    <option value="IP3" th:selected="${detail.mediaDetail2 eq 'IP3'}">인기탭</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- 인스타그램 / 스폰서 -->
+                    <tr class="mediaDetailRow instarDetails" id="instarSponsorDetails">
+                        <th>매체 상세 옵션</th>
+                        <td>
+                            <div class="select-wrap">
+                                <select class="form-select form-sm" name="mediaDetail2">
+                                    <option value="IS1" th:selected="${detail.mediaDetail2 eq 'IS1'}">인스타그램 스폰서</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- 유튜브 / 상품 -->
+                    <tr class="mediaDetailRow youtubeDetails" id="youtubeProductDetails">
+                        <th>매체 상세 옵션</th>
+                        <td>
+                            <div class="select-wrap">
+                                <select class="form-select form-sm" name="mediaDetail2">
+                                    <option value="YP1" th:selected="${detail.mediaDetail2 eq 'YP1'}">조회수</option>
+                                    <option value="YP2" th:selected="${detail.mediaDetail2 eq 'YP2'}">채널 구독자</option>
+                                    <option value="YP3" th:selected="${detail.mediaDetail2 eq 'YP3'}">좋아요</option>
+                                    <option value="YP4" th:selected="${detail.mediaDetail2 eq 'YP4'}">댓글</option>
+                                    <option value="YP5" th:selected="${detail.mediaDetail2 eq 'YP5'}">라이브 스트리밍 시청자수</option>
+                                    <option value="YP6" th:selected="${detail.mediaDetail2 eq 'IS1'}">공유</option>
+                                    <option value="YP7" th:selected="${detail.mediaDetail2 eq 'YP7'}">한국인 조회수</option>
+                                    <option value="YP8" th:selected="${detail.mediaDetail2 eq 'YP8'}">한국인 구독자</option>
+                                    <option value="YP9" th:selected="${detail.mediaDetail2 eq 'YP9'}">한국인 좋아요</option>
+                                    <option value="YP10" th:selected="${detail.mediaDetail2 eq 'YP10'}">한국인 댓글</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- 카카오톡 / 카카오톡 -->
+                    <tr class="mediaDetailRow kakaoDetails" id="kakaoKakaoDetails">
+                        <th>매체 상세 옵션</th>
+                        <td>
+                            <div class="select-wrap">
+                                <select class="form-select form-sm" name="mediaDetail2">
+                                    <option value="KK1" th:selected="${detail.mediaDetail2 eq 'KK1'}">채널친구 추가</option>
+                                    <option value="KK2" th:selected="${detail.mediaDetail2 eq 'KK2'}">모먼트</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- 네이버 / 계정 -->
+                    <tr class="mediaDetailRow naverDetails" id="naverAcountDetails">
+                        <th>매체 상세 옵션</th>
+                        <td>
+                            <div class="select-wrap">
+                                <select class="form-select form-sm" name="mediaDetail2">
+                                    <option value="NAC1" th:selected="${detail.mediaDetail2 eq 'NAC1'}">최적화 블로그 영구</option>
+                                    <option value="NAC2" th:selected="${detail.mediaDetail2 eq 'NAC2'}">최적화 블로그 1년</option>
+                                    <option value="NAC3" th:selected="${detail.mediaDetail2 eq 'NAC3'}">최적화 블로그 6개월</option>
+                                    <option value="NAC4" th:selected="${detail.mediaDetail2 eq 'NAC4'}">최적화 블로그 1개월</option>
+                                    <option value="NAC5" th:selected="${detail.mediaDetail2 eq 'NAC5'}">준 최적화 블로그 5단계</option>
+                                    <option value="NAC6" th:selected="${detail.mediaDetail2 eq 'NAC6'}">준 최적화 블로그 4단계{</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>상품명</th>
+                        <td>
+                            <input type="text" class="form-control" name="packageName" th:value="${detail.packageName}" placeholder=""/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>상세 내용</th>
+                        <td>
+                            <textarea rows="2" class="form-control form-textarea" name="content" id="edit-mode-textarea" placeholder=""></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>가격</th>
+                        <td>
+                            <input type="text" class="form-control form-sm" name="price" th:value="${#numbers.formatInteger(detail.price, 0, 'COMMA')}" placeholder=""/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="">대표 이미지</th>
+                        <td colspan="3">
+                            <div>
+                                <th:block th:unless="${#lists.isEmpty(file)}" th:each="item: ${file}">
+                                    <a th:name="${item.id}" th:text="${item.originName}" th:href="${item.path}" target="_blank" class="mr-1 registered-file"></a>
+                                    <button type="button" class="btn btn-sm btn-danger" data-role="fileDelete" th:name="${item.id}">파일 삭제</button>
+                                </th:block>
+                            </div>
+                            <div class="hstack gap-3">
+                                <button type="button" class="btn btn-outline-dark" data-role="fileUpload">파일첨부</button>
+                                <input type="file" class="form-control" id="fileUpload" multiple="multiple" style="display: none;"/>
+                                <div id="fileUpload-div"></div>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </form>
+
+        <div class="row align-items-center justify-content-between pt-6">
+            <div class="col-auto"></div>
+            <div class="col-auto">
+                <div class="hstack gap-2">
+                    <button type="button" class="btn btn-dark" data-role="list">목록</button>
+                    <button type="button" class="btn btn-dark" data-role="save">저장</button>
+                    <button type="button" class="btn btn-danger" data-role="delete">삭제</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- //container -->
+    </div>
+</div>
+</html>

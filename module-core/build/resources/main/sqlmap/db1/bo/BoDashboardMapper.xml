@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fw.core.mapper.db1.bo.BoDashboardMapper">
+
+    <!--<select id="selectTodayTaskInfo" parameterType="BoMainDTO" resultType="BoMainDTO">
+        SELECT (SELECT COUNT(*) FROM T_ESTIMATE WHERE STATUS = 'PENDING' AND date_format(CREATE_DT, '%Y-%m-%d') = date_format(NOW(), '%Y-%m-%d')) estimateCnt
+             , (SELECT COUNT(*) FROM T_PARTNERS_AD WHERE STATUS = 'PROGRESS') progressCnt
+             , (SELECT COUNT(*) FROM T_QNA WHERE STATUS = 'WAIT' AND date_format(CREATE_DT, '%Y-%m-%d') = date_format(NOW(), '%Y-%m-%d')) qnaCnt
+             , (SELECT COUNT(*) FROM T_USER WHERE APPROVAL_STATUS = 'PENDING' AND date_format(CREATE_DT, '%Y-%m-%d') = date_format(NOW(), '%Y-%m-%d')) approvalCnt
+    </select>
+
+    <select id="selectInflowStats" parameterType="BoMainDTO" resultType="BoMainDTO">
+        SELECT INFLOW_PATH_NAME
+             , COUNT(*) AS inflowCnt
+        FROM T_INFLOW_PATH
+        GROUP BY INFLOW_PATH_NAME
+    </select>
+
+    <select id="selectDailySales" parameterType="BoMainDTO" resultType="BoMainDTO">
+        SELECT DAY(PAYMENT_DT) AS day
+             , SUM(CAST(REPLACE(PRICE, ',', '') AS UNSIGNED)) AS totalPrice
+        FROM t_payment
+        WHERE DATE_FORMAT(PAYMENT_DT, '%Y-%m') = DATE_FORMAT(NOW(), '%Y-%m') AND STATUS = 'SUCCESS'
+        GROUP BY DAY(PAYMENT_DT)
+        ORDER BY day;
+    </select>
+
+    &lt;!&ndash; 일간 방문자 수 (오늘 날짜의 시간별 집계) &ndash;&gt;
+    <select id="selectDailyVisitStats" resultType="BoMainDTO">
+        SELECT LPAD(HOUR(VISIT_DATE), 2, '0') AS label
+             , COUNT(*) AS count
+        FROM t_visit_log
+        WHERE DATE(VISIT_DATE) = CURDATE()
+        GROUP BY LPAD(HOUR(VISIT_DATE), 2, '0')
+        ORDER BY label
+    </select>
+
+    &lt;!&ndash; 주간 방문자 수 (이번 주 날짜별) &ndash;&gt;
+    <select id="selectWeeklyVisitStats" resultType="BoMainDTO">
+        SELECT d.label
+             , IFNULL(COUNT(v.VISIT_DATE), 0) AS count
+        FROM (
+            SELECT DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 6 - n DAY), '%Y-%m-%d') AS label
+            FROM (
+            SELECT 0 AS n UNION ALL
+            SELECT 1 UNION ALL
+            SELECT 2 UNION ALL
+            SELECT 3 UNION ALL
+            SELECT 4 UNION ALL
+            SELECT 5 UNION ALL
+            SELECT 6
+            ) AS days
+            ) AS d
+            LEFT JOIN t_visit_log v
+        ON DATE(v.VISIT_DATE) = STR_TO_DATE(d.label, '%Y-%m-%d')
+        GROUP BY d.label
+        ORDER BY d.label
+    </select>
+
+
+
+    &lt;!&ndash; 월간 방문자 수 (이번 달 날짜별) &ndash;&gt;
+    <select id="selectMonthlyVisitStats" resultType="BoMainDTO">
+        SELECT m.label
+             , IFNULL(COUNT(v.VISIT_DATE), 0) AS count
+        FROM (
+            SELECT DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL n MONTH), '%Y-%m') AS label
+            FROM (
+            SELECT 0 AS n UNION ALL
+            SELECT 1 UNION ALL
+            SELECT 2 UNION ALL
+            SELECT 3 UNION ALL
+            SELECT 4
+            ) AS months
+            ) AS m
+            LEFT JOIN t_visit_log v
+        ON DATE_FORMAT(v.VISIT_DATE, '%Y-%m') = m.label
+        GROUP BY m.label
+        ORDER BY m.label
+    </select>
+
+    <select id="selectProductSales" parameterType="BoMainDTO" resultType="BoMainDTO">
+        SELECT TAP.TITLE
+             , COUNT(*) AS productCnt
+        FROM T_AD_PRODUCT_REQUEST TAPR
+    LEFT JOIN T_AD_PRODUCT TAP ON TAP.PRODUCT_ID = TAPR.PRODUCT_ID
+        WHERE TAPR.STATUS = 'SUCCESS'
+        GROUP BY TAP.TITLE
+    </select>-->
+
+</mapper>

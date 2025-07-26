@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/mainLayout}">
+<div layout:fragment="contents" th:remove="tag">
+    <div id="container">
+        <div class="project-content-list">
+            <div class="project-content">
+                <div class="project-content-info">
+                    <div class="img-file-wrap" style="width: 200px">
+                        <!-- 파일 업로드 UI -->
+                        <div class="file-upload-container w-100">
+                            <div class="file-content">
+                                <input type="file" class="file-upload-input" name="file" id="fileId" accept="image/*"/>
+                                <label for="fileId" class="file-upload-button">
+                                    <i class="icon-p-plus"></i>
+                                    <span>이미지 추가</span>
+                                </label>
+                                <div class="file-preview" id="filePreview1"></div>
+                                <span class="representative-img">대표이미지</span>
+                                <button type="button" class="img-close-btn" onclick="removePreview()">
+                                    <i class="icon-img-close"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info-list">
+                        <div class="d-flex align-items-center gap-4">
+                            <span class="flex-shrink-0">제목 :</span>
+                            <input type="text" class="form-control remove-form" name="title" id="title" style="width: 200px;"/>
+                        </div>
+                        <div class="company">
+                            <div class="d-flex align-items-center gap-4">
+                                <span class="flex-shrink-0">개요 :</span>
+                                <input type="text" class="form-control remove-form" name="summary" id="summary" style="width: 500px;"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="info-group">
+                    <ul>
+                        <li>
+                            <p class="title"><i class="icon-budget"></i>예산</p>
+                            <input type="text" class="form-control remove-form" name="budget" id="budget"/>
+                        </li>
+                        <li>
+                            <p class="title"><i class="icon-period"></i>기간</p>
+                            <div class="select-wrap">
+                                <select class="form-select form" name="adDate" id="adDate"
+                                        style="width: 260px !important;">
+                                    <option class="form-select" value="1TIME">일회성</option>
+                                    <option class="form-select" value="24H">24시간</option>
+                                    <option class="form-select" value="1WEEK">1주일</option>
+                                    <option class="form-select" value="1MONTH">1개월</option>
+                                    <option class="form-select" value="ETC">기타(직접입력)</option>
+                                </select>
+                            </div>
+                            <!-- 기본은 hidden -->
+                            <div id="adDateEtcWrap" style="display: none; margin-top: 8px;">
+                                <input type="text" class="form-control remove-form" name="adDateEtc" id="adDateEtc"
+                                       placeholder="직접 입력"/>
+                            </div>
+                        </li>
+                        <li>
+                            <p class="title"><i class="icon-deadline"></i>마감</p>
+                            <input type="date" class="form-control remove-form" name="closeDt" id="closeDt"/>
+                        </li>
+                        <li>
+                            <p class="title"><i class="icon-deadline"></i>조회수</p>
+                            <input type="text" class="form-control remove-form" name="viewCount" id="viewCount"/>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <table class="table table-hover mt-6">
+            <colgroup>
+                <col width="20%"/>
+                <col width="80%"/>
+            </colgroup>
+
+            <tbody>
+            <tr>
+                <th>클라이언트 정보</th>
+                <td>
+                    <div class="select-wrap">
+                        <select class="form-select form" name="userId" id="userId" style="width: 300px !important;margin-bottom: 5px;">
+                            <option value="">선택하세요</option>
+                            <option th:each="user : ${userList}" th:value="${user.userId}"
+                                    th:text="${user.name + '(' + user.loginId + ')'}"></option>
+                        </select>
+                    </div>
+                    <textarea class="form-control remove-form" id="userIntro" placeholder=""></textarea>
+                </td>
+            </tr>
+            <tr>
+                <th>견적 정보</th>
+                <td>
+                    <div class="select-wrap">
+                        <select class="form-select form" name="estimateId" id="estimateId"
+                                style="width: 300px !important;">
+                            <option value="">선택하세요</option>
+                            <!-- JS로 동적 렌더링 -->
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th>설명​</th>
+                <td>
+                    <textarea class="form-control remove-form"
+                              id="content"
+                              placeholder=""
+                              style="margin-top: 5px; height: 150px; vertical-align: top; padding-top: 10px;"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <th>요청 서비스</th>
+                <td>
+                    <textarea class="form-control remove-form"
+                              id="serviceRequest"
+                              placeholder=""
+                              style="margin-top: 5px; height: 150px; vertical-align: top; padding-top: 10px;"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <th>업무 요청 사항</th>
+                <td>
+                    <textarea class="form-control remove-form"
+                              id="taskRequest"
+                              placeholder=""
+                              style="margin-top: 5px; height: 150px; vertical-align: top; padding-top: 10px;"></textarea>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="hstack justify-content-end gap-4 mt-lg-6">
+            <button type="button" class="btn btn-gray" data-role="cancel">취소​</button>
+            <button type="button" class="btn btn-primary" data-role="insert">등록​</button>
+        </div>
+        <!-- //container -->
+    </div>
+</div>
+</html>

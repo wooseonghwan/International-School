@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/mainLayout}">
+<div layout:fragment="contents" th:remove="tag">
+    <div class="filter d-none d-lg-block ">
+        <div class="hstack justify-content-between gap-4">
+            <div class="page-top mb-lg-1">
+                <h1 class="page-title">광고 상품 리스트</h1>
+            </div>
+        </div>
+    </div>
+    <form name="searchForm">
+        <input type="hidden" name="page" th:value="${searchInfo.page}"/>
+        <!-- filter -->
+        <div class="filter">
+            <div class="row align-items-center">
+                <div class="col-12 col-lg d-flex flex-wrap gap-4 align-items-center">
+                    <div class="gap-1 hstack">
+                        <div class="form-field search" style="max-width: 220px;">
+                            <div class="input-form">
+                                <i class="icon-search"></i>
+                                <input type="text" class="form-control search-form" name="searchText"
+                                       th:value="${searchInfo.searchText}" placeholder="상품명 검색">
+                                <button type="button" class="clear-button"><i class="icon-input-close"></i></button>
+                            </div>
+                        </div>
+                        <div class="gap-1 hstack">
+                            <button type="button" class="btn btn-dark" data-role="btn-search-form"
+                                    style="min-width: 80px">검색
+                            </button>
+                            <button type="button" class="btn btn-dark" data-role="reset"
+                                    style="min-width: 80px">초기화
+                            </button>
+                        </div>
+                    </div>
+                    <!--<div class="col-auto">
+                        <div class="btn-calendar" role="group" style="min-width: 80px">
+                            <button aria-label="이전달" class="" type="button" onclick="changeDate(-1)">
+                                <i class="icon-calendar-prev day"></i>
+                            </button>
+                            <p class="date" name="searchDate" id="displayDate" th:text="${searchInfo.searchDate}"></p>
+                            <input type="hidden" name="searchDate" id="searchDateInput"
+                                   th:value="${searchInfo.searchDate}">
+                            <button aria-label="다음달" class="" type="button" onclick="changeDate(1)">
+                                <i class="icon-calendar-next day"></i>
+                            </button>
+                        </div>
+                    </div>-->
+                    <div class="col-auto" style="margin-left: auto">
+                        <div class="gap-2 hstack">
+                            <button type="button" class="btn btn-dark" data-role="insert-page" style="min-width: 80px">광고 상품 등록</button>
+                            <!--<button type="button" class="btn btn-dark" data-role="package" style="min-width: 80px">패키지 관리</button>-->
+                        </div>
+                    </div>
+                </div>
+                <div class="col-auto ms-0 ms-lg-auto" style="margin-left: auto">
+                    <div class="gap-1 hstack">
+                        <select name="rowSize" class="form-select">
+                            <option value="10" th:selected="${searchInfo.rowSize == 10}">10개</option>
+                            <option value="30" th:selected="${searchInfo.rowSize == 30}">30개</option>
+                            <option value="50" th:selected="${searchInfo.rowSize == 50}">50개</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <!-- //filter -->
+    <!-- table -->
+    <div class="scroll-layout">
+        <div class="scroll-content">
+            <div class="row align-items-center justify-content-between mb-3">
+                <div class="col-auto">Total <strong th:text="${searchInfo.totalCount}">-</strong></div>
+                <!--<div class="col-auto">
+                    <div class="hstack gap-2">
+                        <select class="form-select form-select-sm" data-role="select-row">
+                            <option value="10" th:selected="${searchInfo.rowSize} eq '10'">10개</option>
+                            <option value="30" th:selected="${searchInfo.rowSize} eq '30'">30개</option>
+                            <option value="50" th:selected="${searchInfo.rowSize} eq '50'">50개</option>
+                        </select>
+                    </div>
+                </div>-->
+            </div>
+            <div class="list-table">
+                <table class="table table-hover">
+                    <colgroup>
+                        <col width="20%">
+                        <col width="30%">
+                        <col width="30%">
+                        <col width="20%">
+                    </colgroup>
+                    <thead>
+                    <tr class="cursor-pointer">
+                        <th class="text-center">No</th>
+                        <th class="text-center">매체명</th>
+                        <th class="text-center">상품명</th>
+                        <th class="text-center">가격</th>
+                        <th class="text-center">상세</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <th:block th:if="${#lists.isEmpty(adProductList)}">
+                        <tr>
+                            <td colspan="6" class="text-center">내역이 없습니다.</td>
+                        </tr>
+                    </th:block>
+                    <tr th:each="adProduct : ${adProductList}" th:value="${adProduct.productId}"
+                        th:data-id="${adProduct.productId}" class="clickable-row">
+                        <td class="text-center" th:text="${adProduct.rowNum}"></td>
+                        <td class="text-center" th:text="${adProduct.mediaNm}"></td>
+                        <td class="text-center" th:text="${adProduct.title}"></td>
+                        <td class="text-center" th:text="${#numbers.formatInteger(adProduct.amount, 0, 'COMMA')}"></td>
+                        <td class="text-center">
+                            <button type="button" class="btn btn-dark" data-role="detail" th:value="${adProduct.productId}"
+                                    th:data-id="${adProduct.productId}">
+                                상세/수정
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="d-flex justify-content-center mt-5">
+                <th:block th:replace="fragments/paging :: paging_Fragment"/>
+            </div>
+        </div>
+    </div>
+    <!-- //table -->
+</div>
+</html>

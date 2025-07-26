@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/mainLayout}">
+<div layout:fragment="contents" th:remove="tag">
+  <div class="filter d-none d-lg-block ">
+    <div class="hstack justify-content-between gap-4">
+      <div class="page-top mb-lg-1">
+        <h1 class="page-title">자주묻는 질문</h1>
+      </div>
+      <div class="col-auto ms-0 ms-lg-auto" style="margin-left: auto">
+        <button type="button" class="btn btn-dark" data-role="btnRegister"
+                style="min-width: 80px">등록
+        </button>
+      </div>
+    </div>
+  </div>
+  <form name="searchForm">
+    <input type="hidden" name="page" th:value="${searchInfo.page}"/>
+    <!-- filter -->
+    <p th:text="${searchInfo.totalCount+ ' 건'}"></p>
+    <div class="filter" style="margin-top: 0.7rem;">
+      <div class="row align-items-center">
+        <div class="col-12 col-lg d-flex flex-wrap gap-4 align-items-center">
+          <div class="gap-1 hstack">
+            <div class="gap-1 hstack">
+              <select name="searchType" class="form-select form-sm">
+                <option value="" th:selected="${searchInfo.searchType == null}">전체</option>
+                <option th:each="category : ${categoryList}"
+                        th:value="${category.cateSeq}"
+                        th:text="${category.cateName}"
+                        th:selected="${searchInfo.searchType == category.cateSeq}">
+                </option>
+              </select>
+            </div>
+            <div class="gap-1 hstack">
+              <input class="form-control form-sm" data-picker="date"
+                     name="searchStart"
+                     placeholder="YYYY.MM.DD"
+                     type="text"
+                     th:value="${searchInfo.searchStart}"
+                     autocomplete="off">
+              -
+              <input class="form-control form-sm" data-picker="date"
+                     name="searchEnd"
+                     placeholder="YYYY.MM.DD"
+                     type="text"
+                     th:value="${searchInfo.searchEnd}"
+                     autocomplete="off">
+            </div>
+            <button type="button" class="btn btn-dark" data-role="btn-search-form"
+                    style="min-width: 80px">검색
+            </button>
+          </div>
+          <div class="col-auto ms-0 ms-lg-auto" style="margin-left: auto">
+            <div class="gap-1 hstack">
+              <select name="rowSize" class="form-select form-sm">
+                <option value="10" th:selected="${searchInfo.rowSize == 10}">10개</option>
+                <option value="30" th:selected="${searchInfo.rowSize == 30}">30개</option>
+                <option value="50" th:selected="${searchInfo.rowSize == 50}">50개</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <!-- //filter -->
+  <!-- table -->
+  <div class="scroll-layout">
+    <div class="scroll-content">
+      <div class="list-table">
+        <table class="table table-hover">
+          <colgroup>
+            <col style="width:5%">
+            <col style="width:15%">
+            <col style="width:15%">
+            <col style="width:40%">
+            <col style="width:15%">
+            <col style="width:10%">
+          </colgroup>
+          <thead>
+          <tr class="cursor-pointer">
+            <th class="text-center">No.</th>
+            <th class="text-center">날짜</th>
+            <th class="text-center">카테고리</th>
+            <th class="text-center">제목</th>
+            <th class="text-center">답변자</th>
+            <th class="text-center">사용여부</th>
+          </tr>
+          </thead>
+          <tbody>
+          <th:block th:if="${#lists.isEmpty(faqList)}">
+            <tr>
+              <td colspan="8" class="text-center">내역이 없습니다.</td>
+            </tr>
+          </th:block>
+          <tr th:each="faq : ${faqList}" th:value="${faq.faqSeq}" th:data-seq="${faq.faqSeq}"
+              class="clickable-row">
+            <td class="text-center" th:text="${faq.faqSeq}"></td>
+            <td class="text-center" th:text="${faq.createDt}"></td>
+            <td class="text-center" th:text="${faq.categoryName}"></td>
+            <td class="text-center" th:text="${faq.faqTitle}"></td>
+            <td class="text-center" th:text="${faq.createName}"></td>
+            <td class="text-center" th:text="${faq.useYn == 'Y'?'사용':'미사용'}"></td>
+
+            <!--            <td class="text-center">-->
+            <!--              <button type="button" class="btn btn-dark">-->
+            <!--                상세/수정-->
+            <!--              </button>-->
+            <!--            </td>-->
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="d-flex justify-content-center mt-5">
+        <th:block th:replace="fragments/paging :: paging_Fragment"/>
+      </div>
+    </div>
+  </div>
+  <!-- //table -->
+</div>
+</html>

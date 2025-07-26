@@ -1,0 +1,1796 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="modal">
+
+    <!-- Alert: sample -->
+    <div class="modal alert" id="alert-sample1" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p class="alert-message">Text body Text body Text body Text body Text body Text body Text body Text
+                        body Text body</p>
+                </div>
+                <div class="modal-footer">
+                    <div class="d-flex">
+                        <button class="btn btn-primary" data-bs-dismiss="modal" type="button">확인</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- //Alert: sample -->
+    <!-- Alert: sample -->
+    <div class="modal alert" id="alert-sample2" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="alert-title">Alert Title</div>
+                    <p class="alert-message">Text body Text body Text body Text body Text body Text body Text body Text
+                        body Text body</p>
+                </div>
+                <div class="modal-footer">
+                    <div class="d-flex">
+                        <button class="btn btn-gray" data-bs-dismiss="mo dal" type="button">취소</button>
+                        <button class="btn btn-primary" type="button">확인</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- //Alert: sample -->
+
+    <!-- modal: 당일특가  -->
+    <!--<div class="modal" id="modal-sale-price" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable modal-sale-price">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">당일특가</h5>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                </div>
+                <div class="modal-body pt-0 pb-0">
+                    <table class="table table-bordered">
+                        <colgroup>
+                            <col style="width: 20%">
+                            <col style="width: 80%">
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th class="text-center">날짜</th>
+                            <th class="text-center">2023년 12월 16일(토)</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <th class="text-center" rowspan="5">객실선택</th>
+                            <td class="selected">
+                                <div class="hstack justify-content-between gap-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="flexCheckDefault1" type="checkbox" value="">
+                                        <label class="form-check-label" for="flexCheckDefault">스위트 A</label>
+                                    </div>
+                                    <p class="price"><span>240,000</span>원</p>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="selected">
+                                <div class="hstack justify-content-between gap-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="flexCheckDefault2" type="checkbox" value="">
+                                        <label class="form-check-label" for="flexCheckDefault">스위트 B</label>
+                                    </div>
+                                    <p class="price"><span>240,000</span>원</p>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="selected">
+                                <div class="hstack justify-content-between gap-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="flexCheckDefault3" type="checkbox" value="">
+                                        <label class="form-check-label" for="flexCheckDefault">디럭스 A</label>
+                                    </div>
+                                    <p class="price"><span>240,000</span>원</p>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="hstack justify-content-between gap-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="flexCheckDefault4" type="checkbox" value="">
+                                        <label class="form-check-label" for="flexCheckDefault">디럭스 B</label>
+                                    </div>
+                                    <div class="">
+                                        <p class="text-danger text-end mb-1">-20,000</p>
+                                        <p class="price">
+                                            <input class="form-control form-sm text-end" disabled="" placeholder=""
+                                                   type="text" value="180,000">
+                                            <span>원</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="hstack justify-content-between gap-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="flexCheckDefault5" type="checkbox" value="">
+                                        <label class="form-check-label" for="flexCheckDefault">디럭스 C</label>
+                                    </div>
+                                    <p class="price">
+                                        <input class="form-control form-sm text-end" placeholder="" type="text"
+                                               value="180,000">
+                                        <span>원</span>
+                                    </p>
+                                </div>
+                            </td>
+                        </tr>
+
+                        &lt;!&ndash; 판매채널 선택 &ndash;&gt;
+                        <tr>
+                            <th class="text-center" rowspan="6">판매채널 선택</th>
+                            <td>
+                                <div class="form-check">
+                                    <input class="form-check-input" id="flexCheckDefault6" type="checkbox" value="">
+                                    <label class="form-check-label" for="flexCheckDefault">판매사 전체</label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="sell-channel">
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="flexCheckDefault7" type="checkbox" value="">
+                                        <label class="form-check-label" for="flexCheckDefault">네이버</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="flexCheckDefault8" type="checkbox" value="">
+                                        <label class="form-check-label" for="flexCheckDefault">카카오</label>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="sell-channel">
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="flexCheckDefault9" type="checkbox" value="">
+                                        <label class="form-check-label" for="flexCheckDefault">야놀자</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="flexCheckDefault10" type="checkbox"
+                                               value="">
+                                        <label class="form-check-label" for="flexCheckDefault">아고다</label>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="sell-channel">
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="flexCheckDefault11" type="checkbox"
+                                               value="">
+                                        <label class="form-check-label" for="flexCheckDefault">아놀자 펜션</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="flexCheckDefault12" type="checkbox"
+                                               value="">
+                                        <label class="form-check-label" for="flexCheckDefault">에어비앤비</label>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="sell-channel">
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="flexCheckDefault13" type="checkbox"
+                                               value="">
+                                        <label class="form-check-label" for="flexCheckDefault">여기어때</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="flexCheckDefault14" type="checkbox"
+                                               value="">
+                                        <label class="form-check-label" for="flexCheckDefault">부킹닷컴</label>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="sell-channel">
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="flexCheckDefault15" type="checkbox"
+                                               value="">
+                                        <label class="form-check-label" for="flexCheckDefault">인터파크투어</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="flexCheckDefault16" type="checkbox"
+                                               value="">
+                                        <label class="form-check-label" for="flexCheckDefault">익스피디아</label>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-lg btn-primary" data-bs-dismiss="modal" type="button">저장</button>
+                </div>
+            </div>
+        </div>
+    </div>-->
+    <!-- //modal: 당일특가  -->
+
+    <!-- modal: 공지사항  -->
+    <div class="modal" id="modal-notice" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">공지사항</h5>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                </div>
+                <div class="modal-body pt-0 pb-0">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>[공지] 업데이트 공지사항</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                                안녕하세요<br>
+                                스마트 매니저 입니다.<br>
+                                <br>
+                                서비스 업데이트 공지사항입니다.<br>
+                                더 나은 서비스 제공을 위해<br>
+                                <br>
+                                2023년 12월20일(수) 00시 부터~05시까지<br>
+                                업데이트로 인한 서비스 접속 불가 안내 드립니다.<br>
+                                <br>
+                                이점 숙지하시어 이용에 불편 없길 바랍니다.<br>
+                                감사합니다.
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-lg btn-primary" data-bs-dismiss="modal" type="button">확인</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- //modal: 공지사항  -->
+
+    <!-- modal: 마이페이지  -->
+    <div class="modal" tabindex="-1" id="modal-mypage">
+        <div class="modal-dialog modal-dialog-centered modal-md modal-dialog-scrollable modal-mypage">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title d-none d-lg-block">마이페이지</h5>
+                    <div class="user-info d-flex d-lg-none">
+                        <div class="profile-img" data-bs-toggle="modal" data-bs-target="#modal-mypage">
+                            <img src="/static/images/profile-img.svg" alt="프로필 이미지">
+                        </div>
+                        <p class="user-id">misssoma@gmail.com</p>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" data-role="mypageModalClose"></button>
+                </div>
+                <div class="modal-body pt-0 pb-0">
+                    <table class="table table-bordered">
+                        <colgroup>
+                            <col width="20%">
+                        </colgroup>
+                        <tbody>
+                        <tr class="d-none d-lg-table-row">
+                            <input type="hidden" th:value="${sessionInfo.email}" name="email"/>
+                            <th class="text-center">회원 아이디</th>
+                            <td th:text="${sessionInfo.adminId}">
+                                misssoma@gmail.com
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">비밀번호</th>
+                            <td>
+                                <div class="hstack justify-content-between gap-4">
+                                    <p th:text="${#strings.isEmpty(sessionInfo.lastPasswordChangeDt) ? '최종 변경일 : - ' : '최종 변경일 :' + sessionInfo.lastPasswordChangeDt}">
+                                            최종 변경일 : 2023.12.02
+                                    </p>
+                                    <div class="d-flex align-items-center">
+                                        <button type="button" class="btn btn-sm btn-outline-gray" data-role="sendEmail">재설정</button>
+                                        <div id="loadingBar" class="spinner-border text-primary ms-2" role="status" style="display: none;">
+                                            <span class="sr-only"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">휴대폰 번호</th>
+                            <td th:text="${#strings.isEmpty(sessionInfo.adminPhoneNm) ? '' : sessionInfo.adminPhoneNm}">
+                                010-3356-8787
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="d-flex align-items-center justify-content-center gap-2 btns">
+                        <button type="button" class="btn btn-sm btn-outline-gray" data-role="adminOut">회원탈퇴</button>
+                        <button type="button" class="btn btn-sm btn-dark" data-role="adminLogout">로그아웃</button>
+                    </div>
+                </div>
+                <div class="modal-footer d-none d-lg-block">
+                    <button type="button" class="btn btn-lg btn-primary" data-bs-dismiss="modal" data-role="mypageModalClose">확인 </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- //modal: 마이페이지  -->
+
+    <div class="modal alert" tabindex="-1" id="alert-withdrawal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p class="alert-message">
+                        회원탈퇴는 본사에 문의 후 가능합니다.<br>
+                        고객센터 : 02-555-2626 
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" data-role="adminOutClose">확인</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal alert" tabindex="-1" id="alert-logout">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p class="alert-message">
+                        로그아웃 하시겠습니까?
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-gray" data-bs-dismiss="mo dal" data-role="adminLogoutClose">취소</button>
+                        <button type="button" class="btn btn-primary" data-role="logout">확인</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- modal: 문자 전송  -->
+    <div class="modal" id="modal-send-message" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">문자 전송</h5>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                </div>
+                <div class="modal-body pt-0 pb-0">
+                    <table class="table table-bordered">
+                        <colgroup>
+                            <col style="width: 35%">
+                            <col style="width: 15%">
+                            <col style="width: 40%">
+                            <col style="width: 10%">
+                        </colgroup>
+                        <tbody>
+                        <tr>
+                            <th class="text-center" rowspan="2">받는 이</th>
+                            <td class="text-center">박지현</td>
+                            <td>
+                                <input class="form-control form-sm" placeholder="" type="number" value="050220555673">
+                            </td>
+                            <td class="text-center">
+                                <button class="close-btn" type="button"><i class="icon-close"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">박지현</td>
+                            <td class="text-center">
+                                <input class="form-control form-sm" placeholder="" type="number" value="050220555673">
+                            </td>
+                            <td class="text-center">
+                                <button class="close-btn" type="button"><i class="icon-close"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">내용</th>
+                            <td colspan="3">
+                                <div class="message-wrap border-0 p-0">
+                                    <div class="message-form p-0">
+                                        <select class="form-select form-sm">
+                                            <option selected="">결제 안내 문자</option>
+                                            <option value="1">결제 안내 문자</option>
+                                            <option value="2">결제 안내 문자</option>
+                                            <option value="3">결제 안내 문자</option>
+                                        </select>
+                                        <div class="text-input">
+                                            <textarea class="form-control form-textarea" placeholder="" rows="2"
+                                                      style="--height: 150px"></textarea>
+                                            <div class="count">
+                                                <span>0</span>
+                                                <span>/2,000byte</span>
+                                            </div>
+                                        </div>
+                                        <div class="invalid-feedback d-block gap-2 m-0">
+                                            <i class="icon-error"></i>
+                                            최대 1000자(2000byte)까지 입력하실 수 있습니다.
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-lg btn-primary" data-bs-dismiss="modal" type="button">전송</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- //modal: 문자 전송  -->
+
+    <!-- modal: 요금 일괄 입력 -->
+    <div class="modal" id="modal-price-input" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">요금 일괄 입력</h5>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                </div>
+                <div class="desc font-md mt-8 mb-4 text-center">선택 하신 객실을 판매 하시겠습니까?</div>
+                <div class="modal-body mt-4">
+                    <div class="scroll-layout">
+                        <div class="scroll-content">
+                            <table class="table normal">
+                                <colgroup>
+                                    <col width="118px">
+                                    <col width="118px">
+                                    <col width="118px">
+                                    <col width="118px">
+                                    <col width="106px">
+                                    <col width="106px">
+                                    <col width="106px">
+                                </colgroup>
+                                <thead>
+                                <tr>
+                                    <th class="text-center" colspan="4">객실요금</th>
+                                    <th class="text-center" colspan="3">추가 인원 요금</th>
+                                </tr>
+                                <tr>
+                                    <th class="text-center" rowspan="2">주중</th>
+                                    <th class="text-center" rowspan="2">금요일</th>
+                                    <th class="text-center sm-pd">
+                                        <p>토요일</p>
+                                    </th>
+                                    <th class="text-center" rowspan="2">일요일</th>
+                                    <th class="text-center" rowspan="2">어른</th>
+                                    <th class="text-center" rowspan="2">어린이</th>
+                                    <th class="text-center" rowspan="2">유아</th>
+                                </tr>
+                                <tr>
+                                    <th class="text-center sm-pd">공휴일전날</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td class="text-center">
+                                        <div class="form-field">
+                                            <div class="input-form flex-form">
+                                                <input class="form-control form-sm price-form-control" placeholder="0"
+                                                       type="number">
+                                                <p class="price-txt">원</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="form-field">
+                                            <div class="input-form flex-form">
+                                                <input class="form-control price-form-control form-sm" placeholder="0"
+                                                       type="number">
+                                                <p class="price-txt">원</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="form-field">
+                                            <div class="input-form flex-form">
+                                                <input class="form-control price-form-control form-sm" placeholder="0"
+                                                       type="number">
+                                                <p class="price-txt">원</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="form-field">
+                                            <div class="input-form flex-form">
+                                                <input class="form-control price-form-control form-sm" placeholder="0"
+                                                       type="number">
+                                                <p class="price-txt">원</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="form-field">
+                                            <div class="input-form flex-form">
+                                                <input class="form-control price-form-control form-sm" placeholder="0"
+                                                       type="number">
+                                                <p class="price-txt">원</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="form-field">
+                                            <div class="input-form flex-form">
+                                                <input class="form-control price-form-control form-sm" placeholder="0"
+                                                       type="number">
+                                                <p class="price-txt">원</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="form-field">
+                                            <div class="input-form flex-form">
+                                                <input class="form-control price-form-control form-sm" placeholder="0"
+                                                       type="number">
+                                                <p class="price-txt">원</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer text-end">
+                    <button class="btn btn-lg btn-primary" data-bs-dismiss="modal" type="button">예약 추가</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- //modal: 요금 일괄 입력 -->
+
+    <!-- modal: 상품 선택 -->
+    <div class="modal" id="modal-product-select" tabindex="-1">
+        <div class="modal-dialog modal-sm modal-dialog-scrollable modal-dialog-centered sign-up">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">상품 선택</h5>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                </div>
+                <div class="modal-body mt-4 mb-4">
+                    <div class="desc font-md mt-8 mb-8 text-center">선택 하신 객실을 판매 하시겠습니까?</div>
+                    <div class="hstack justify-content-center gap-8">
+                        <div class="form-check">
+                            <input class="form-check-input" id="flexRadioDefault1" name="flexRadioDefault" type="radio">
+                            <label class="form-check-label calendar-status" for="flexRadioDefault1">
+                                <span class="calendar-badge bg-primary">판</span>
+                                판매중
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input checked="" class="form-check-input" id="flexRadioDefault17" name="flexRadioDefault"
+                                   type="radio">
+                            <label class="form-check-label calendar-status" for="flexRadioDefault23">
+                                <span class="calendar-badge bg-gray3">마</span>
+                                판매마감
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="d-flex">
+                        <button class="btn btn-lg btn-primary" data-bs-dismiss="modal" type="button">확인</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- //modal: 상품 선택 -->
+
+    <!-- modal: 회원가입 안내 -->
+    <div class="modal" id="modal-signup" tabindex="-1">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered sign-up">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">회원가입</h5>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-form">
+                        <div class="logo">
+                            <img alt="스마트 매니저" src="../assets/images/text-logo.svg">
+                        </div>
+                        <div class="desc">
+                            안녕하세요. 스마트 매니저입니다.<br>
+                            회원가입을 원하시는 고객님은<br>
+                            파트너 계약을 먼저 진행하셔야 합니다.<br>
+                            아래의 고객센터로 연락주세요.<br>
+                            <br>
+                            감사합니다.
+                        </div>
+                        <p class="call">고객센터 : 02-555-2626</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="d-flex">
+                        <button class="btn btn-lg btn-primary" data-bs-dismiss="modal" type="button">확인</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- //modal: 회원가입 안내 -->
+
+    <!-- modal: 비밀번호 찾기 -->
+    <div class="modal" id="modal-password-find" tabindex="-1">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">비밀번호 찾기</h5>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-form gap-md">
+                        <div class="logo">
+                            <img alt="스마트 매니저" src="../assets/images/text-logo.svg">
+                        </div>
+                        <div class="desc">회원가입 하신 이메일 주소를 입력해 주세요.</div>
+                        <input class="form-control form-control-lg" placeholder="이메일 주소를 입력해 주세요." type="email">
+                    </div>
+                </div>
+                <div class="modal-footer find">
+                    <div class="d-flex">
+                        <button class="btn btn-lg btn-primary" data-bs-dismiss="modal" type="button">비밀번호 재설정 인증번호 전송
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- //modal: 비밀번호 찾기 -->
+
+    <!-- modal: 인증번호 입력 -->
+    <div class="modal" tabindex="-1" id="modal-certification-number">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">인증번호 입력</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" data-role="closeModal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" class="form-control form-control-lg" name="authCode" placeholder="인증번호를 입력해 주세요.">
+                </div>
+                <div class="modal-footer find">
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-lg btn-primary" data-role="certificate">인증</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- //modal: 인증번호 입력 -->
+
+    <div class="modal alert" tabindex="-1" id="alert-no-num">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p class="alert-message">
+                        인증번호를 입력하세요.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="noNum">확인</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal alert" tabindex="-1" id="alert-num-success">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p class="alert-message">
+                        인증되었습니다.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="success">확인</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- modal: 비밀번호 재설정 -->
+    <div class="modal" tabindex="-1" id="modal-password-reset">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">비밀번호 재설정</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" data-role="closeModal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-form gap-md">
+                        <div class="desc">
+                            <p>인증번호가 확인 되었습니다.<br>
+                                새로 사용하실 비밀번호를 입력하세요.</p>
+                            <p class="text-primary">
+                                비밀번호는 6자 이상이어야 하고<br>
+                                숫자, 영문, 특수기호(!$@%)의 조합을 포함해야 합니다.
+                            </p>
+                        </div>
+                        <div class="">
+                            <div class="">
+                                <input type="password" class="form-control form-control-lg" name="password" placeholder="비밀번호를 입력해주세요.">
+                            </div>
+                            <div class="mt-3">
+                                <input type="password" class="form-control form-control-lg" name="rePassword" placeholder="입력하신 비밀번호를 다시 한번 입력해주세요.">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer find">
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-lg btn-primary" data-role="changePw">비밀번호 재설정</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- //modal: 비밀번호 재설정 -->
+    <div class="modal alert" tabindex="-1" id="alert-num-fail">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p class="alert-message">
+                        인증번호가 일치하지 않습니다.<br>
+                        확인 후 다시 입력하세요.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="fail">확인</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal alert" tabindex="-1" id="alert-reset-password">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p class="alert-message">
+                        비밀번호가 재설정 되었습니다.<br>
+                        다시 로그인 해주세요.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="okModal">확인</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal alert" tabindex="-1" id="alert-not-password">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p class="alert-message">
+                        비밀번호가 일치하지 않습니다.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="failModal">확인</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal alert" tabindex="-1" id="alert-password-not">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p class="alert-message">
+                        비밀번호는 최소 6자 이상이어야 하며,<br>
+                        소문자, 대문자, 숫자, 특수문자를 포함해야 합니다.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="noPassword">확인</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- modal: 예약 내역 상세 -->
+    <!--<div class="modal" id="modal-reservation-details" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-md modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">예약 내역 상세</h5>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                </div>
+                <div class="modal-body pt-0 pb-0">
+                    <table class="table table-bordered">
+                        <colgroup>
+                            <col style="width: 120px">
+                            <col>
+                        </colgroup>
+                        <tbody>
+                        <tr>
+                            <th class="text-center">예약자 정보</th>
+                            <td colspan="4">김정주&nbsp;0502-4047-5672</td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">상품명 / 숙박 기간</th>
+                            <td colspan="4">스위트 A / 1박</td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">입실/퇴실 일시</th>
+                            <td colspan="4">
+                                <p>2023.12.13(수) 16:00</p>
+                                <p>2023.12.14(목) 12:00</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">결제 금액</th>
+                            <td colspan="4">240,000원</td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">결제 일시</th>
+                            <td colspan="4">2023.12.01 03:25:45</td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">결제 채널</th>
+                            <td colspan="4">아고다</td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">취소 일시</th>
+                            <td colspan="4">-</td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">상태</th>
+                            <td class="text-center">예약 대기</td>
+                            <td class="text-center">예약 확정</td>
+                            <td class="text-center">예약 취소</td>
+                            <td class="text-center">
+                                <div class="form-check justify-content-center">
+                                    <input checked="" class="form-check-input" id="flexCheckDefault18" type="checkbox"
+                                           value="">
+                                    <label class="form-check-label" for="flexCheckDefault">입실 완료</label>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="invalid-feedback d-flex gap-1 mt-2"><i class="icon-error"></i>판매 채널에서 판매한 상품인 경우 상태 설정은
+                        입실 완료만 설정 가능합니다
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-lg btn-primary" data-bs-dismiss="modal" type="button">저장</button>
+                </div>
+            </div>
+        </div>
+    </div>-->
+    <!-- //modal: 예약 내역 상세 -->
+
+    <!-- modal: 예약 추가  -->
+    <div class="modal" id="modal-reservation-add" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-md modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">예약 추가</h5>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                </div>
+                <div class="modal-body pt-0 pb-0">
+                    <table class="table table-bordered">
+                        <colgroup>
+                            <col style="width: 120px">
+                            <col>
+                        </colgroup>
+                        <tbody>
+                        <tr>
+                            <th class="text-center">예약자 정보</th>
+                            <td>김정주&nbsp;0502-4047-5672</td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">상품명 / 숙박 기간</th>
+                            <td>스위트 B</td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">입실/퇴실 일시</th>
+                            <td>
+                                <div class="d-flex align-items-center gap-2">
+                                    <input class="form-control form-sm hasDatepicker" data-picker="date"
+                                           id="dp1715328366618" placeholder="YYYY.MM.DD" type="text">
+                                    -
+                                    <input class="form-control form-sm hasDatepicker" data-picker="date"
+                                           id="dp1715328366619" placeholder="YYYY.MM.DD" type="text">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">결제 금액</th>
+                            <td>240,000원</td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">결제 일시</th>
+                            <td>2023.12.01 03:25:45</td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">결제 방법</th>
+                            <td>
+                                <div class="hstack gap-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="flexCheckDefault19" type="checkbox"
+                                               value="">
+                                        <label class="form-check-label" for="flexCheckDefault3">계좌</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="flexCheckDefault20" type="checkbox"
+                                               value="">
+                                        <label class="form-check-label" for="flexCheckDefault4">현금</label>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">결제 채널</th>
+                            <td>직접 판매</td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">상태</th>
+                            <td class="text-center">
+                                <div class="hstack gap-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="flexCheckDefault21" type="checkbox"
+                                               value="">
+                                        <label class="form-check-label" for="flexCheckDefault5">입금 전</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="flexCheckDefault22" type="checkbox"
+                                               value="">
+                                        <label class="form-check-label" for="flexCheckDefault6">입금 후</label>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-lg btn-primary" data-bs-dismiss="modal" type="button">예약 추가</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- //modal: 예약 추가 -->
+
+    <!-- modal: 플랫폼 등록  -->
+    <div class="modal" id="modal-platform" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-md modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">플랫폼 등록</h5>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                </div>
+                <div class="modal-body pt-0 pb-0">
+                    <table class="table table-bordered">
+                        <colgroup>
+                            <col style="width: 50%">
+                            <col style="width: 50%">
+                        </colgroup>
+                        <tbody>
+                        <tr>
+                            <th class="text-center">플랫폼 명</th>
+                            <td>
+                                <input class="form-control form-sm" placeholder="" type="text" value="">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">연결 OTA</th>
+                            <td>
+                                <select class="form-select form-sm">
+                                    <option value="미연결">미연결</option>
+                                    <option value="연결">연결</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">연동 활성화 여부</th>
+                            <td>
+                                <div class="hstack gap-6">
+                                    <div class="form-check">
+                                        <input checked="" class="form-check-input" id="flexRadioDefault23"
+                                               name="flexRadioDefault" type="radio">
+                                        <label class="form-check-label" for="flexRadioDefault23">비활성화</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input checked="" class="form-check-input" id="flexRadioDefault24"
+                                               name="flexRadioDefault" type="radio">
+                                        <label class="form-check-label" for="flexRadioDefault24">활성화</label>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-lg btn-primary" data-bs-dismiss="modal" type="button">저장</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- //modal: 플랫폼 등록  -->
+
+    <!-- modal: 판매  -->
+    <div class="modal" id="modal-cell" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-md modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">판매</h5>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                </div>
+                <div class="modal-body pt-0 pb-0">
+                    <table class="table table-bordered">
+                        <colgroup>
+                            <col style="width: 120px">
+                            <col>
+                        </colgroup>
+                        <tbody>
+                        <tr>
+                            <th class="text-center">예약자 정보</th>
+                            <td>김정주&nbsp;0502-4047-5672</td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">상품명 / 숙박 기간</th>
+                            <td>스위트 B</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="desc font-md mt-8 mb-8 text-center">선택 하신 객실을 판매 하시겠습니까?</div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-lg btn-primary" data-bs-dismiss="modal" type="button">예약 추가</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- //modal: 판매  -->
+
+    <!-- modal: 기간 반복 -->
+    <div class="modal" id="modal-repeat-period" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">기간 반복</h5>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                </div>
+                <div class="modal-body pt-0 pb-0">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button aria-selected="true" class="nav-link active" data-bs-target="#month" data-bs-toggle="tab"
+                                    role="tab" type="button">매월
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button aria-selected="false" class="nav-link" data-bs-target="#year" data-bs-toggle="tab"
+                                    role="tab" tabindex="-1" type="button">매년
+                            </button>
+                        </li>
+                    </ul>
+                    <div class="tab-content mt-6">
+                        <div class="tab-pane fade show active" id="month" role="tabpanel" tabindex="0">
+                            <table class="table table-fixed">
+                                <colgroup>
+                                    <col style="width: 50%">
+                                    <col style="width: 50%">
+                                </colgroup>
+                                <tbody>
+                                <tr>
+                                    <th class="text-center">개월마다</th>
+                                    <td>
+                                        <input class="form-control form-sm m-auto text-end" placeholder=""
+                                               style="width: 93px" type="text" value="1">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="text-center">15일</th>
+                                    <td>
+                                        <div class="form-check justify-content-center">
+                                            <input class="form-check-input" id="flexCheckDefault25" type="checkbox"
+                                                   value="">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="text-center">3째 주 금요일</th>
+                                    <td>
+                                        <div class="form-check justify-content-center">
+                                            <input class="form-check-input" id="flexCheckDefault26" type="checkbox"
+                                                   value="">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="text-center">반복없음</th>
+                                    <td>
+                                        <div class="form-check justify-content-center">
+                                            <input class="form-check-input" id="flexCheckDefault" type="checkbox"
+                                                   value="">
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane fade" id="year" role="tabpanel" tabindex="0">
+                            <table class="table table-fixed">
+                                <colgroup>
+                                    <col style="width: 50%">
+                                    <col style="width: 50%">
+                                </colgroup>
+                                <tbody>
+                                <tr>
+                                    <th class="text-center">개월마다</th>
+                                    <td>
+                                        <input class="form-control form-sm m-auto text-end" placeholder=""
+                                               style="width: 93px" type="text" value="1">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="text-center">15일</th>
+                                    <td>
+                                        <div class="form-check justify-content-center">
+                                            <input class="form-check-input" id="flexCheckDefault27" type="checkbox"
+                                                   value="">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="text-center">3째 주 금요일</th>
+                                    <td>
+                                        <div class="form-check justify-content-center">
+                                            <input class="form-check-input" id="flexCheckDefault28" type="checkbox"
+                                                   value="">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="text-center">반복없음</th>
+                                    <td>
+                                        <div class="form-check justify-content-center">
+                                            <input class="form-check-input" id="flexCheckDefault29" type="checkbox"
+                                                   value="">
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-end">
+                        <button class="btn btn-lg btn-primary" data-bs-dismiss="modal" id="modal-image-close1"
+                                type="button">저장
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- //modal: 기간 반복 -->
+
+    <!-- modal: 이미지 보기 (파일업로드 시) -->
+    <div class="modal" id="modal-photo" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"></h5>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="img text-center"><img alt="" id="modal-image" src=""></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="d-flex">
+                        <button class="btn btn-lg btn-gray" data-bs-dismiss="modal" id="modal-image-close12"
+                                type="button">닫기
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- //modal: 이미지 보기 -->
+
+    <!-- modal: 이미지 보기 -->
+    <div class="modal" id="modal-photo-fill" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"></h5>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                </div>
+                <div class="modal-body">
+                    테스트
+                    <div class="img text-center"><img alt="" src="../assets/images/검수요청이미지.png"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="d-flex">
+                        <button class="btn btn-lg btn-gray" data-bs-dismiss="modal" id="modal-image-close"
+                                type="button">닫기
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- //modal: 이미지 보기 -->
+
+    <!-- modal: 담당자 검색 -->
+    <div class="modal" id="modal-manager-search" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">예시</h5>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="filter mt-0">
+                        <div class="row">
+                            <div class="col">
+                                <input class="form-control" placeholder="내용을 입력하세요." type="text">
+                            </div>
+                            <div class="col-auto">
+                                <button class="btn btn-dark" type="button">검색</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive-xxl">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr class="cursor-pointer">
+                                <th class="text-center"></th>
+                                <th class="text-center">이름</th>
+                                <th class="text-center">휴대폰번호</th>
+                                <th class="text-center">이메일</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <!-- row 클릭시 상세페이지로 이동 -->
+                                <td class="text-center">
+                                    <input class="form-check-input m-0 align-middle" name="user" type="radio">
+                                </td>
+                                <td class="text-center">박명수</td>
+                                <td class="text-center">010-1234-5678</td>
+                                <td class="text-center">email@email.com</td>
+                            </tr>
+
+                            <tr>
+                                <!-- row 클릭시 상세페이지로 이동 -->
+                                <td class="text-center">
+                                    <input class="form-check-input m-0 align-middle" name="user" type="radio">
+                                </td>
+                                <td class="text-center">박명수</td>
+                                <td class="text-center">010-1234-5678</td>
+                                <td class="text-center">email@email.com</td>
+                            </tr>
+
+                            <tr>
+                                <!-- row 클릭시 상세페이지로 이동 -->
+                                <td class="text-center">
+                                    <input class="form-check-input m-0 align-middle" name="user" type="radio">
+                                </td>
+                                <td class="text-center">박명수</td>
+                                <td class="text-center">010-1234-5678</td>
+                                <td class="text-center">email@email.com</td>
+                            </tr>
+
+                            <tr>
+                                <!-- row 클릭시 상세페이지로 이동 -->
+                                <td class="text-center">
+                                    <input class="form-check-input m-0 align-middle" name="user" type="radio">
+                                </td>
+                                <td class="text-center">박명수</td>
+                                <td class="text-center">010-1234-5678</td>
+                                <td class="text-center">email@email.com</td>
+                            </tr>
+
+                            <tr>
+                                <!-- row 클릭시 상세페이지로 이동 -->
+                                <td class="text-center">
+                                    <input class="form-check-input m-0 align-middle" name="user" type="radio">
+                                </td>
+                                <td class="text-center">박명수</td>
+                                <td class="text-center">010-1234-5678</td>
+                                <td class="text-center">email@email.com</td>
+                            </tr>
+
+                            <tr>
+                                <!-- row 클릭시 상세페이지로 이동 -->
+                                <td class="text-center">
+                                    <input class="form-check-input m-0 align-middle" name="user" type="radio">
+                                </td>
+                                <td class="text-center">박명수</td>
+                                <td class="text-center">010-1234-5678</td>
+                                <td class="text-center">email@email.com</td>
+                            </tr>
+
+                            <tr>
+                                <!-- row 클릭시 상세페이지로 이동 -->
+                                <td class="text-center">
+                                    <input class="form-check-input m-0 align-middle" name="user" type="radio">
+                                </td>
+                                <td class="text-center">박명수</td>
+                                <td class="text-center">010-1234-5678</td>
+                                <td class="text-center">email@email.com</td>
+                            </tr>
+
+                            <tr>
+                                <!-- row 클릭시 상세페이지로 이동 -->
+                                <td class="text-center">
+                                    <input class="form-check-input m-0 align-middle" name="user" type="radio">
+                                </td>
+                                <td class="text-center">박명수</td>
+                                <td class="text-center">010-1234-5678</td>
+                                <td class="text-center">email@email.com</td>
+                            </tr>
+
+                            <tr>
+                                <!-- row 클릭시 상세페이지로 이동 -->
+                                <td class="text-center">
+                                    <input class="form-check-input m-0 align-middle" name="user" type="radio">
+                                </td>
+                                <td class="text-center">박명수</td>
+                                <td class="text-center">010-1234-5678</td>
+                                <td class="text-center">email@email.com</td>
+                            </tr>
+
+                            <tr>
+                                <!-- row 클릭시 상세페이지로 이동 -->
+                                <td class="text-center">
+                                    <input class="form-check-input m-0 align-middle" name="user" type="radio">
+                                </td>
+                                <td class="text-center">박명수</td>
+                                <td class="text-center">010-1234-5678</td>
+                                <td class="text-center">email@email.com</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <nav>
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item">
+                                <a aria-label="First" class="page-link" href="#">
+                                    <i class="icon-pagination-first"></i>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a aria-label="Previous" class="page-link" href="#">
+                                    <i class="icon-pagination-prev"></i>
+                                </a>
+                            </li>
+                            <li aria-current="page" class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link" href="#">4</a></li>
+                            <li class="page-item"><a class="page-link" href="#">5</a></li>
+                            <li class="page-item"><a class="page-link" href="#">6</a></li>
+                            <li class="page-item"><a class="page-link" href="#">7</a></li>
+                            <li class="page-item"><a class="page-link" href="#">8</a></li>
+                            <li class="page-item"><a class="page-link" href="#">9</a></li>
+                            <li class="page-item"><a class="page-link" href="#">...</a></li>
+                            <li class="page-item"><a class="page-link" href="#">55</a></li>
+                            <li class="page-item">
+                                <a aria-label="Next" class="page-link" href="#">
+                                    <i class="icon-pagination-next"></i>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a aria-label="Last" class="page-link" href="#">
+                                    <i class="icon-pagination-last"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="modal-footer">
+                    <div class="d-flex">
+                        <button class="btn btn-lg btn-gray" data-bs-dismiss="modal" type="button">취소</button>
+                        <button class="btn btn-lg btn-primary" type="button">확인</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- //modal: 담당자 검색 -->
+
+    <!-- modal: 평가정보 상세 -->
+    <div class="modal" id="modal-evaluation-details" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-md modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">평가정보 상세</h5>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered">
+                        <colgroup>
+                            <col style="width: 80px">
+                            <col>
+                        </colgroup>
+                        <tbody>
+                        <tr>
+                            <th class="text-center">제목</th>
+                            <td>평가결과입니다.</td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">내용</th>
+                            <td>
+                                너무 빠르고 꼼꼼하게 작업해주셨어요. <br>
+                                감사합니다.
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <div class="d-flex">
+                        <button class="btn btn-lg btn-primary" data-bs-dismiss="modal" type="button">확인</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- //modal: 평가정보 상세 -->
+
+    <!-- modal: 평가정보 쓰기 -->
+    <!-- <div class="modal" tabindex="-1" id="modal-evaluation-form">
+    <div class="modal-dialog modal-dialog-centered modal-md modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">평가정보 쓰기</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-bordered">
+          <colgroup>
+            <col style="width: 80px">
+            <col>
+          </colgroup>
+          <tbody>
+            <tr>
+              <th class="text-center">제목</th>
+              <td>
+                <input type="text" class="form-control" placeholder="제목을 입력하세요.">
+              </td>
+            </tr>
+            <tr>
+              <th class="text-center">내용</th>
+              <td>
+                <textarea cols="" rows="6" class="form-control" placeholder="내용을 입력하세요."></textarea>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <div class="d-flex">
+          <button type="button" class="btn btn-lg btn-gray" data-bs-dismiss="modal">취소</button>
+          <button type="button" class="btn btn-lg btn-primary">확인</button>
+        </div>
+      </div>
+    </div>
+    </div>
+    </div> -->
+    <!-- //modal: 평가정보 쓰기 -->
+
+    <!-- modal: 공통 코드 등록 -->
+    <!-- <div class="modal" tabindex="-1" id="modal-code-form">
+    <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">공통 코드 등록</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-bordered table-fixed">
+          <colgroup>
+            <col style="width: 100px">
+            <col>
+            <col style="width: 100px">
+            <col>
+          </colgroup>
+          <tbody>
+            <tr>
+              <th class="text-center">코드<span class="required">*</span></th>
+              <td>
+                <div class="row">
+                  <div class="col">
+                    <input type="text" class="form-control" placeholder="코드를 입력하세요.">
+                  </div>
+                  <div class="col-auto">
+                    <button type="button" class="btn btn-dark">중복확인</button>
+                  </div>
+                </div>
+              </td>
+              <th class="text-center">코드명칭<span class="required">*</span></th>
+              <td>
+                <input type="text" class="form-control" placeholder="코드 명칭을 입력하세요.">
+              </td>
+            </tr>
+            <tr>
+              <th class="text-center">코드설명<span class="required">*</span></th>
+              <td>
+                <input type="text" class="form-control" placeholder="코드 설명을 입력하세요.">
+              </td>
+              <th class="text-center">사용여부<span class="required">*</span></th>
+              <td>
+                <div class="hstack">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="codeUseType" id="codeUseY" checked>
+                    <label class="form-check-label" for="codeUseY">사용</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="codeUseType" id="codeUseN">
+                    <label class="form-check-label" for="codeUseN">미사용</label>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <div class="d-flex">
+          <button type="button" class="btn btn-lg btn-gray" data-bs-dismiss="modal">닫기</button>
+          <button type="button" class="btn btn-lg btn-primary">저장</button>
+        </div>
+      </div>
+    </div>
+    </div>
+    </div> -->
+    <!-- //modal: 공통 코드 등록 -->
+
+    <!-- modal: 공통 코드 상세 -->
+    <!-- <div class="modal" tabindex="-1" id="modal-code-details">
+    <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">공통 코드 상세</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-bordered table-fixed">
+          <colgroup>
+            <col style="width: 100px">
+            <col>
+            <col style="width: 100px">
+            <col>
+          </colgroup>
+          <tbody>
+            <tr>
+              <th class="text-center">코드</th>
+              <td>NDST_DNTF</td>
+              <th class="text-center">코드명칭</th>
+              <td>산업 구분</td>
+            </tr>
+            <tr>
+              <th class="text-center">코드설명</th>
+              <td>INDUSTRY_DNTF</td>
+              <th class="text-center">사용여부</th>
+              <td>사용</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <div class="d-flex">
+          <button type="button" class="btn btn-lg btn-gray" data-bs-dismiss="modal">닫기</button>
+          <button type="button" class="btn btn-lg btn-secondary">삭제</button>
+          <button type="button" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#modal-code-form">수정</button>
+        </div>
+      </div>
+    </div>
+    </div>
+    </div> -->
+    <!-- //modal: 공통 코드 상세 -->
+
+    <!-- modal: 공통 상세 코드 등록 -->
+    <!-- <div class="modal" tabindex="-1" id="modal-sub-code-form">
+    <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">공통 상세 코드 등록</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-bordered table-fixed">
+          <colgroup>
+            <col style="width: 100px">
+            <col>
+            <col style="width: 100px">
+            <col>
+          </colgroup>
+          <tbody>
+            <tr>
+              <th class="text-center">코드<span class="required">*</span></th>
+              <td>
+                <div class="row">
+                  <div class="col">
+                    <input type="text" class="form-control" placeholder="코드를 입력하세요.">
+                  </div>
+                  <div class="col-auto">
+                    <button type="button" class="btn btn-dark">중복확인</button>
+                  </div>F
+                </div>
+              </td>
+              <th class="text-center">코드명칭<span class="required">*</span></th>
+              <td>
+                <input type="text" class="form-control" placeholder="코드 명칭을 입력하세요.">
+              </td>
+            </tr>
+            <tr>
+              <th class="text-center">코드설명<span class="required">*</span></th>
+              <td>
+                <input type="text" class="form-control" placeholder="코드 설명을 입력하세요.">
+              </td>
+              <th class="text-center">사용여부<span class="required">*</span></th>
+              <td>
+                <div class="hstack">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="subCodeUseType" id="subCodeUseY" checked>
+                    <label class="form-check-label" for="subCodeUseY">사용</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="subCodeUseType" id="subCodeUseN">
+                    <label class="form-check-label" for="subCodeUseN">미사용</label>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th class="text-center">순서<span class="required">*</span></th>
+              <td>
+                <input type="text" class="form-control" placeholder="순서를 입력하세요.">
+              </td>
+              <th class="text-center"></th>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <div class="d-flex">
+          <button type="button" class="btn btn-lg btn-gray" data-bs-dismiss="modal">닫기</button>
+          <button type="button" class="btn btn-lg btn-primary">저장</button>
+        </div>
+      </div>
+    </div>
+    </div>
+    </div> -->
+    <!-- //modal: 공통 상세 코드 등록 -->
+
+    <!-- modal: 공통 상세 코드 상세 -->
+    <!-- <div class="modal" tabindex="-1" id="modal-sub-code-details">
+    <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">공통 상세 코드 상세</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-bordered table-fixed">
+          <colgroup>
+            <col style="width: 100px">
+            <col>
+            <col style="width: 100px">
+            <col>
+          </colgroup>
+          <tbody>
+            <tr>
+              <th class="text-center">코드</th>
+              <td>NDST_DNTF</td>
+              <th class="text-center">코드명칭</th>
+              <td>산업 구분</td>
+            </tr>
+            <tr>
+              <th class="text-center">코드설명</th>
+              <td>INDUSTRY_DNTF</td>
+              <th class="text-center">사용여부</th>
+              <td>사용</td>
+            </tr>
+            <tr>
+              <th class="text-center">순서</th>
+              <td>1</td>
+              <th class="text-center"></th>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <div class="d-flex">
+          <button type="button" class="btn btn-lg btn-gray" data-bs-dismiss="modal">닫기</button>
+          <button type="button" class="btn btn-lg btn-secondary">삭제</button>
+          <button type="button" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#modal-sub-code-form">수정</button>
+        </div>
+      </div>
+    </div>
+    </div>
+    </div> -->
+    <!-- //modal: 공통 상세 코드 상세 -->
+
+    <!-- modal: 파일 등록 -->
+    <!-- <div class="modal" tabindex="-1" id="modal-file-add">
+    <div class="modal-dialog modal-dialog-centered modal-md modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">파일 등록</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-borderless">
+          <colgroup>
+            <col style="width: 100px">
+            <col>
+          </colgroup>
+          <tbody>
+            <tr>
+              <th><span>파일</span></th>
+              <td>
+                <input type="file" class="form-control" placeholder="파일 선택">
+              </td>
+            </tr>
+            <tr>
+              <th><span>설명</span></th>
+              <td>
+                <textarea rows="5" class="form-control"></textarea>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+        <button type="button" class="btn btn-primary">등록</button>
+      </div>
+    </div>
+    </div>
+    </div> -->
+    <!-- //modal: 파일 등록 -->
+
+<!--
+    <div class="ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all"
+         id="ui-datepicker-div"></div>-->
+</th:block>
+</html>

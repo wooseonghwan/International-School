@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fw.core.mapper.db1.batch.BatchMapper">
+
+    <!-- 여기어때 배치 대상 리스트 조회 -->
+    <select id="selectReserveListForYeogi" resultType="BatchChannelDTO">
+        /* com.fw.core.mapper.db1.batch.BatchMapper.selectReserveListForYeogi, 24.06.27, wsh, BatchMapper.xml */
+        SELECT yg_seq
+             , reserve_status
+             , reserve_no
+             , reserve_nm
+             , reserve_phone
+             , room_nm
+             , lodgment
+             , check_in_dt
+             , check_out_dt
+             , reserve_price
+             , channel_nm
+             , payment_dt
+             , cancel_dt
+             , batch_yn
+             , user_id
+             , deposit_price
+          FROM tb_crawling_yeogi
+         WHERE batch_yn = 'N'
+    </select>
+    <!-- 야펜 배치 대상 리스트 조회 -->
+    <select id="selectReserveListForYapen" resultType="BatchChannelDTO">
+        /* com.fw.core.mapper.db1.batch.BatchMapper.selectReserveListForYapen, 24.06.27, wsh, BatchMapper.xml */
+        SELECT yp_seq
+             , reserve_status
+             , reserve_no
+             , reserve_nm
+             , reserve_phone
+             , room_nm
+             , lodgment
+             , check_in_dt
+             , check_out_dt
+             , reserve_price
+             , channel_nm
+             , payment_dt
+             , cancel_dt
+             , batch_yn
+             , user_id
+        FROM tb_crawling_yapen
+        WHERE batch_yn = 'N'
+    </select>
+
+    <!-- 여기어때 배치 성공여부 업데이트 -->
+    <update id="updateBatchYnForYeogi" parameterType="BatchChannelDTO">
+        /* com.fw.core.mapper.db1.batch.BatchMapper.updateBatchYnForYeogi, 24.06.27, wsh, BatchMapper.xml */
+        UPDATE tb_crawling_yeogi
+        SET batch_yn = 'Y'
+          , batch_dt = NOW()
+        WHERE yg_seq = #{ygSeq}
+    </update>
+
+    <!-- 야펜 배치 성공여부 업데이트 -->
+    <update id="updateBatchYnForYapen" parameterType="BatchChannelDTO">
+        /* com.fw.core.mapper.db1.batch.BatchMapper.updateBatchYnForYapen, 24.06.27, wsh, BatchMapper.xml */
+        UPDATE tb_crawling_yapen
+        SET batch_yn = 'Y'
+          , batch_dt = NOW()
+        WHERE yp_seq = #{ypSeq}
+    </update>
+
+</mapper>

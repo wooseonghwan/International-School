@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/mainLayout}">
+<div layout:fragment="contents" th:remove="tag">
+    <div id="container">
+        <div class="page-top">
+            <h1 class="page-title">광고 상품 상세/수정</h1>
+        </div>
+        <form name="updateProduct">
+            <input type="hidden" id="productId" name="productId" th:value="${detail.productId}" />
+            <div class="detail-table mt-6">
+                <table class="table table-bordered">
+                    <colgroup>
+                        <col style="width: 10%"/>
+                        <col/>
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                        <th>대표 이미지</th>
+                        <td>
+                            <img id="filePreview1" th:if="${detail.fileId != null}" th:src="@{${detail.fileUrl}}"
+                                 style="width: 210px; height: 210px; object-fit: cover; border: 1px solid #ddd; border-radius: 4px;">
+                            <p th:unless="${detail.fileId != null}" class="text-muted" style="margin-bottom: 10px;">
+                                등록된 대표이미지가 없습니다.
+                            </p>
+                            <input type="file" name="thumbnailImage" id="fileId" accept="image/*">
+                            <label for="fileId" class="btn btn-outline-dark">파일 변경</label>
+                            <input type="hidden" id="originFileId" name="originFileId" th:value="${detail.fileId}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>매체</th>
+                        <td>
+                            <div class="select-wrap">
+                                <select class="form-select" name="media" id="media">
+                                    <option value="NAVER" th:selected="${detail.media eq 'NAVER'}">네이버</option>
+                                    <option value="INSTAR" th:selected="${detail.media eq 'INSTAR'}">인스타그램</option>
+                                    <option value="YOUTUBE" th:selected="${detail.media eq 'YOUTUBE'}">유튜브</option>
+                                    <option value="KAKAO" th:selected="${detail.media eq 'KAKAO'}">카카오톡</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- 네이버 상세 옵션 -->
+                    <tr class="mediaDetailRow" id="naverDetails">
+                        <th>매체 상세</th>
+                        <td>
+                            <div class="select-wrap">
+                                <select class="form-select" name="mediaDetail">
+                                    <option value="BLOG" th:selected="${detail.mediaDetail eq 'BLOG'}">블로그</option>
+                                    <option value="PLACE" th:selected="${detail.mediaDetail eq 'PLACE'}">플레이스</option>
+                                    <option value="CAFE" th:selected="${detail.mediaDetail eq 'CAFE'}">카페</option>
+                                    <option value="JISICK" th:selected="${detail.mediaDetail eq 'JISICK'}">지식인</option>
+                                    <option value="IMAGE" th:selected="${detail.mediaDetail eq 'IMAGE'}">이미지</option>
+                                    <option value="NEWS" th:selected="${detail.mediaDetail eq 'NEWS'}">뉴스</option>
+                                    <option value="AUTO" th:selected="${detail.mediaDetail eq 'AUTO'}">자동완성</option>
+                                    <option value="SEARCH-AD" th:selected="${detail.mediaDetail eq 'SEARCH-AD'}">검색광고</option>
+                                    <option value="TOP-SITE" th:selected="${detail.mediaDetail eq 'TOP-SITE'}">사이트 상위</option>
+                                    <option value="ACCOUNT" th:selected="${detail.mediaDetail eq 'ACCOUNT'}">네이버 계정</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- 인스타그램 상세 옵션 -->
+                    <tr class="mediaDetailRow" id="instarDetails">
+                        <th>매체 상세</th>
+                        <td>
+                            <div class="select-wrap">
+                                <select class="form-select" name="mediaDetail">
+                                    <option value="MANAGEMENT" th:selected="${detail.mediaDetail eq 'MANAGEMENT'}">계정관리</option>
+                                    <option value="POPULAR" th:selected="${detail.mediaDetail eq 'POPULAR'}">인기</option>
+                                    <option value="SPONSOR" th:selected="${detail.mediaDetail eq 'SPONSOR'}">스폰서</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- 유튜브 상세 옵션 -->
+                    <tr class="mediaDetailRow" id="youtubeDetails">
+                        <th>매체 상세</th>
+                        <td>
+                            <div class="select-wrap">
+                                <select class="form-select" name="mediaDetail">
+                                    <option value="PRODUCT" th:selected="${detail.mediaDetail eq 'PRODUCT'}">상품</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- 카카오톡 상세 옵션 -->
+                    <tr class="mediaDetailRow" id="kakaoDetails">
+                        <th>매체 상세</th>
+                        <td>
+                            <div class="select-wrap">
+                                <select class="form-select" name="mediaDetail">
+                                    <option value="KAKAOTALK" th:selected="${detail.mediaDetail eq 'KAKAOTALK'}">카카오톡</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>상품명</th>
+                        <td>
+                            <input type="text" class="form-control" name="title" th:value="${detail.title}" placeholder=""/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>내용</th>
+                        <td>
+                            <input type="text" class="form-control" name="content" th:value="${detail.content}" placeholder=""/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>상품 부가설명</th>
+                        <td>
+                            <div id="productSubContent">
+                                <div th:each="subContent, iterStat : ${detail.productSubContents}" class="input-group mb-2">
+                                    <input type="text" class="form-control" name="productSubContent" th:value="${subContent}" placeholder=""/>
+                                    <div class="input-group-append" style="margin-left: 3px;">
+                                        <button type="button" class="btn btn-outline-dark" data-role="plus" th:if="${iterStat.last}">
+                                            <i class="icon-plus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-outline-danger" data-role="minus">
+                                            <i class="icon-minus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-outline-dark" data-role="plus" th:if="${#lists.isEmpty(detail.productSubContents)}">
+                                <i class="icon-plus"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>상세 정보</th>
+                        <td>
+                            <input type="text" class="form-control" name="mainContent" th:value="${detail.mainContent}" placeholder=""/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>가격 정보</th>
+                        <td>
+                            <input type="text" class="form-control" name="amountContent" th:value="${detail.amountContent}" placeholder=""/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>기타 정보</th>
+                        <td>
+                            <input type="text" class="form-control" name="etcContent" th:value="${detail.etcContent}" placeholder=""/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>가격</th>
+                        <td>
+                            <input type="text" class="form-control" name="amount" th:value="${detail.amount}" placeholder=""/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>작업일</th>
+                        <td>
+                            <input type="text" class="form-control" name="workDt" th:value="${detail.workDt}" placeholder=""/>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </form>
+        <div class="row align-items-center justify-content-between pt-6">
+            <div class="col-auto"></div>
+            <div class="col-auto">
+                <div class="hstack gap-2">
+                    <button type="button" class="btn btn-dark" data-role="list">목록</button>
+                    <button type="button" class="btn btn-dark" data-role="save">저장</button>
+                    <button type="button" class="btn btn-danger" data-role="delete">삭제</button>
+                </div>
+            </div>
+        </div>
+        <!-- //container -->
+    </div>
+</div>
+</html>

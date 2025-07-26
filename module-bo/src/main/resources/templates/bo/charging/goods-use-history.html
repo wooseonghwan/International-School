@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/mainLayout}">
+<div layout:fragment="contents" th:remove="tag">
+    <div class="filter d-none d-lg-block">
+        <div class="hstack justify-content-between gap-4">
+            <div class="page-top mb-lg-1">
+                <h1 class="page-title">물품사용 및 충전내역</h1>
+            </div>
+        </div>
+    </div>
+
+    <form name="searchForm">
+        <input type="hidden" name="page" th:value="${searchInfo.page}"/>
+        <!-- filter -->
+        <div class="filter">
+            <div class="row align-items-center">
+                <div class="col-12 col-lg d-flex flex-wrap gap-4">
+                    <div class="form-field search">
+                        <div class="input-form">
+                            <i class="icon-search"></i>
+                            <input type="text" class="form-control search-form" name="searchValue"
+                                   th:value="${searchInfo.searchValue}" placeholder="회원번호">
+                            <button type="button" class="clear-button"><i class="icon-input-close"></i></button>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="gap-1 hstack">
+                            <div class="input-group">
+                                <input class="form-control form" data-picker="date"
+                                       name="searchStart"
+                                       type="text"
+                                       th:value="${searchInfo.searchStart}"
+                                       id="searchStart">
+                                <div class="col-auto">
+                                    <button type="button" class="btn btn-secondary" onclick="clearDate('searchStart')">
+                                        날짜삭제
+                                    </button>
+                                </div>
+                            </div>
+                            <span>~</span>
+                            <div class="input-group">
+                                <input class="form-control form" data-picker="date"
+                                       name="searchEnd"
+                                       type="text"
+                                       th:value="${searchInfo.searchEnd}"
+                                       id="searchEnd">
+                                <div class="col-auto">
+                                    <button type="button" class="btn btn-secondary" onclick="clearDate('searchEnd')">
+                                        날짜삭제
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-dark" data-role="btn-search-form" style="min-width: 80px">
+                            검색
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <!-- //filter -->
+
+
+    <!-- table -->
+    <div class="scroll-layout">
+        <div class="scroll-content">
+            <div class="row align-items-center justify-content-between mb-3">
+                <div class="col-auto">Total <strong th:text="${searchInfo.totalCount}">-</strong></div>
+            </div>
+            <div class="list-table">
+                <table class="table table-hover text-center">
+                    <colgroup>
+                        <col style="width: 15%;">
+                        <col style="width: 15%;">
+                        <col style="width: 30%;">
+                        <col style="width: 10%;">
+                        <col style="width: 10%;">
+                        <col style="width: 10%;">
+                        <col style="width: 10%;">
+                    </colgroup>
+                    <thead>
+                    <tr class="cursor-pointer">
+                        <th>날짜</th>
+                        <th>시간</th>
+                        <th>이름</th>
+                        <th>충전금액</th>
+                        <th>상품명</th>
+                        <th>사용금액</th>
+                        <th>잔액</th>
+                    </tr>
+                    </thead>
+                    <tbody name="userList">
+                    <th:block th:if="${#lists.isEmpty(goodsUseHistoryList)}">
+                        <tr>
+                            <td colspan="7">충전내역이 없습니다.</td>
+                        </tr>
+                    </th:block>
+                    <tr th:each="list, iterStat : ${goodsUseHistoryList}">
+                        <td th:text="${list.fDate}"></td>
+                        <td th:text="${list.cDate}"></td>
+                        <td th:text="${list.custName}"></td>
+                        <td th:text="${list.gbn == 'CHARGE'} ? ${#numbers.formatInteger(list.amnt, 3, 'COMMA')} : ''"></td>
+                        <td th:text="${list.menuNm}"></td>
+                        <td th:text="${(list.gbn == 'CAFE' || list.gbn == 'FOOD') ? #numbers.formatInteger(list.amnt, 3, 'COMMA') : ''}"></td>
+                        <td th:text="${list.menuNm}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="d-flex justify-content-center mt-5">
+                <th:block th:replace="fragments/paging :: paging_Fragment"/>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

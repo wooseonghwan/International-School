@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fw.core.mapper.db1.bo.BoPaymentMapper">
+
+    <!-- 결제 리스트 -->
+    <select id="selectPaymentList" parameterType="BoPaymentDTO" resultType="BoPaymentDTO">
+        /* com.fw.core.mapper.db1.bo.BoPaymentMapper.selectPaymentList, 결제 리스트, 24.11.12, WSH, BoPaymentMapper.xml */
+        SELECT ROW_NUMBER() OVER(ORDER BY tp.payment_dt DESC) AS rowNum
+             , tp.payment_id
+             , tp.product_type
+             , CASE WHEN tp.product_type = 'A' THEN '광고 상품'
+                    WHEN tp.product_type = 'P' THEN '패키지 상품'
+                    WHEN tp.product_type = 'S' THEN '실시간 견적' END AS productTypeNm
+             , tu.name
+             , tp.status
+             , CASE WHEN tp.status = 'SUCCESS' THEN '결제완료'
+                    WHEN tp.status = 'NO-SUCCESS' THEN '결제 미확인' END AS statusNm
+             , tp.price
+             , tp.pay_method
+             , CASE WHEN tp.pay_method = 'CARD' THEN '카드'
+                    WHEN tp.pay_method = 'CASH' THEN '현금'
+                    WHEN tp.pay_method = 'TRANSFER' THEN '이체' END AS payMethodNm
+             , date_format(tp.payment_dt, '%Y-%m-%d %H:%i') as paymentDt
+             , tap.title
+        FROM t_payment tp
+    INNER JOIN t_user tu ON tu.user_id = tp.user_id
+    LEFT JOIN t_ad_product tap ON tap.product_id = tp.ad_product_id
+    <!--LEFT JOIN tb_package tpc ON tpc.package_seq = tp.package_seq-->
+        <where>
+            <if test="searchText != null and searchText != ''">
+                (tu.name LIKE CONCAT('%', #{searchText}, '%'))
+            </if>
+            <if test="searchStart != null and searchStart != ''">
+                AND date_format(tp.payment_dt, '%Y-%m-%d') >= #{searchStart}
+            </if>
+            <if test="searchEnd != null and searchEnd != ''">
+                AND date_format(tp.payment_dt, '%Y-%m-%d') &lt;= #{searchEnd}
+            </if>
+            <if test="searchType != null and searchType != ''">
+                AND tp.status = #{searchType}
+            </if>
+            <if test="searchType2 != null and searchType2 != ''">
+                AND tp.product_type = #{searchType2}
+            </if>
+        </where>
+        ORDER BY tp.payment_dt DESC
+        <include refid="common.paging" />
+    </select>
+    <!-- 결제 리스트 카운트 -->
+    <select id="selectPaymentListCnt" parameterType="BoPaymentDTO" resultType="int">
+        /* com.fw.core.mapper.db1.bo.BoPaymentMapper.selectPaymentListCnt, 결제 리스트 카운트, 24.11.12, WSH, BoPaymentMapper.xml */
+        SELECT COUNT(1)
+        FROM t_payment tp
+    INNER JOIN t_user tu ON tu.user_id = tp.user_id
+    LEFT JOIN t_ad_product tap ON tap.product_id = tp.ad_product_id
+    <!--LEFT JOIN tb_package tpc ON tpc.package_seq = tp.package_seq-->
+        <where>
+            <if test="searchText != null and searchText != ''">
+                (tu.name LIKE CONCAT('%', #{searchText}, '%'))
+            </if>
+            <if test="searchStart != null and searchStart != ''">
+                AND date_format(tp.payment_dt, '%Y-%m-%d') >= #{searchStart}
+            </if>
+            <if test="searchEnd != null and searchEnd != ''">
+                AND date_format(tp.payment_dt, '%Y-%m-%d') &lt;= #{searchEnd}
+            </if>
+            <if test="searchType != null and searchType != ''">
+                AND tp.status = #{searchType}
+            </if>
+            <if test="searchType2 != null and searchType2 != ''">
+                AND tp.product_type = #{searchType2}
+            </if>
+        </where>
+    </select>
+    <!-- 결제내역 상세 -->
+    <select id="selectPaymentDetail" parameterType="BoPaymentDTO" resultType="BoPaymentDTO">
+        /* com.fw.core.mapper.db1.bo.BoPaymentMapper.selectPaymentDetail, 24.11.12, wsh, BoPaymentMapper.xml */
+        SELECT tp.payment_id
+             , tp.product_type
+             , CASE WHEN tp.product_type = 'A' THEN '광고 상품'
+                    WHEN tp.product_type = 'P' THEN '패키지 상품'
+                    WHEN tp.product_type = 'S' THEN '실시간 견적' END AS productTypeNm
+             , tu.name
+             , tp.status
+             , CASE WHEN tp.status = 'SUCCESS' THEN '결제완료'
+                    WHEN tp.status = 'NO-SUCCESS' THEN '결제 미확인' END AS statusNm
+             , tp.price
+             , tp.pay_method
+             , CASE WHEN tp.pay_method = 'CARD' THEN '카드'
+                    WHEN tp.pay_method = 'CASH' THEN '현금'
+                    WHEN tp.pay_method = 'TRANSFER' THEN '이체' END AS payMethodNm
+             , date_format(tp.payment_dt, '%Y-%m-%d %H:%i') as paymentDt
+             , tap.title
+             , tp.contract_file_id
+             , tp.estimate_file_id
+             , tp.bill_file_id
+             , tp.update_id
+             , date_format(tp.update_dt, '%Y-%m-%d %H:%i') AS updateDt
+        FROM t_payment tp
+    INNER JOIN t_user tu ON tu.user_id = tp.user_id
+    LEFT JOIN t_ad_product tap ON tap.product_id = tp.ad_product_id
+        WHERE payment_id = #{paymentId}
+    </select>
+
+    <update id="updatePayment" parameterType="BoPaymentDTO">
+        /* com.fw.core.mapper.db1.bo.BoPaymentMapper.updatePayment, 24.11.12, wsh , BoPaymentMapper.xml */
+        UPDATE t_payment
+        SET status = #{status}
+          , update_id = #{adminSession.adminSeq}
+          , update_dt = NOW()
+        WHERE payment_id = #{paymentId}
+    </update>
+</mapper>

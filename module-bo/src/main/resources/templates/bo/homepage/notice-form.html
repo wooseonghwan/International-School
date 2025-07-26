@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/mainLayout}">
+<div layout:fragment="contents" th:remove="tag">
+    <div id="container">
+        <div class="page-top mb-lg-1">
+            <h1 class="page-title">공지사항 등록</h1>
+        </div>
+        <div class="detail-table mt-6">
+            <table class="table table-bordered">
+                <colgroup>
+                    <col style="width: 10%"/>
+                    <col/>
+                </colgroup>
+                <tbody>
+                <tr>
+                    <th>언어선택</th>
+                    <td>
+                        <div class="gap-1 hstack">
+                            <select name="searchType" class="form-select">
+                                <option value="KR">한글</option>
+                                <option value="EN" >영어</option>
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>팝업 창타입</th>
+                    <td style="display: flex; align-items: center;">
+                        <label style="display: flex; align-items: center; margin-right: 20px;">
+                            <input type="radio" class="form-check" name="popup" value="P">
+                            <span style="margin-left: 5px;">팝업</span>
+                        </label>
+                        <label style="display: flex; align-items: center;">
+                            <input type="radio" class="form-check" name="popup" value="S">
+                            <span style="margin-left: 5px;">슬라이드</span>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <th>제목</th>
+                    <td>
+                        <input class="form-control" type="text" id="title">
+                    </td>
+                </tr>
+                <tr>
+                    <th>게시옵션</th>
+                    <td>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+                            <label class="form-check-label" for="flexCheckDefault"> (전사공지사항 게시)</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>내용</th>
+                    <td>
+                        <textarea rows="2" class="form-control form-textarea" id="content" name="content" placeholder=""></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th>크기(가로/세로)</th>
+                    <td>
+                        가로:
+                        <input class="form-control d-inline-block" type="text" name="width" style="width: 80px;"> 픽셀(px) /
+                        세로:
+                        <input class="form-control d-inline-block" type="text" name="height" style="width: 80px;"> 픽셀(px)
+                    </td>
+                </tr>
+                <tr>
+                    <th>위치(왼쪽/상단)</th>
+                    <td>
+                        왼쪽:
+                        <input class="form-control d-inline-block" type="text" name="left" style="width: 60px;"> /
+                        상단:
+                        <input class="form-control d-inline-block" type="text" name="top" style="width: 60px;">
+                    </td>
+                </tr>
+                <tr>
+                    <th>유효기간</th>
+                    <td>
+                        <input class="form-control" data-picker="date"
+                               name="endDt"
+                               type="text"
+                               autocomplete="off" style="width: 150px;">
+                        <button type="button" class="btn btn-outline-dark btn-sm">종료일</button>
+                        <label class="ms-3">
+                            <input type="checkbox" name="endNoLimitYn"> 제한없음
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <th>팝업사용유무</th>
+                    <td>
+                        <select name="popupYn" class="form-select" style="width: 150px;">
+                            <option value="N">미사용</option>
+                            <option value="Y">사용</option>
+                        </select>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row align-items-center" style="margin-top: 20px;">
+            <div class="col-auto ms-0 ms-lg-auto" style="margin-left: auto">
+                <div class="gap-2 hstack">
+                    <button type="button" class="btn btn-dark" data-role="btnSave"
+                            style="min-width: 80px">저장
+                    </button>
+                    <button type="button" class="btn btn-dark" data-role="btnList"
+                            style="min-width: 80px">목록
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

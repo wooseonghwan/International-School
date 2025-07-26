@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/mainLayout}">
+<div layout:fragment="contents" th:remove="tag">
+    <div id="container">
+        <div class="page-top">
+            <h1 class="page-title">고객 상세/수정</h1>
+        </div>
+        <div class="row align-items-center justify-content-between pt-6">
+            <div class="col-auto"></div>
+            <div class="col-auto">
+                <div class="hstack gap-2">
+                    <button type="button" class="btn btn-dark" data-role="btnList">고객 리스트</button>
+                </div>
+            </div>
+        </div>
+        <form name="userDetail">
+            <input type="hidden" id="userId" name="userId" th:value="${detail.userId}"/>
+            <div class="detail-table mt-6">
+                <table class="table table-bordered">
+                    <colgroup>
+                        <col style="width: 10%"/>
+                        <col/>
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                        <td colspan="4" class="text-center" style="width: 100%;">
+                            <strong>회원 가입 정보</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>성함</th>
+                        <td>
+                            <input type="text" class="form-control" name="name" th:value="${detail.name}"
+                                   placeholder="" readonly/>
+                        </td>
+                        <th>연락처</th>
+                        <td>
+                            <input type="text" class="form-control" name="phone" th:value="${detail.phone}"
+                                   placeholder="" readonly/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>업체명</th>
+                        <td>
+                            <input type="text" class="form-control" name="companyName" th:value="${detail.companyName}"
+                                   placeholder=""/>
+                        </td>
+                        <th>이메일</th>
+                        <td>
+                            <input type="text" class="form-control" name="email" th:value="${detail.email}"
+                                   placeholder="" readonly/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>주소</th>
+                        <td>
+                            <input type="text" class="form-control" name="addr" th:value="${detail.addr}"
+                                   placeholder=""/>
+                        </td>
+                        <th>통장 계좌번호</th>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <input type="text" class="form-control" name="bankAccountNumber"
+                                       th:value="${detail.bankAccountNumber}" placeholder="" readonly/>
+                                <button type="button" class="btn btn-outline-secondary" id="bankUrl" th:data-url="${detail.bankFileUrl}">
+                                    통장사본
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="detail-table mt-6">
+                <table class="table table-bordered">
+                    <colgroup>
+                        <col style="width: 10%"/>
+                        <col/>
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                        <td colspan="4" class="text-center" style="width: 100%;">
+                            <strong>회원 기본 정보</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>아이디</th>
+                        <td>
+                            <input type="text" class="form-control" name="loginId" th:value="${detail.loginId}"
+                                   placeholder=""/>
+                        </td>
+                        <th>비밀번호</th>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <input type="password" class="form-control" name="password" id="passwordInput"
+                                       th:value="${detail.password}" placeholder="" readonly/>
+                                <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                    비밀번호 초기화
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>사업자번호</th>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <input type="text" class="form-control" name="businessNumber"
+                                       th:value="${detail.businessNumber}" placeholder="" readonly/>
+                                <button type="button" class="btn btn-outline-secondary" id="businessFileUrl" th:data-url="${detail.businessFileUrl}">
+                                    사업자등록증 다운로드
+                                </button>
+                            </div>
+                        </td>
+                        <th>주력 매체</th>
+                        <td>
+                            <input type="text" class="form-control" name="mainMedia" th:value="${detail.mainMedia}"
+                                   placeholder=""/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>기타 메모사항</th>
+                        <td>
+                            <input type="text" class="form-control" name="memo" th:value="${detail.memo}"
+                                   placeholder=""/>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </form>
+        <div class="row align-items-center justify-content-between pt-6">
+            <div class="col-auto"></div>
+            <div class="col-auto">
+                <div class="hstack gap-2">
+                    <button type="button" class="btn btn-dark" data-role="history" th:data-seq="${detail.userId}">회원 이용
+                        내역
+                    </button>
+                    <button type="button" class="btn btn-dark" data-role="blacklist" th:data-seq="${detail.userId}">
+                        블랙리스트 등록
+                    </button>
+                    <button type="button" class="btn btn-dark" data-role="update">수정</button>
+                </div>
+            </div>
+        </div>
+        <!-- //container -->
+    </div>
+    <!-- //table -->
+    <div class="modal fade" id="modal-history" tabindex="-1">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+            <div class="modal-content">
+                <input type="hidden" id="historySeq">
+                <div class="modal-header">
+                    <h5 class="modal-title w-100 text-center">회원 이용 내역</h5> <!-- 타이틀 추가 -->
+                </div>
+                <div class="modal-body">
+                    <table class="table table-hover text-center">
+                        <input type="hidden" id="." name="userId"
+                               th:value="${not #lists.isEmpty(history) ? history[0].userId : ''}"/>
+                        <colgroup>
+                            <col style="width: 25%;">
+                            <col style="width: 25%;">
+                            <col style="width: 25%;">
+                            <col style="width: 25%;">
+                        </colgroup>
+                        <thead>
+                        <tr class="cursor-pointer">
+                            <th>번호</th>
+                            <th>광고품목</th>
+                            <th>매체/플랫폼</th>
+                            <th>진행여부</th>
+                        </tr>
+                        </thead>
+                        <tbody id="userHistoryList">
+                        <th:block th:if="${#lists.isEmpty(history)}">
+                            <tr>
+                                <td colspan="4">회원 이용 내역이 없습니다.</td>
+                            </tr>
+                        </th:block>
+                        <tr th:each="history, stat : ${history}">
+                            <td th:text="${stat.index + 1}"></td>
+                            <td th:text="${history.useName}"></td>
+                            <td th:text="${history.useName == '광고상품' ? history.mediaNm : history.platform}"></td>
+                            <td th:text="${history.status}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="modal-footer justify-content-center mt-3">
+                        <button type="button" class="btn btn-dark" data-role="close">닫기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- //table -->
+    <div class="modal fade" id="modal-blacklist" tabindex="-1">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+            <div class="modal-content">
+                <input type="hidden" id="modalSeq">
+                <div class="modal-body">
+                    <table class="table">
+                        <tr>
+                            <th class="text-center">사유</th>
+                            <td><input type="text" class="form-control" id="blacklistReason"
+                                       placeholder="사유를 입력해주시기 바랍니다."></td>
+                        </tr>
+                    </table>
+                    <div class="text-center mt-5">
+                        <p>작성하신 내용으로 블랙리스트로 등록 하시겠습니까?</p>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center pt-0">
+                    <button type="button" class="btn btn-dark" data-role="add-Blacklist" style="margin-right: 10px;">예
+                    </button>
+                    <button type="button" class="btn btn-dark" data-role="cancel">아니오</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

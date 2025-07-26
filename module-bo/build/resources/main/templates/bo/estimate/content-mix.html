@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/mainLayout}">
+<div layout:fragment="contents" th:remove="tag">
+    <div class="filter d-none d-lg-block ">
+        <div class="hstack justify-content-between gap-4">
+            <div class="page-top mb-lg-1">
+                <h1 class="page-title">컨텐츠 조합</h1>
+            </div>
+        </div>
+    </div>
+    <form name="searchForm">
+        <input type="hidden" name="page" th:value="${searchInfo.page}"/>
+        <!-- filter -->
+        <div class="filter">
+            <div class="row align-items-center">
+                <div class="col-12 col-lg d-flex flex-wrap gap-4 align-items-center">
+                    <div class="gap-1 hstack">
+                        <div class="form-field search" style="max-width: 220px;">
+                            <div class="input-form">
+                                <i class="icon-search"></i>
+                                <input type="text" class="form-control search-form" name="searchText"
+                                       th:value="${searchInfo.searchText}" placeholder="고객명 검색">
+                                <button type="button" class="clear-button"><i class="icon-input-close"></i></button>
+                            </div>
+                        </div>
+                        <div class="gap-1 hstack">
+                            <button type="button" class="btn btn-dark" data-role="btn-search-form"
+                                    style="min-width: 80px">검색
+                            </button>
+                            <button type="button" class="btn btn-dark" data-role="reset"
+                                    style="min-width: 80px">초기화
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="gap-1 hstack">
+                            <input class="form-control form" data-picker="date"
+                                   name="searchStart"
+                                   placeholder="YYYY-MM-DD"
+                                   type="text"
+                                   th:value="${searchInfo.searchStart}">
+                            -
+                            <input class="form-control form" data-picker="date"
+                                   name="searchEnd"
+                                   placeholder="YYYY-MM-DD"
+                                   type="text"
+                                   th:value="${searchInfo.searchEnd}">
+                        </div>
+                    </div>
+                    <div class="filter-item">
+                        <select autocomplete="off" class="form-select" name="searchType">
+                            <option value="" th:selected="${searchInfo.searchType == ''}">전체</option>
+                            <option value="PENDING" th:selected="${searchInfo.searchType == 'PENDING'}">견적요청</option>
+                            <option value="PROGRESS" th:selected="${searchInfo.searchType == 'PROGRESS'}">진행중</option>
+                            <option value="SUCCESS" th:selected="${searchInfo.searchType == 'SUCCESS'}">견적완료</option>
+                            <option value="UPDATE" th:selected="${searchInfo.searchType == 'UPDATE'}">수정요청</option>
+                            <option value="CANCEL" th:selected="${searchInfo.searchType == 'CANCEL'}">취소</option>
+                        </select>
+                    </div>
+                    <div class="col-auto ms-0 ms-lg-auto" style="margin-left: auto">
+                        <div class="gap-1 hstack">
+                            <button type="button" class="btn btn-dark" data-role="excelDownload"
+                                    style="min-width: 80px">엑셀 다운로드
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <!-- //filter -->
+    <!-- table -->
+    <div class="scroll-layout">
+        <div class="scroll-content">
+            <div class="row align-items-center justify-content-between mb-3">
+                <div class="col-auto">Total <strong th:text="${searchInfo.totalCount}">-</strong></div>
+            </div>
+            <div class="list-table">
+                <table class="table table-hover">
+                    <colgroup>
+                        <col width="10%">
+                        <col width="15%">
+                        <col width="15%">
+                        <col width="15%">
+                        <col width="15%">
+                        <col width="15%">
+                        <col width="15%">
+                    </colgroup>
+                    <thead>
+                    <tr class="cursor-pointer">
+                        <th class="text-center">No</th>
+                        <th class="text-center">고객명</th>
+                        <th class="text-center">플랫폼</th>
+                        <th class="text-center">광고유형</th>
+                        <th class="text-center">광고방식</th>
+                        <th class="text-center">상태</th>
+                        <th class="text-center">상세</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <th:block th:if="${#lists.isEmpty(estimateList)}">
+                        <tr>
+                            <td colspan="8" class="text-center">내역이 없습니다.</td>
+                        </tr>
+                    </th:block>
+                    <tr th:each="list : ${estimateList}" class="clickable-row">
+                        <td class="text-center" th:text="${list.rowNum}"></td>
+                        <td class="text-center" th:text="${list.name}"></td>
+                        <td class="text-center" th:text="${list.platform}"></td>
+                        <td class="text-center" th:text="${list.platformDetail}"></td>
+                        <td class="text-center" th:text="${list.adType}"></td>
+                        <td class="text-center" th:text="${list.statusNm}"></td>
+                        <td class="text-center">
+                            <button type="button" class="btn btn-dark" data-role="detail" th:value="${list.estimateId}" th:data-estimate-id="${list.estimateId}">
+                                상세/수정
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="d-flex justify-content-center mt-5">
+                <th:block th:replace="fragments/paging :: paging_Fragment"/>
+            </div>
+        </div>
+    </div>
+    <!-- //table -->
+</div>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/mainLayout}">
+<div layout:fragment="contents" th:remove="tag">
+    <div class="page-top">
+        <h1 class="page-title">관리자 관리</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">시스템 관리</li>
+                <li class="breadcrumb-item">관리자 관리</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="card mb-3">
+        <div class="card-body">
+            <form name="searchForm">
+                <input type="hidden" name="page" th:value="${searchInfo.page}" />
+                <input type="hidden" name="rowSize" th:value="${searchInfo.rowSize}" />
+                <input type="hidden" id="startDt" th:value="${searchInfo.searchStart}" />
+                <input type="hidden" id="endDt" th:value="${searchInfo.searchEnd}" />
+                <!-- 필터 영역 -->
+                <div class="filter-area">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="row g-2 g-lg-3 align-items-center">
+                            <div class="col-auto">
+                                <input type="text" id="searchStart" name="searchStart" class="form-control"
+                                       placeholder="YYYY.MM.DD"
+                                       data-picker="date" autocomplete="off"/>
+                            </div>
+                            <div class="col-auto">~</div>
+                            <div class="col-auto">
+                                <input type="text" id="searchEnd" name="searchEnd" class="form-control"
+                                       placeholder="YYYY.MM.DD"
+                                       data-picker="date" autocomplete="off"/>
+                            </div>
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-dark" data-role="btn-search-form"
+                                        style="min-width: 80px">검색
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row justify-content-end">
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-dark me-2" style="min-width: 80px" onclick="window.location.href='/bo/system/org/admin/form'">관리자등록</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- //필터 영역 -->
+            </form>
+        </div>
+    </div>
+    <div class="card mb-3">
+        <div class="card-header">
+            <div class="row align-items-center justify-content-end">
+                <div class="col-auto">
+                    <div class="d-flex gap-2">
+                        <select class="form-select" name="rowSize">
+                            <option value="10" th:selected="${searchInfo.rowSize eq 10}">10개</option>
+                            <option value="50" th:selected="${searchInfo.rowSize eq 50}">50개 </option>
+                            <option value="100" th:selected="${searchInfo.rowSize eq 100}">100개</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="total-cnt"><strong
+                    th:text="${'Total: ' + #numbers.formatInteger(searchInfo.totalCount,0,'COMMA')}"></strong></div>
+            <div class="table-responsive-xxl">
+                <table class="table table-bordered table-hover mb-0">
+                    <colgroup>
+                        <col style="width: 10%"/>
+                        <col style="width: 40%"/>
+                        <col/>
+                        <col/>
+                        <col/>
+                        <col/>
+                        <col/>
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th class="text-center">NO</th>
+                        <th class="text-center">관리자 아이디</th>
+                        <th class="text-center">관리자 이름</th>
+                        <th class="text-center">관리자 상태</th>
+                        <th class="text-center">등록일시</th>
+                    </tr>
+                    </thead>
+                    <tbody class="table-group-divider">
+                    <th:block th:if="${#lists.isEmpty(list)}">
+                        <tr>
+                            <td colspan="6" class="text-center">등록된 항목이 없습니다.</td>
+                        </tr>
+                    </th:block>
+                    <th:block th:unless="${#lists.isEmpty(list)}">
+                        <th:block th:each="item : ${list}">
+                            <tr>
+                                <td class="text-center" th:text="${searchInfo.totalCount-(searchInfo.rowSize*(searchInfo.page-1))-itemStat.index}">1</td>
+                                <td class="text-center">
+                                    <a th:href="@{/bo/system/org/admin/detail(adminSeq=${item.adminSeq})}"
+                                       th:text="${item.adminId}"></a>
+                                </td>
+                                <td class="text-center" th:text="${item.adminNm}" }>YYYY.MM.DD HH:MM​</td>
+                                <td class="text-center" th:text="${item.adminStatusNm}">qasd@naver.com</td>
+                                <td class="text-center" th:text="${item.createDt}"></td>
+                            </tr>
+                        </th:block>
+                    </th:block>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center mt-5">
+            <th:block th:replace="fragments/paging :: paging_Fragment"/>
+        </div>
+    </div>
+    <!-- //container -->
+</div>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layouts/mainLayout}">
+<div layout:fragment="contents" th:remove="tag">
+	<!-- 페이지 상단 메뉴명 작성 시작 -->
+	<div class="page-top">
+		<h1 class="page-title">배너 관리</h1>
+		<nav aria-label="breadcrumb">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item">화면 관리</li>
+				<li class="breadcrumb-item">배너 관리</li>
+			</ol>
+		</nav>
+	</div>
+	<!-- 페이지 상단 메뉴명 작성 끝 -->
+	<div class="card">
+		<div class="card-body">
+			<div class="table-responsive-xxl">
+				<input type="hidden" id="bannerSeq" th:value="${detail.bannerSeq}" />
+				<input type="hidden" id="fileSeq" th:value="${detail.fileSeq}" />
+				<table class="table table-bordered mb-0">
+					<colgroup>
+						<col style="width: 10%" />
+						<col style="width: 23%" />
+						<col style="width: 10%" />
+						<col style="width: 23%" />
+						<col style="width: 10%" />
+						<col style="width: 23%" />
+					</colgroup>
+					<tbody>
+					<tr>
+						<th class="text-center">등록일</th>
+						<td>
+							<p th:text="${detail.createDt}"></p>
+						</td>
+						<th class="text-center">구분</th>
+						<td>
+							<p th:text="${detail.bannerType}"></p>
+						</td>
+						<th class="text-center">사용여부</th>
+						<td>
+							<p th:text="(${detail.useFlag} eq 'Y')?'사용':'미사용'"></p>
+						</td>
+					</tr>
+					<tr>
+						<th class="text-center">배너이름</th>
+						<td colspan="5">
+							<p th:text="${detail.bannerNm}"></p>
+						</td>
+					</tr>
+					<tr>
+						<th class="text-center none-sort">첨부파일</th>
+						<td colspan="5">
+							<th:block th:if="${file ne null}">
+								<th:block th:unless="${#lists.isEmpty(file)}" th:each="list : ${file}">
+									<a th:text="${list.originName}" th:href="${list.path}" target="_blank"></a>
+								</th:block>
+							</th:block>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="hstack gap-2 justify-content-end mt-4">
+		<button type="button" class="btn btn-dark" style="width: 100px" data-role="update">수정</button>
+		<button type="button" class="btn btn-outline-dark" style="width: 100px" data-role="delete">삭제</button>
+		<button type="button" class="btn btn-secondary" style="width: 100px" data-role="list">목록</button>
+	</div>
+</div>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/mainLayout}">
+<div layout:fragment="contents" th:remove="tag">
+    <div id="container">
+        <div class="page-top">
+            <h1 class="page-title">파트너스 광고 상세/수정</h1>
+        </div>
+        <form name="updatePtAd">
+          <input type="hidden" id="adId" name="adId" th:value="${detail.adId}" />
+          <input type="hidden" id="partnersId" name="adId" th:value="${detail.partnersId}" />
+          <input type="hidden" id="projectId" name="adId" th:value="${detail.projectId}" />
+            <div class="detail-table mt-6">
+                <table class="table table-bordered">
+                    <colgroup>
+                        <col style="width: 10%"/>
+                        <col/>
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                        <th>프로젝트 명</th>
+                        <td>
+                            <input type="text" class="form-control" name="productName" th:value="${detail.title}"
+                                   placeholder="" readonly/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>파트너스 명</th>
+                        <td>
+                            <input type="text" class="form-control" name="productMainContent" th:value="${detail.name}"
+                                   placeholder="" readonly/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>프로젝트 금액</th>
+                        <td>
+                            <input type="text" class="form-control" name="price" th:value="${detail.budget}"
+                                   placeholder="" readonly/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>입찰 금액</th>
+                        <td>
+                            <input type="text" class="form-control" name="minOrderCnt"
+                                   th:value="${detail.amount}" placeholder="" readonly/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>메모</th>
+                        <td>
+                            <input type="text" class="form-control" name="minOrderCnt" th:value="${detail.memo}"
+                                   placeholder="" readonly/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>진행상태</th>
+                        <td>
+                            <div class="select-wrap">
+                                <select class="form-select" name="status" id="status">
+                                    <option value="BID" th:selected="${detail.status eq 'BID'}">입찰중</option>
+                                    <option value="PROGRESS" th:selected="${detail.status eq 'PROGRESS'}">진행중</option>
+                                    <option value="COMPLETE" th:selected="${detail.status eq 'COMPLETE'}">진행완료</option>
+                                    <option value="BILLING" th:selected="${detail.status eq 'BILLING'}">정산완료</option>
+                                    <option value="CANCEL" th:selected="${detail.status eq 'CANCEL'}">결제취소</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>보고서 제출상태</th>
+                        <td>
+                            <div class="select-wrap">
+                                <select class="form-select" name="reportStatus" id="reportStatus">
+                                    <option value="PENDING" th:selected="${detail.reportStatus eq 'PENDING'}">미제출</option>
+                                    <option value="PROGRESS" th:selected="${detail.reportStatus eq 'PROGRESS'}">검수중</option>
+                                    <option value="COMPLETE" th:selected="${detail.reportStatus eq 'COMPLETE'}">검수완료</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </form>
+
+        <div class="row align-items-center justify-content-between pt-6">
+            <div class="col-auto"></div>
+            <div class="col-auto">
+                <div class="hstack gap-2">
+                    <button type="button" class="btn btn-dark" data-role="list">목록</button>
+                    <button type="button" class="btn btn-dark" data-role="save">수정</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- //container -->
+    </div>
+</div>
+</html>

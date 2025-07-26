@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/mainLayout}">
+<div layout:fragment="contents" th:remove="tag">
+    <div class="filter d-none d-lg-block ">
+        <div class="hstack justify-content-between gap-4">
+            <div class="page-top mb-lg-1">
+                <h1 class="page-title">공지사항</h1>
+            </div>
+            <div class="col-auto ms-0 ms-lg-auto" style="margin-left: auto">
+                <button type="button" class="btn btn-dark" data-role="delete"
+                        style="min-width: 80px">삭제
+                </button>
+                <button type="button" class="btn btn-dark" data-role="btnRegister"
+                        style="min-width: 80px">등록
+                </button>
+            </div>
+        </div>
+    </div>
+    <form name="searchForm">
+        <input type="hidden" name="page" th:value="${searchInfo.page}"/>
+        <!-- filter -->
+        <div class="filter" style="margin-top: 0.7rem;">
+            <div class="row align-items-center">
+                <div class="col-12 col-lg d-flex flex-wrap gap-4">
+                    <div class="gap-1 hstack">
+                        <select name="searchType" class="form-select">
+                            <option value="TITLE" th:selected="${searchInfo.searchType == 'TITLE'}">제목</option>
+                            <option value="CONTENT" th:selected="${searchInfo.searchType == 'CONTENT'}">상세내용</option>
+                        </select>
+                    </div>
+                    <div class="form-field search">
+                        <div class="input-form">
+                            <i class="icon-search"></i>
+                            <input type="text" class="form-control search-form" name="searchValue" th:value="${searchInfo.searchValue}">
+                            <button type="button" class="clear-button"><i class="icon-input-close"></i></button>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-dark" data-role="btn-search-form" style="min-width: 80px">검색</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <!-- //filter -->
+    <!-- table -->
+    <div class="scroll-layout">
+        <div class="scroll-content">
+            <div class="row align-items-center justify-content-between mb-3">
+                <div class="col-auto">Total <strong th:text="${searchInfo.totalCount}">-</strong></div>
+            </div>
+            <div class="list-table">
+                <table class="table table-hover">
+                    <colgroup>
+                        <col style="width:5%">
+                        <col style="width:10%">
+                        <col style="width:20%">
+                        <col style="width:15%">
+                        <col style="width:15%">
+                        <col style="width:10%">
+                        <col style="width:20%">
+                        <col style="width:5%">
+                    </colgroup>
+                    <thead>
+                    <tr class="cursor-pointer">
+                        <th class="text-center">
+                            <input type="checkbox" id="checkAll"> <!-- 전체 선택 -->
+                        </th>
+                        <th class="text-center">No.</th>
+                        <th class="text-center">제목</th>
+                        <th class="text-center">종류</th>
+                        <th class="text-center">작성자</th>
+                        <th class="text-center">팝업사용유무</th>
+                        <th class="text-center">등록일</th>
+                        <th class="text-center">관리</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <th:block th:if="${#lists.isEmpty(noticeList)}">
+                        <tr>
+                            <td colspan="8" class="text-center">내역이 없습니다.</td>
+                        </tr>
+                    </th:block>
+                    <tr th:each="notice : ${noticeList}">
+                        <td class="text-center">
+                            <input type="checkbox" class="check-item" name="noticeIds" th:value="${notice.noticeId}">
+                        </td>
+                        <td class="text-center" th:text="${notice.rowNum}"></td>
+                        <td class="text-center" th:text="${notice.title}"></td>
+                        <td class="text-center" th:text="${notice.langNm}"></td>
+                        <td class="text-center" th:text="${notice.adminNm}"></td>
+                        <td class="text-center">
+                            <div>
+                                <select name="popupYn" class="form-select">
+                                    <option value="Y" th:selected="${notice.popupYn == 'Y'}">사용</option>
+                                    <option value="N" th:selected="${notice.popupYn == 'N'}">미사용</option>
+                                </select>
+                            </div>
+                        </td>
+                        <td class="text-center" th:text="${notice.createDt}"></td>
+                        <td class="text-center">
+                            <button type="button" class="btn btn-primary" data-role="detail" th:value="${notice.noticeId}" th:data-seq="${notice.noticeId}">
+                                수정
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="d-flex justify-content-center mt-5">
+                <th:block th:replace="fragments/paging :: paging_Fragment"/>
+            </div>
+        </div>
+    </div>
+    <!-- //table -->
+</div>
+</html>

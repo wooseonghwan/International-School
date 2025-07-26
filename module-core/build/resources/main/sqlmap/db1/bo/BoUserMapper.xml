@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fw.core.mapper.db1.bo.BoUserMapper">
+
+    <!-- 고객 리스트 -->
+    <select id="selectUserList" parameterType="BoUserDTO" resultType="BoUserDTO">
+        SELECT ROW_NUMBER() OVER(ORDER BY cDate ASC) AS rowNum
+             , custNo
+             , custName
+             , cardId
+             , webId
+             , webPw
+             , date_format(cDate, '%Y-%m-%d %H:%i') as cDate
+        FROM user_tb
+        <where>
+            <if test="searchValue != null and searchValue != '' and searchType != null and searchType != ''">
+                <choose>
+                    <when test="searchType == 'LOGINID'">
+                        webId LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+                    <when test="searchType == 'NAME'">
+                        custName LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+                    <when test="searchType == 'CARDNO'">
+                        cardId LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+                    <when test="searchType == 'USERNO'">
+                        custNo LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+                    <otherwise>
+                        1=1
+                    </otherwise>
+                </choose>
+            </if>
+        </where>
+        ORDER BY cDate DESC
+        <include refid="common.paging" />
+    </select>
+
+    <!-- 고객 리스트 카운트 -->
+    <select id="countUserList" parameterType="BoUserDTO" resultType="int">
+        SELECT COUNT(1)
+        FROM user_tb
+        <where>
+            <if test="searchValue != null and searchValue != '' and searchType != null and searchType != ''">
+                <choose>
+                    <when test="searchType == 'LOGINID'">
+                        webId LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+                    <when test="searchType == 'NAME'">
+                        custName LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+                    <when test="searchType == 'CARDNO'">
+                        cardId LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+                    <when test="searchType == 'USERNO'">
+                        custNo LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+                    <otherwise>
+                        1=1
+                    </otherwise>
+                </choose>
+            </if>
+        </where>
+    </select>
+</mapper>

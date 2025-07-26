@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/mainLayout}">
+<div layout:fragment="contents" th:remove="tag">
+    <div id="container">
+        <div class="page-top">
+            <h1 class="page-title">견적 상세</h1>
+        </div>
+        <form name="updateEstimate">
+            <input type="hidden" id="estimateId" name="estimateId" th:value="${detail.estimateId}"/>
+            <input type="hidden" id="beforeEstimateAmount" name="beforeEstimateAmount" th:value="${detail.estimateAmount}"/>
+            <input type="hidden" id="userId" name="userId" th:value="${detail.userId}"/>
+            <input type="hidden" id="categoryId" name="categoryId" th:value="${detail.categoryId}"/>
+            <input type="hidden" id="locationId" name="locationId" th:value="${detail.locationId}"/>
+            <input type="hidden" id="adType" name="adType" th:value="${detail.adType}"/>
+            <input type="hidden" id="adTypeEtc" name="adTypeEtc" th:value="${detail.adTypeEtc}"/>
+            <input type="hidden" id="adTime" name="adTime" th:value="${detail.adTime}"/>
+            <input type="hidden" id="adTimeEtc" name="adTimeEtc" th:value="${detail.adTimeEtc}"/>
+            <div class="detail-table mt-6">
+                <table class="table table-bordered">
+                    <colgroup>
+                        <col style="width: 10%"/>
+                        <col/>
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                        <th>고객명</th>
+                        <td>
+                            <input type="text" class="form-control" name="name" th:value="${detail.name}" readonly/>
+                        </td>
+                        <th>아이디</th>
+                        <td>
+                            <input type="text" class="form-control" name="loginId" th:value="${detail.loginId}" readonly/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>전화번호</th>
+                        <td>
+                            <input type="text" class="form-control" name="phone" th:value="${detail.phone}" readonly/>
+                        </td>
+                        <th>이메일</th>
+                        <td>
+                            <input type="text" class="form-control" name="email" th:value="${detail.email}" readonly/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>카테고리</th>
+                        <td>
+                            <input type="text" class="form-control" th:value="${detail.categoryName + ' > ' + detail.subCategoryName}" readonly/>
+                        </td>
+                        <th>지역</th>
+                        <td>
+                            <input type="text" class="form-control " th:value="${detail.city + ' ' + detail.district + ' ' + detail.town}" readonly/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>플랫폼</th>
+                        <td>
+                            <input type="text" class="form-control " name="platform" th:value="${detail.platform}" readonly/>
+                        </td>
+                        <th>광고 유형</th>
+                        <td>
+                            <input type="text" class="form-control " name="platformDetail" th:value="${detail.platformDetail}" readonly/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>광고 운영방식</th>
+                        <td>
+                            <input type="text" class="form-control "
+                                   th:if="${detail.adType == 'ETC'}"
+                                   th:value="${detail.adTypeEtc  + '(' + '직접입력' + ')'}" readonly/>
+
+                            <input type="text" class="form-control "
+                                   th:unless="${detail.adType == 'ETC'}"
+                                   th:value="${detail.adType}" readonly/>
+                        </td>
+                        <th>광고 기간</th>
+                        <td>
+                            <input type="text" class="form-control "
+                                   th:if="${detail.adTime == 'ETC'}"
+                                   th:value="${detail.adTimeEtc + '(' + '직접입력' + ')'}" readonly/>
+                            <input type="text" class="form-control "
+                                   th:unless="${detail.adTime == 'ETC'}"
+                                   th:value="${detail.adTime}" readonly/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>키워드</th>
+                        <td>
+                            <input type="text" class="form-control " name="keywordName" th:value="${detail.keywordName}" readonly/>
+                        </td>
+                        <th>견적 금액</th>
+                        <td>
+                            <input type="text" class="form-control " name="estimateAmount" th:value="${detail.estimateAmount}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>견적 작성일</th>
+                        <td>
+                            <input type="text" class="form-control " name="createDt" th:value="${detail.createDt}" readonly/>
+                        </td>
+                        <th>견적 완료일</th>
+                        <td>
+                            <input type="text" class="form-control " name="successDt" th:value="${detail.successDt}" readonly/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>상태</th>
+                        <td>
+                            <div class="select-wrap">
+                                <select class="form-select " name="status" id="status">
+                                    <option value="PENDING" th:selected="${detail.status eq 'PENDING'}">견적요청</option>
+                                    <option value="PROGRESS" th:selected="${detail.status eq 'PROGRESS'}">진행중</option>
+                                    <option value="SUCCESS" th:selected="${detail.status eq 'SUCCESS'}">견적완료</option>
+                                    <option value="UPDATE" th:selected="${detail.status eq 'UPDATE'}">수정요청</option>
+                                    <option value="CANCEL" th:selected="${detail.status eq 'CANCEL'}">취소</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>메모</th>
+                        <td colspan="6">
+                            <input type="text" class="form-control " name="memo" th:value="${detail.memo}" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>수정 내역</th>
+                        <td colspan="6">
+                            <a class="text-primary" id="toggleHistoryBtn" style="cursor:pointer;">수정 내역 확인</a>
+                            <div id="estimateHistoryBox" style="display:none; margin-top:10px;">
+                                <ul class="list-group">
+                                    <th:block th:if="${#lists.isEmpty(estimateHistoryList)}">
+                                        <li class="list-group-item">수정 내역이 없습니다.</li>
+                                    </th:block>
+                                    <th:block th:each="history : ${estimateHistoryList}">
+                                        <li class="list-group-item text-primary history-item"  th:text="${history.createDt}" th:data-create-dt="${history.createDt}" th:data-estimate-id="${detail.estimateId}" style="cursor: pointer;">
+                                        </li>
+                                    </th:block>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </form>
+
+        <div class="row align-items-center justify-content-between pt-6">
+            <div class="col-auto"></div>
+            <div class="col-auto">
+                <div class="hstack gap-2">
+                    <button type="button" class="btn btn-dark" data-role="list">목록</button>
+                    <button type="button" class="btn btn-dark" data-role="save">저장</button>
+                </div>
+            </div>
+        </div>
+        <!-- //container -->
+        <div class="modal fade" id="estimateHistoryModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header border-0">
+                        <h5 class="modal-title fw-bold">이전 견적서 정보</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫기"></button>
+                    </div>
+                    <div class="modal-body px-4">
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                <label class="form-label fw-bold">성함</label>
+                                <input type="text" id="modalUserName" class="form-control" readonly>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label fw-bold">연락처</label>
+                                <input type="text" id="modalPhone" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                <label class="form-label fw-bold">아이디</label>
+                                <input type="text" id="modalLoginId" class="form-control" readonly>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label fw-bold">사업자 등록번호</label>
+                                <input type="text" id="modalBusinessNumber" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                <label class="form-label fw-bold">카테고리</label>
+                                <input type="text" id="modalCategory" class="form-control" readonly>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label fw-bold">지역</label>
+                                <input type="text" id="modalLocation" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                <label class="form-label fw-bold">플랫폼</label>
+                                <input type="text" id="modalPlatform" class="form-control" readonly>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label fw-bold">광고 유형</label>
+                                <input type="text" id="modalAdType" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                <label class="form-label fw-bold">광고 운영방식</label>
+                                <input type="text" id="modalAdRunType" class="form-control" readonly>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label fw-bold">광고 기간</label>
+                                <input type="text" id="modalAdTime" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                <label class="form-label fw-bold">키워드</label>
+                                <input type="text" id="modalKeyword" class="form-control" readonly>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label fw-bold">견적 금액</label>
+                                <input type="text" id="modalEstimateAmount" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                <label class="form-label fw-bold">견적 작성일</label>
+                                <input type="text" id="modalCreateDt" class="form-control" readonly>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label fw-bold text-danger">메모*</label>
+                                <input type="text" id="modalMemo" class="form-control text-danger" readonly>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                <label class="form-label fw-bold">수정자</label>
+                                <input type="text" id="modalName" class="form-control" readonly>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label fw-bold">상태</label>
+                                <input type="text" id="modalStatus" class="form-control" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fw.core.mapper.db1.bo.BoProjectMapper">
+
+    <select id="selectProjectList" parameterType="BoProjectDTO" resultType="BoProjectDTO">
+        /* com.fw.core.mapper.db1.bo.BoProjectMapper.selectProjectList, 프로젝트 리스트, 25.03.25, WSH, BoProjectMapper.xml */
+        SELECT tp.project_id
+             , tp.title
+             , tp.summary
+             , tp.content
+             , tp.budget
+             , date_format(tp.close_dt, '%Y-%m-%d') AS closeDt
+             , tp.view_count
+             , date_format(tp.create_dt, '%Y-%m-%d') AS createDt
+             , tp.status
+             , tu.name
+             , tp.ad_date
+             , CASE WHEN tp.ad_date = '1TIME' THEN '일회성'
+                    WHEN tp.ad_date = '24H' THEN '24시간'
+                    WHEN tp.ad_date = '1WEEK' THEN '1주일'
+                    WHEN tp.ad_date = '1MONTH' THEN '1개월'
+                    WHEN tp.ad_date = 'ETC' THEN '기타(직접입력)' END AS adDateName
+             , tp.ad_date_etc
+             , tp.file_id
+             , tf.file_save_nm
+             , tf.file_url
+        FROM T_PROJECT tp
+    INNER JOIN T_USER tu ON tu.user_id = tp.user_id
+    LEFT JOIN T_FILE tf ON tf.file_id = tp.file_id
+        WHERE tp.del_yn = 'N'
+        ORDER BY tp.create_dt DESC
+        <include refid="common.paging" />
+    </select>
+
+    <select id="selectProjectListCnt" parameterType="BoProjectDTO" resultType="int">
+        /* com.fw.core.mapper.db1.bo.BoProjectMapper.selectProjectListCnt, 프로젝트 리스트 개수, 25.03.25, WSH, BoProjectMapper.xml */
+        SELECT COUNT(1)
+        FROM T_PROJECT tp
+    INNER JOIN T_USER tu ON tu.user_id = tp.user_id
+        WHERE tp.del_yn = 'N'
+    </select>
+
+    <select id="selectProjectDetail" parameterType="String" resultType="BoProjectDTO">
+        /* com.fw.core.mapper.db1.bo.BoProjectMapper.selectProjectList, 프로젝트 리스트, 25.03.25, WSH, BoProjectMapper.xml */
+        SELECT tp.project_id
+             , tp.title
+             , tp.summary
+             , tp.content
+             , tp.budget
+             , date_format(tp.close_dt, '%Y-%m-%d') AS closeDt
+             , tp.view_count
+             , date_format(tp.create_dt, '%Y-%m-%d') AS createDt
+             , tp.status
+             , tu.name
+             , tp.ad_date
+             , CASE WHEN tp.ad_date = '1TIME' THEN '일회성'
+                    WHEN tp.ad_date = '24H' THEN '24시간'
+                    WHEN tp.ad_date = '1WEEK' THEN '1주일'
+                    WHEN tp.ad_date = '1MONTH' THEN '1개월'
+                    WHEN tp.ad_date = 'ETC' THEN '기타(직접입력)' END AS adDateName
+             , tp.ad_date_etc
+             , tp.service_request
+             , tp.task_request
+             , tp.file_id
+             , tp.user_intro
+             , te.platform
+             , te.platform_detail
+             , te.ad_type
+             , tf.file_save_nm
+             , tf.file_url
+        FROM T_PROJECT tp
+    INNER JOIN T_USER tu ON tu.user_id = tp.user_id
+    LEFT JOIN T_ESTIMATE te ON te.estimate_id = tp.estimate_id
+    LEFT JOIN T_FILE tf ON tf.file_id = tp.file_id
+        WHERE tp.project_id = #{projectId}
+    </select>
+    
+    <select id="selectApplyPartnerList" parameterType="BoProjectDTO" resultType="BoProjectDTO">
+        /* com.fw.core.mapper.db1.bo.BoProjectMapper.selectApplyPartnerList, 지원한 파트너스 리스트 조회, 25.03.25, WSH, BoProjectMapper.xml */
+        SELECT tu.name
+        FROM T_PARTNERS_AD tpa
+    INNER JOIN T_USER tu ON tu.user_id = tpa.partners_id
+        WHERE tpa.project_id = #{projectId}
+    </select>
+
+    <update id="updateProject" parameterType="BoProjectDTO">
+        /* com.fw.core.mapper.db1.bo.BoProjectMapper.updateProject, 프로젝트 수정, 25.03.25, WSH, BoProjectMapper.xml */
+        UPDATE T_PROJECT
+        SET status = #{status}
+          , title = #{title}
+          , summary = #{summary}
+          , budget = #{budget}
+          , ad_date = #{adDate}
+          , ad_date_etc = #{adDateEtc}
+          , close_dt = #{closeDt}
+          , view_count = #{viewCount}
+          , user_intro = #{userIntro}
+          , content = #{content}
+          , service_request = #{serviceRequest}
+          , task_request = #{taskRequest}
+          , file_id = #{fileId}
+          , update_id = #{adminSession.adminSeq}
+          , update_dt = NOW()
+        WHERE project_id = #{projectId}
+    </update>
+
+    <select id="selectUserList" parameterType="BoProjectDTO" resultType="BoProjectDTO">
+        /* com.fw.core.mapper.db1.bo.BoProjectMapper.selectUserList, 고객 리스트 조회, 25.03.25, WSH, BoProjectMapper.xml */
+        SELECT user_id
+             , name
+             , login_id
+        FROM T_USER
+        WHERE user_type = 'PERSONAL' OR user_type = 'BUSINESS' AND delete_yn = 'N' AND blacklist_yn = 'N'
+    </select>
+
+    <insert id="insertProject" parameterType="BoProjectDTO">
+        /* com.fw.core.mapper.db1.bo.BoProjectMapper.insertProject, 파트너스 등록, 25.03.25, WSH, BoProjectMapper.xml */
+        INSERT INTO T_PROJECT
+                (
+                 user_id
+                 , user_intro
+                 , estimate_id
+                 , title
+                 , summary
+                 , content
+                 , status
+                 , budget
+                 , ad_date
+                 , ad_date_etc
+                 , close_dt
+                 , view_count
+                 , service_request
+                 , task_request
+                 , file_id
+                 , del_yn
+                 , create_id
+                 , create_dt
+                ) VALUES (
+                #{userId}
+                 , #{userIntro}
+                 , #{estimateId}
+                 , #{title}
+                 , #{summary}
+                 , #{content}
+                 , 'OPEN'
+                 , #{budget}
+                 , #{adDate}
+                 , #{adDateEtc}
+                 , #{closeDt}
+                 , #{viewCount}
+                 , #{serviceRequest}
+                 , #{taskRequest}
+                 , #{fileId}
+                 , 'N'
+                 , #{adminSession.adminSeq}
+                 , NOW()
+                 )
+    </insert>
+
+    <update id="deleteProject" parameterType="BoProjectDTO">
+        /* com.fw.core.mapper.db1.bo.BoProjectMapper.deleteProject, 프로젝트 삭제, 25.03.25, WSH, BoProjectMapper.xml */
+        UPDATE T_PROJECT
+        SET del_yn = 'Y'
+          , update_id = #{adminSession.adminSeq}
+          , update_dt = NOW()
+        WHERE project_id = #{projectId}
+    </update>
+
+    <select id="selectEstimateList" parameterType="BoProjectDTO" resultType="BoProjectDTO">
+        /* com.fw.core.mapper.db1.bo.BoProjectMapper.selectEstimateList, 견적 리스트 조회, 25.04.11, WSH, BoProjectMapper.xml */
+        SELECT te.estimate_id
+             , te.user_id
+             , te.platform
+             , te.platform_detail
+             , te.ad_type
+             , tu.name
+        FROM T_ESTIMATE te
+    LEFT JOIN T_USER tu ON tu.user_id = te.user_id
+    LEFT JOIN T_PROJECT tp ON te.estimate_id = tp.estimate_id
+        WHERE te.status = 'SUCCESS'
+          AND te.user_id = #{userId}
+          AND tp.estimate_id IS NULL
+    </select>
+
+
+    <select id="selectEstimateInfo" parameterType="BoProjectDTO" resultType="BoProjectDTO">
+        /* com.fw.core.mapper.db1.bo.BoProjectMapper.selectEstimateInfo, 견적 상세 조회, 25.04.11, WSH, BoProjectMapper.xml */
+        SELECT te.estimate_id
+             , te.user_id
+             , te.platform
+             , te.platform_detail
+             , te.ad_type
+             , tu.name
+        FROM T_ESTIMATE te
+    LEFT JOIN T_USER tu ON tu.user_id = te.user_id
+        WHERE te.status = 'SUCCESS' AND te.user_id = #{userId}
+    </select>
+
+</mapper>

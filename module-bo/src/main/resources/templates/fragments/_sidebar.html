@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="common">
+    <aside id="sidebar">
+        <div class="sidebar-logo hstack">
+            <a class="img" href="/bo/">
+                <img alt="" src="/static/images/logo.svg" style="width:200px;"/>
+            </a>
+        </div>
+        <div class="sidebar-top">
+            <div class="hstack">
+                <div class="navbar-user-info">
+                    <a href="#none">메뉴</a>
+                </div>
+            </div>
+            <button aria-label="전체메뉴 닫기" class="btn-allmenu-close" type="button"></button>
+        </div>
+        <nav class="sidebar-nav" id="sidevarNav">
+            <ul>
+                <li class="sidebar-item" th:each="item : ${session.MENU_AUTH}" th:if="${item.menuLevel eq '1'}">
+                    <th:block th:if="${item.menuCd eq 'MENU001001000000'}">
+                        <a class="sidebar-link" th:href="${item.menuUrl}" >
+                            <i class="icon-side-01"></i>
+                            <span th:text="${item.menuNm}"></span>
+                        </a>
+                    </th:block>
+                    <th:block th:unless="${item.menuCd eq 'MENU001001000000'}">
+                        <th:block th:unless="${item.menuUrl eq null}">
+                            <a th:href="${item.menuUrl}" class="sidebar-link">
+                                <i th:classappend="${item.menuIconCd}"></i>
+                                <span th:text="${item.menuNm}">대시보드</span>
+                            </a>
+                        </th:block>
+                        <th:block th:if="${item.menuUrl eq null}">
+                            <a href="javascript:void(0)" data-bs-toggle="collapse" class="sidebar-link accordion"
+                               th:data-bs-target="${'#' + item.menuCd}"
+                               th:aria-expanded="${item.menuCd eq activeUpperMenuCd ?'true':'false'}"
+                               th:onclick="toggleAccordion([[${item.menuCd}]])">
+                                <i th:classappend="${item.menuIconCd}"></i>
+                                <span th:text="${item.menuNm}">대시보드</span>
+                            </a>
+                        </th:block>
+                    </th:block>
+                    <div th:id="${item.menuCd}" data-bs-parent="#sidevarNav" class="accordion-collapse collapse " style=""
+                         th:classappend="${item.menuCd eq activeUpperMenuCd ?'show':''}">
+                        <ul class="depth2">
+                            <th:block th:each="item2 : ${session.MENU_AUTH}">
+                                <th:block th:if="${item2.menuLevel eq '2' and item.menuCd eq item2.upperMenuCd}">
+                                    <li class="sidebar-item" th:id="${item2.menuCd}">
+                                        <a th:classappend="${#strings.startsWith(activeMenuURI, item2.menuUrl) ? 'sidebar-link active' : 'sidebar-link'}"
+                                           th:href="${item2.menuUrl}">
+                                            <span th:text="${item2.menuNm}"></span>
+                                        </a>
+                                    </li>
+                                </th:block>
+                            </th:block>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+    <script>
+        function toggleAccordion(menuCd) {
+            const accordionElement = document.getElementById(menuCd);
+            accordionElement.classList.toggle('show');
+        }
+
+    </script>
+</th:block>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/mainLayout}">
+<div layout:fragment="contents" th:remove="tag">
+    <div class="page-top">
+        <h1 class="page-title">관리자 상세</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">시스템 관리</li>
+                <li class="breadcrumb-item">관리자 관리</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive-xxl">
+                <input type="hidden" name="adminSeq" th:value="${detail.adminSeq}" />
+                <table class="table table-bordered mb-0">
+                    <colgroup>
+                        <col style="width: 15%"/>
+                        <col style="width: 35%"/>
+                        <col style="width: 15%"/>
+                        <col style="width: 35%"/>
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                        <th class="text-center">관리자 그룹</th>
+                        <td>
+                            <p th:text="${detail.groupNm}">관리자/파트너스</p>
+                        </td>
+                        <th class="text-center">회원NO</th>
+                        <td>
+                            <p th:text="${detail.adminSeq}">1</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-center">관리자 이름</th>
+                        <td colspan="3">
+                            <p th:text="${detail.adminNm}">홍길동</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-center">관리자 이메일</th>
+                        <td colspan="3">
+                            <p th:text="${detail.email}">SOFTPUZZLE@SOFTPUZZE.CO.KR</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-center">관리자 아이디​</th>
+                        <td colspan="3">
+                            <p th:text="${detail.adminId}">SOFTPUZZLE</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-center">관리자 상태​</th>
+                        <td colspan="3">
+                            <p th:text="${detail.adminStatusNm}">SOFTPUZZLE</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-center">가입일​</th>
+                        <td colspan="3">
+                            <p th:text="${detail.createDt}">YYYY.MM.DD HH:MM</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-center">계정 사용 시작일​</th>
+                        <td colspan="3">
+                            <p th:text="${#strings.isEmpty(detail.useStartDt) ? '-' : detail.useStartDt}">YYYY.MM.DD HH:MM</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-center">계정 사용 만료일​</th>
+                        <td colspan="3">
+                            <p th:text="${#strings.isEmpty(detail.useEndDt) ? '-' : detail.useEndDt}">YYYY.MM.DD HH:MM</p>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="hstack gap-2 justify-content-end mt-4">
+        <button type="button" class="btn btn-secondary" style="width: 100px" onclick="history.back()">뒤로</button>
+        <button type="button" class="btn btn-dark" style="width: 100px" data-role="modify">수정</button>
+        <button type="button" class="btn btn-outline-dark" style="width: 100px" data-role="delete">삭제</button>
+    </div>
+</div>
+</html>

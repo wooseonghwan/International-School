@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/mainLayout}">
+<div layout:fragment="contents" th:remove="tag">
+    <div class="filter d-none d-lg-block ">
+        <div class="hstack justify-content-between gap-4">
+            <div class="page-top mb-lg-1">
+                <h1 class="page-title">고객게시판</h1>
+            </div>
+        </div>
+    </div>
+    <form name="searchForm">
+        <input type="hidden" name="page" th:value="${searchInfo.page}"/>
+        <!-- filter -->
+        <div class="filter" style="margin-top: 0.7rem;">
+            <div class="row align-items-center">
+                <div class="col-12 col-lg d-flex flex-wrap gap-4 align-items-center">
+                    <div class="col-12 col-lg d-flex flex-wrap gap-4">
+                        <div class="gap-1 hstack">
+                            <select name="searchType" class="form-select">
+                                <option value="TITLE" th:selected="${searchInfo.searchType == 'TITLE'}">제목</option>
+                                <option value="CONTENT" th:selected="${searchInfo.searchType == 'CONTENT'}">상세내용</option>
+                            </select>
+                        </div>
+                        <div class="form-field search">
+                            <div class="input-form">
+                                <i class="icon-search"></i>
+                                <input type="text" class="form-control search-form" name="searchValue" th:value="${searchInfo.searchValue}">
+                                <button type="button" class="clear-button"><i class="icon-input-close"></i></button>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <button type="button" class="btn btn-dark" data-role="btn-search-form" style="min-width: 80px">검색</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <!-- //filter -->
+    <!-- table -->
+    <div class="scroll-layout">
+        <div class="scroll-content">
+            <div class="row align-items-center justify-content-between mb-3">
+                <div class="col-auto">Total <strong th:text="${searchInfo.totalCount}">-</strong></div>
+            </div>
+            <div class="list-table">
+                <table class="table table-hover">
+                    <colgroup>
+                        <col style="width:5%">
+                        <col style="width:40%">
+                        <col style="width:20%">
+                        <col style="width:20%">
+                        <col style="width:15%">
+                    </colgroup>
+                    <thead>
+                    <tr class="cursor-pointer">
+                        <th class="text-center">번호</th>
+                        <th class="text-center">제목</th>
+                        <th class="text-center">작성자</th>
+                        <th class="text-center">등록일</th>
+                        <th class="text-center">조회수</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <th:block th:if="${#lists.isEmpty(qnaList)}">
+                        <tr>
+                            <td colspan="6" class="text-center">내역이 없습니다.</td>
+                        </tr>
+                    </th:block>
+                    <tr th:each="qna : ${qnaList}" th:value="${qna.qnaId}" th:data-seq="${qna.qnaId}"
+                        class="clickable-row">
+                        <td class="text-center" th:text="${qna.rowNum}"></td>
+                        <td class="text-center" th:text="${qna.title}"></td>
+                        <td class="text-center" th:text="${qna.custName}"></td>
+                        <td class="text-center" th:text="${qna.createDt}"></td>
+                        <td class="text-center" th:text="${qna.viewCnt}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="d-flex justify-content-center mt-5">
+                <th:block th:replace="fragments/paging :: paging_Fragment"/>
+            </div>
+        </div>
+    </div>
+    <!-- //table -->
+</div>
+</html>

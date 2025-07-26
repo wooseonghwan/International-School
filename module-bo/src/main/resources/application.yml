@@ -1,0 +1,111 @@
+spring:
+  profiles:
+    active: local
+    include:
+      - app
+      - db
+      - file
+  mvc:
+    throw-exception-if-no-handler-found: true
+    dispatch-options-request: false
+  config:
+    messages:
+      basename: messages/bo/message
+      encoding: UTF-8
+  web:
+    resources:
+      add-mappings: false
+  thymeleaf:
+    cache: false
+    check-template-location: true
+    prefix: classpath:/templates/
+    suffix: .html
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: softpuzzle0410@gmail.com
+    password: sahb lwtq ppdf ojri
+    properties:
+      mail:
+        transport:
+          protocol: smtp
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          ssl:
+            protocols: TLSv1.2
+            trust: smtp.gmail.com
+            enable: false
+---
+# local
+spring:
+  config:
+    activate:
+      on-profile: local
+server:
+  port: 8080
+  servlet:
+    session:
+      cookie:
+        name: BO-JSESSIONID
+bo:
+  session:
+    key-name: BO_SESSION_INFO
+file:
+  upload:
+    path: /www/upload/
+    editor_path: C:/upload/editor
+service:
+  upload:
+    path: C:/www/upload
+api:
+  url: http://localhost:21411
+---
+# dev
+spring:
+  config:
+    activate:
+      on-profile: dev
+server:
+  port: 8080
+  servlet:
+    session:
+      cookie:
+        name: BO-JSESSIONID
+bo:
+  session:
+    key-name: BO_SESSION_INFO
+file:
+  upload:
+    path: /www/uploadFiles/marking/
+    editor_path: /www/uploadFiles/marking/
+service:
+  upload:
+    path: /www/uploadFiles/marking/
+api:
+  url: https://core-smanager.devsp.kr
+---
+# prod
+spring:
+  config:
+    activate:
+      on-profile: real
+server:
+  port: 80
+  servlet:
+    session:
+      cookie:
+        name: BO-JSESSIONID
+bo:
+  session:
+    key-name: BO_SESSION_INFO
+file:
+  upload:
+    path: /www/sites/softpuzzle.co.kr/base-modules/upload/module1
+    editor_path: /www/sites/softpuzzle.co.kr/base-modules/upload/module1
+service:
+  upload:
+    path: /upload
+api:
+  url: https://core-smanager.devsp.kr

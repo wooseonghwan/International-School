@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/mainLayout}">
+<div layout:fragment="contents" th:remove="tag">
+    <div class="filter d-none d-lg-block ">
+        <div class="hstack justify-content-between gap-4">
+            <div class="page-top mb-lg-1">
+                <h1 class="page-title">카테고리 리스트</h1>
+            </div>
+        </div>
+    </div>
+    <form name="searchForm">
+        <input type="hidden" name="page" th:value="${searchInfo.page}"/>
+        <!-- filter -->
+        <div class="filter">
+            <div class="row align-items-center">
+                <div class="col-12 col-lg d-flex flex-wrap gap-4 align-items-center">
+                    <div class="gap-1 hstack">
+                        <div class="form-field search" style="max-width: 220px;">
+                            <div class="input-form">
+                                <i class="icon-search"></i>
+                                <input type="text" class="form-control search-form" name="searchText" th:value="${searchInfo.searchText}" placeholder="카테고리명 검색">
+                                <button type="button" class="clear-button"><i class="icon-input-close"></i></button>
+                            </div>
+                        </div>
+                        <div class="gap-1 hstack">
+                            <button type="button" class="btn btn-dark" data-role="btn-search-form"
+                                    style="min-width: 80px">검색
+                            </button>
+                            <button type="button" class="btn btn-dark" data-role="reset"
+                                    style="min-width: 80px">초기화
+                            </button>
+                        </div>
+                    </div>
+                    <!--<div class="col-auto">
+                        <div class="btn-calendar" role="group" style="min-width: 80px">
+                            <button aria-label="이전달" class="" type="button" onclick="changeDate(-1)">
+                                <i class="icon-calendar-prev day"></i>
+                            </button>
+                            <p class="date" name="searchDate" id="displayDate" th:text="${searchInfo.searchDate}"></p>
+                            <input type="hidden" name="searchDate" id="searchDateInput" th:value="${searchInfo.searchDate}">
+                            <button aria-label="다음달" class="" type="button" onclick="changeDate(1)">
+                                <i class="icon-calendar-next day"></i>
+                            </button>
+                        </div>
+                    </div>-->
+                    <div class="col-auto ms-0 ms-lg-auto" style="margin-left: auto">
+                        <div class="gap-1 hstack">
+                            <button type="button" class="btn btn-dark" data-role="insert-modal-open"
+                                    style="min-width: 80px">등록
+                            </button>
+                            <!--<button type="button" class="btn btn-dark" data-role="excelDownload"
+                                    style="min-width: 80px">엑셀 다운로드
+                            </button>-->
+                        </div>
+                    </div>
+                </div>
+                <div class="col-auto ms-0 ms-lg-auto" style="margin-left: auto">
+                    <div class="gap-1 hstack">
+                        <select name="rowSize" class="form-select">
+                            <option value="10" th:selected="${searchInfo.rowSize == 10}">10개</option>
+                            <option value="30" th:selected="${searchInfo.rowSize == 30}">30개</option>
+                            <option value="50" th:selected="${searchInfo.rowSize == 50}">50개</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <!-- //filter -->
+    <!-- table -->
+    <div class="scroll-layout">
+        <div class="scroll-content">
+            <div class="row align-items-center justify-content-between mb-3">
+                <div class="col-auto">Total <strong th:text="${searchInfo.totalCount}">-</strong></div>
+                <!--<div class="col-auto">
+                    <div class="hstack gap-2">
+                        <select class="form-select form-select-sm" data-role="select-row">
+                            <option value="10" th:selected="${searchInfo.rowSize} eq '10'">10개</option>
+                            <option value="30" th:selected="${searchInfo.rowSize} eq '30'">30개</option>
+                            <option value="50" th:selected="${searchInfo.rowSize} eq '50'">50개</option>
+                        </select>
+                    </div>
+                </div>-->
+            </div>
+            <div class="list-table">
+                <table class="table table-hover">
+                    <colgroup>
+                        <col width="10%">
+                        <col width="30%">
+                        <col width="30%">
+                        <col width="20%">
+                        <col width="10%">
+                    </colgroup>
+                    <thead>
+                    <tr class="cursor-pointer">
+                        <th class="text-center">No</th>
+                        <th class="text-center">사용여부</th>
+                        <th class="text-center">카테고리명</th>
+                        <th class="text-center">서브 카테고리명</th>
+                        <th class="text-center">등록일자</th>
+                        <th class="text-center">상세</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <th:block th:if="${#lists.isEmpty(categoryList)}">
+                        <tr>
+                            <td colspan="6" class="text-center">내역이 없습니다.</td>
+                        </tr>
+                    </th:block>
+                    <tr th:each="list : ${categoryList}" class="clickable-row">
+                        <td class="text-center" th:text="${list.rowNum}"></td>
+                        <td class="text-center" th:text="${list.useYnNm}"></td>
+                        <td class="text-center" th:text="${list.categoryName}"></td>
+                        <td class="text-center" th:text="${list.subCategoryName}"></td>
+                        <td class="text-center" th:text="${list.createDt}"></td>
+                        <td class="text-center">
+                            <button type="button" class="btn btn-dark" data-role="detail-modal-open" th:value="${list.categoryId}" th:data-seq="${list.categoryId}">
+                                상세/수정
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="d-flex justify-content-center mt-5">
+                <th:block th:replace="fragments/paging :: paging_Fragment"/>
+            </div>
+        </div>
+    </div>
+    <!-- 카테고리 등록 모달 -->
+    <div class="modal" tabindex="-1" id="modal-category">
+        <div class="modal-dialog modal-dialog-centered modal-md modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">카테고리 등록</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" data-role="close"></button>
+                </div>
+                <div class="modal-body pt-0 pb-0">
+                    <table class="table table-bordered">
+                        <colgroup>
+                            <col style="width: 50%" />
+                            <col style="width: 50%" />
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <th class="text-center">사용여부</th>
+                                <td>
+                                    <select class="form-select" id="useYn">
+                                        <option value="Y">활성화</option>
+                                        <option value="N">비활성화</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-center">카테고리명</th>
+                                <td>
+                                    <input type="text" id="categoryName" name="categoryName" class="form-control" placeholder="" value="" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-center">서브 카테고리명</th>
+                                <td>
+                                    <input type="text" id="subCategoryName" name="subCategoryName" class="form-control" placeholder="" value="" />
+                                </td>
+                            </tr>
+<!--                            <tr>-->
+<!--                                <th class="text-center">대표 이미지</th>-->
+<!--                                <td colspan="3">-->
+<!--                                    <input type="file" id="banner-upload" multiple="multiple" name="file" style="display: none;">-->
+<!--                                    <label for="banner-upload" class="btn btn-primary">파일 선택</label>-->
+<!--                                    <span id="file-chosen">선택된 파일 없음</span>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-role="insert" class="btn btn-lg btn-primary" data-bs-dismiss="modal">등록</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 상세/수정 모달 -->
+    <div class="modal" tabindex="-1" id="detail-modal-category">
+        <div class="modal-dialog modal-dialog-centered modal-md modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">카테고리 상세/수정</h5>
+                    <input type="hidden" name="categoryId" id="categoryId">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-btn-info"></button>
+                </div>
+                <div class="modal-body pt-0 pb-0">
+                    <table class="table table-bordered">
+                        <colgroup>
+                            <col style="width: 50%" />
+                            <col style="width: 50%" />
+                        </colgroup>
+                        <tbody>
+                        <tr>
+                            <th class="text-center">사용여부</th>
+                            <td>
+                                <select class="form-select" name="useYn">
+                                    <option value="Y">활성화</option>
+                                    <option value="N">비활성화</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">카테고리명</th>
+                            <td><input type="text" name="categoryName" class="form-control" placeholder="" value="" /></td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">서브 카테고리명</th>
+                            <td><input type="text" name="subCategoryName" class="form-control" placeholder="" value="" /></td>
+                        </tr>
+<!--                        <tr>-->
+<!--                            <th class="text-center">대표 이미지</th>-->
+<!--                            <td colspan="3">-->
+<!--                                <div>-->
+<!--                                    <th:block th:unless="${#lists.isEmpty(file)}" th:each="item: ${file}">-->
+<!--                                        <a th:name="${item.id}" th:text="${item.originName}" th:href="${item.path}" target="_blank" class="mr-1 registered-file"></a>-->
+<!--                                        <button type="button" class="btn btn-sm btn-danger" data-role="fileDelete" th:name="${item.id}">파일 삭제</button>-->
+<!--                                    </th:block>-->
+<!--                                </div>-->
+<!--                                <div class="hstack gap-3">-->
+<!--                                    <button type="button" class="btn btn-outline-dark" data-role="fileUpload">파일첨부</button>-->
+<!--                                    <input type="file" class="form-control" id="fileUpload" multiple="multiple" style="display: none;"/>-->
+<!--                                    <div id="fileUpload-div"></div>-->
+<!--                                </div>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-role="update" class="btn btn-lg btn-outline-primary" data-bs-dismiss="modal">수정</button>
+                    <button type="button" data-role="delete" class="btn btn-lg btn-outline-danger" data-bs-dismiss="modal" style="margin-left: 5px;">삭제</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- //table -->
+</div>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/mainLayout}">
+<div layout:fragment="contents" th:remove="tag">
+    <div id="container">
+        <div class="page-top">
+            <h1 class="page-title">결제 상세</h1>
+        </div>
+        <form name="updatePayment">
+            <input type="hidden" id="paymentId" name="paymentId" th:value="${detail.paymentId}"/>
+            <!--<input type="hidden" id="fileSeq" name="fileSeq" th:value="${detail.fileSeq}"/>-->
+            <input type="hidden" name="fileChangeFlag" value="N"/>
+            <div class="detail-table mt-6">
+                <table class="table table-bordered">
+                    <colgroup>
+                        <col style="width: 10%"/>
+                        <col/>
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                        <th>고객명</th>
+                        <td>
+                            <input type="text" class="form-control" name="productName" th:value="${detail.name}" readonly/>
+                        </td>
+                    </tr>
+                    <!--<tr>
+                        <th>품목명</th>
+                        <th:block th:if="${detail.productType == 'A'}">
+                            <td>
+                                <input type="text" class="form-control" name="productName" th:value="${'[' + detail.productTypeNm + ']' + ' ' + detail.productName}" readonly/>
+                            </td>
+                        </th:block>
+                        <th:block th:if="${detail.productType == 'P'}">
+                            <td>
+                                <input type="text" class="form-control" name="packageName" th:value="${'[' + detail.productTypeNm + ']' + ' ' + detail.packageName}" readonly/>
+                            </td>
+                        </th:block>
+                        <th:block th:if="${detail.productType == 'S'}">
+                            <td>
+                                <input type="text" class="form-control" name="productName" th:value="${'[' + detail.productTypeNm + ']' + ' ' + detail.productName}" readonly/>
+                            </td>
+                        </th:block>
+                    </tr>-->
+                    <tr>
+                        <th>결제금액</th>
+                        <td>
+                            <input type="text" class="form-control" name="productName" th:value="${#numbers.formatInteger(detail.price, 0, 'COMMA')}" readonly/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>결제상태</th>
+                        <td>
+                            <div class="select-wrap">
+                                <select class="form-select" name="status" id="status">
+                                    <option value="SUCCESS" th:selected="${detail.status eq 'SUCCESS'}">결제완료</option>
+                                    <option value="NO-SUCCESS" th:selected="${detail.status eq 'NO-SUCCESS'}">결제 미확인</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>결제수단</th>
+                        <td>
+                            <input type="text" class="form-control" name="price" th:value="${detail.payMethodNm}" readonly/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>결제일</th>
+                        <td>
+                            <input type="text" class="form-control" name="price" th:value="${detail.paymentDt}" readonly/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>수정일</th>
+                        <td>
+                            <input type="text" class="form-control" name="price" th:value="${detail.updateDt}" readonly/>
+                        </td>
+                    </tr>
+                    <!-- TODO:: 계산서, 계약서, 견적서 처리 -->
+                    <tr>
+                        <th>계산서</th>
+                        <td>
+                            <button type="button" class="btn btn-dark" onclick="openBillPopup()">조회</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>계약서</th>
+                        <td>
+                            <button type="button" class="btn btn-dark" onclick="openContractPopup()">조회</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>견적서</th>
+                        <td>
+                            <button type="button" class="btn btn-dark" onclick="openEstimatePopup()">조회</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </form>
+
+        <div class="row align-items-center justify-content-between pt-6">
+            <div class="col-auto"></div>
+            <div class="col-auto">
+                <div class="hstack gap-2">
+                    <button type="button" class="btn btn-dark" data-role="list">목록</button>
+                    <button type="button" class="btn btn-dark" data-role="save">저장</button>
+                </div>
+            </div>
+        </div>
+        <!-- //container -->
+    </div>
+</div>
+</html>

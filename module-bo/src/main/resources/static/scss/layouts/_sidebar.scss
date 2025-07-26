@@ -1,0 +1,136 @@
+.sidebar-brand {
+  width: var(--sidebar-width);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px 30px;
+  height: var(--navbar-height);
+  flex-shrink: 0;
+  margin-bottom: 30px;
+}
+
+.sidebar-title {
+  display: flex;
+  align-items: center;
+  padding: 16px 40px;
+  margin-bottom: 10px;
+  flex-shrink: 0;
+  .title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    flex-grow: 1;
+  }
+}
+
+.sidebar-nav {
+  flex-grow: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  ul {
+    padding: 0;
+    list-style: none;
+  }
+  > ul {
+    > .sidebar-item {
+      &:not(:first-child) {
+        border-top: 1px solid #40516c;
+      }
+      > .sidebar-link {
+        //1뎁스
+        color: #fff;
+        display: flex;
+        font-weight: 500;
+        font-size: 16px;
+        padding: 16px var(--container-padding-x);
+        text-decoration: none;
+        position: relative;
+        span {
+          flex-grow: 1;
+        }
+        &:hover {
+          background: #334158;
+        }
+        &[data-bs-toggle] {
+          &::after {
+            content: "expand_more";
+            display: block;
+            transition: 0.15s;
+            font-family: "Material Icons Outlined";
+            font-size: 24px;
+            display: inline-block;
+            line-height: 1;
+          }
+        }
+        &[aria-expanded="true"] {
+          &::after {
+            transform: rotate(180deg);
+          }
+        }
+        &.active {
+          background: #40516c;
+          &::before {
+            content: "";
+            width: 4px;
+            height: 100%;
+            background-color: #fff;
+            position: absolute;
+            left: 0;
+            top: 0;
+          }
+          & ~ ul {
+            background: #40516c;
+          }
+        }
+      }
+      > ul {
+        padding-bottom: 6px;
+      }
+      .sidebar-item .sidebar-link {
+        //2뎁스
+        color: #ccc;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 10px 40px;
+        text-decoration: none;
+        &::before {
+          content: "";
+          width: 4px;
+          height: 4px;
+          border-radius: 50%;
+          background: #ccc;
+        }
+        &:hover,
+        &.active {
+          color: #fff;
+          &::before {
+            background: #fff;
+          }
+        }
+        &.active {
+          text-decoration: underline;
+        }
+      }
+      .three-depth {
+        //3뎁스
+        background-color: #4051;
+        .links {
+          display: block;
+          padding: 7px 60px;
+          color: #fff;
+          &:hover,
+          &.active {
+            color: #fff;
+            &::before {
+              background: #fff;
+            }
+          }
+          &.active {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+:root{
+  --container-padding-x: 1rem;
+  --navbar-height: 50px;
+  --navbar-bg: #fff;
+  --sidebar-width: 260px;
+  --sidebar-bg: #1a2942;
+  @include media-breakpoint-up(md){
+    --container-padding-x: 1.5rem;
+  }
+  @include media-breakpoint-up(lg){
+    --container-padding-x: 2rem;
+    --navbar-height: 70px;
+  }
+  @include media-breakpoint-up(xl){
+    --sidebar-width: 280px;
+  }
+}
+

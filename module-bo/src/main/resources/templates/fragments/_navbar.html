@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="common">
+    <nav id="navbar" class="d-none d-lg-block">
+        <div class="d-flex align-items-center h-100">
+            <div class="navbar-brand">
+                <nav>
+                    <th:block th:unless="${menuNm.upper eq null}">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item" th:text="${menuNm.upper}">ㅋㅌㅋㅌㅊ</li>
+                            <th:block th:unless="${activeUpperMenuCd eq 'MENU0000000000000'}">
+                                <li class="breadcrumb-item" aria-current="page" th:text="${menuNm.current}">ㅁㄴㅇㄹ</li>
+                                <th:block th:unless="${menuNm.detail eq null}">
+                                    <li class="breadcrumb-item" th:text="${menuNm.detail}">ㅁㄴㅇㄹ</li>
+                                </th:block>
+                            </th:block>
+                        </ol>
+                    </th:block>
+                </nav>
+            </div>
+            <div class="hstack gap-3 ms-auto">
+                <div class="profile-img">
+                    <a>
+                        <img src="/static/images/profile-img.svg" alt="프로필 이미지" />
+                    </a>
+                </div>
+                <div class="navbar-user-info">
+                    <a>
+                        <span th:text="${sessionInfo.adminNm + '('}">주왕산관광호텔(</span>
+                        <span id="getHeaderId" th:text="${sessionInfo.adminId}">메일</span>
+                        <span>)</span>
+                    </a>
+                    <p class="email" th:text="${sessionInfo.email}">misssoma@gmail.com</p>
+                </div>
+                <button type="button" class="btn-logout" aria-label="로그아웃" onclick="document.location.href='/bo/logout'">
+                <!-- <button type="button" class="btn-allmenu" aria-label="전체메뉴">
+                  <span class="material-symbols-outlined">
+                    menu
+                  </span>slid
+                </button> -->
+            </div>
+        </div>
+    </nav>
+</th:block>
+</html>

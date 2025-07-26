@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/html"
+      layout:decorate="~{layouts/mainLayout}">
+<div layout:fragment="contents" th:remove="tag">
+    <div id="container">
+        <div class="page-top">
+            <h1 class="page-title">광고 내역 상세</h1>
+        </div>
+        <form name="updateAdProductHist">
+            <input type="hidden" id="productRequestId" name="productRequestId" th:value="${detail.productRequestId}"/>
+            <input type="hidden" id="productId" name="productId" th:value="${detail.productId}"/>
+            <input type="hidden" id="userId" name="userId" th:value="${detail.userId}"/>
+<!--            <input type="hidden" id="fileSeq" name="fileSeq" th:value="${detail.fileSeq}"/>-->
+<!--            <input type="hidden" name="fileChangeFlag" value="N"/>-->
+            <div class="detail-table mt-6">
+                <table class="table table-bordered">
+                    <colgroup>
+                        <col style="width: 10%"/>
+                        <col/>
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                        <th>고객명</th>
+                        <td>
+                            <input type="text" class="form-control" name="name" th:value="${detail.name}" readonly/>
+                        </td>
+                        <th>아이디</th>
+                        <td>
+                            <input type="text" class="form-control" name="loginId" th:value="${detail.loginId}" readonly/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>전화번호</th>
+                        <td>
+                            <input type="text" class="form-control" name="phone" th:value="${detail.phone}" readonly/>
+                        </td>
+                        <th>이메일</th>
+                        <td>
+                            <input type="text" class="form-control" name="email" th:value="${detail.email}" readonly/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>광고상품명</th>
+                        <td>
+                            <input type="text" class="form-control" name="title" th:value="${detail.title}"
+                                   readonly/>
+                        </td>
+                        <th>가격</th>
+                        <td>
+                            <input type="text" class="form-control" name="amount" th:value="${detail.amount}" readonly/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>설명</th>
+                        <td>
+                            <textarea type="text" class="form-control" name="content" th:text="${detail.content}" readonly></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>상태</th>
+                        <td>
+                            <div class="select-wrap">
+                                <select class="form-select " name="status" id="status">
+                                    <option value="PENDING" th:selected="${detail.status eq 'PENDING'}">상품의뢰</option>
+                                    <option value="SUCCESS" th:selected="${detail.status eq 'SUCCESS'}">구매완료</option>
+                                    <option value="AD-PROGRESS" th:selected="${detail.status eq 'AD-PROGRESS'}">광고 진행중</option>
+                                    <option value="CANCEL" th:selected="${detail.status eq 'CANCEL'}">취소</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>등록일</th>
+                        <td>
+                            <input type="text" class="form-control" name="createDt" th:value="${detail.createDt}" readonly/>
+                        </td>
+                        <th>광고 시작일</th>
+                        <td>
+                            <input type="text" class="form-control" name="startDt" th:value="${detail.startDt}" readonly/>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </form>
+
+        <div class="row align-items-center justify-content-between pt-6">
+            <div class="col-auto"></div>
+            <div class="col-auto">
+                <div class="hstack gap-2">
+                    <button type="button" class="btn btn-dark" data-role="list">목록</button>
+                    <button type="button" class="btn btn-dark" data-role="save">저장</button>
+                </div>
+            </div>
+        </div>
+        <!-- //container -->
+    </div>
+</div>
+</html>

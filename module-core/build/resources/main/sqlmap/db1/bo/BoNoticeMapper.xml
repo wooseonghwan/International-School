@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fw.core.mapper.db1.bo.BoNoticeMapper">
+    <select id="selectNoticeList" parameterType="BoNoticeDTO" resultType="BoNoticeDTO">
+        SELECT ROW_NUMBER() OVER (ORDER BY tn.NOTICE_ID ASC) AS rowNum
+             , tn.NOTICE_ID
+             , tn.LANG
+             , CASE WHEN tn.LANG = 'KR' THEN '한글공지'
+                    WHEN tn.LANG = 'EN' THEN '영문공지' END AS langNm
+             , tn.TITLE
+             , date_format(tn.CREATE_DT, '%Y-%m-%d') as createDt
+             , tn.POPUP_YN
+             , CASE WHEN tn.POPUP_YN = 'Y' THEN '사용'
+                    WHEN tn.POPUP_YN = 'N' THEN '미사용' END AS popupYnNm
+             , ta.admin_nm
+        FROM t_notice tn
+    LEFT JOIN t_admin ta ON ta.admin_seq = tn.create_id
+        <where>
+            <if test="searchValue != null and searchValue != '' and searchType != null and searchType != ''">
+                <choose>
+                    <when test="searchType == 'TITLE'">
+                        tn.TITLE LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+                    <when test="searchType == 'CONTENT'">
+                        tn.CONTENT LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+                    <otherwise>
+                        1=1
+                    </otherwise>
+                </choose>
+            </if>
+            AND tn.DEL_YN = 'N'
+        </where>
+        ORDER BY tn.NOTICE_ID DESC
+        <include refid="common.paging"/>
+    </select>
+
+
+    <select id="selectNoticeListCnt" resultType="int" parameterType="BoNoticeDTO">
+        SELECT COUNT(*)
+        FROM t_notice tn
+    LEFT JOIN t_admin ta ON ta.admin_seq = tn.create_id
+        <where>
+            <if test="searchValue != null and searchValue != '' and searchType != null and searchType != ''">
+                <choose>
+                    <when test="searchType == 'TITLE'">
+                        tn.TITLE LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+                    <when test="searchType == 'CONTENT'">
+                        tn.CONTENT LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+                    <otherwise>
+                        1=1
+                    </otherwise>
+                </choose>
+            </if>
+            AND tn.DEL_YN = 'N'
+        </where>
+    </select>
+
+
+    <insert id="insertNotice" parameterType="BoNoticeDTO">
+        INSERT INTO t_notice
+        (
+            LANG
+            , TITLE
+            , CONTENT
+            , POPUP_TYPE
+            , OPTION_YN
+            , WIDTH
+            , HEIGHT
+            , `LEFT`
+            , TOP
+            , END_DT
+            , END_NO_LIMIT_YN
+            , POPUP_YN
+            , CREATE_ID
+            , CREATE_DT
+            , DEL_YN
+        )VALUES
+        (
+            #{lang}
+            , #{title}
+            , #{content}
+            , #{popupType}
+            , #{optionYn}
+            , #{width}
+            , #{height}
+            , #{left}
+            , #{top}
+            , #{endDt}
+            , #{endNoLimitYn}
+            , #{popupYn}
+            , '1'
+            , NOW()
+            , 'N'
+        )
+    </insert>
+
+    <select id="selectNoticeDetail" parameterType="String" resultType="BoNoticeDTO">
+        SELECT NOTICE_ID
+             , LANG
+             , TITLE
+             , CONTENT
+             , POPUP_TYPE
+             , OPTION_YN
+             , WIDTH
+             , HEIGHT
+             , `LEFT`
+             , TOP
+             , date_format(END_DT, '%Y-%m-%d') as endDt
+             , END_NO_LIMIT_YN
+             , POPUP_YN
+             , CREATE_ID
+             , CREATE_DT
+             , DEL_YN
+        FROM t_notice
+        WHERE NOTICE_ID = #{noticeId}
+    </select>
+
+    <update id="updateNotice" parameterType="BoNoticeDTO">
+        UPDATE t_notice
+        SET TITLE = #{title}
+          , CONTENT = #{content}
+          , LANG = #{lang}
+          , POPUP_TYPE = #{popupType}
+          , OPTION_YN = #{optionYn}
+          , WIDTH = #{width}
+          , HEIGHT = #{height}
+          , `LEFT` = #{left}
+          , TOP = #{top}
+          , END_DT = #{endDt}
+          , END_NO_LIMIT_YN = #{endNoLimitYn}
+          , POPUP_TN = #{popupYn}
+          , UPDATE_DT = NOW()
+          , UPDATE_ID = '1'
+        WHERE NOTICE_ID = #{noticeId}
+    </update>
+
+    <delete id="deleteNotices" parameterType="list">
+        UPDATE t_notice
+        SET DEL_YN = 'Y'
+        WHERE NOTICE_ID IN
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

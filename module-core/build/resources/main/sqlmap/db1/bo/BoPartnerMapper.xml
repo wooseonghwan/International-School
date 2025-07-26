@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fw.core.mapper.db1.bo.BoPartnerMapper">
+
+    <select id="selectPartnersAdList" resultType="BoPartnerDTO" parameterType="BoPartnerDTO">
+        /* com.fw.core.mapper.db1.bo.BoPartnerMapper.selectPartnersAdList, 파트너스 광고 리스트, 25.03.24, WSH, BoPartnerMapper.xml */
+        SELECT tpa.ad_id
+             , tpa.order_no
+             , tp.name
+             , tpp.title
+             , tpa.status
+             , CASE WHEN tpa.status = 'BID' THEN '입찰중'
+                    WHEN tpa.status = 'PROGRESS' THEN '진행중'
+                    WHEN tpa.status = 'COMPLETE' THEN '진행완료'
+                    WHEN tpa.status = 'BILLING' THEN '정산완료'
+                    WHEN tpa.status = 'CANCEL' THEN '결제취소' END AS statusName
+             , tpa.report_status
+             , CASE WHEN tpa.report_status = 'PENDING' THEN '미제출'
+                    WHEN tpa.report_status = 'PROGRESS' THEN '검수중'
+                    WHEN tpa.report_status = 'COMPLETE' THEN '검수완료' END AS reportStatusName
+             , DATE_FORMAT(tpsh.status_change_dt, '%Y-%m-%d %H:%i:%s') AS statusChangeDt
+             , tpa.amount
+             , tpp.budget
+             , tpa.partners_id
+        FROM T_PARTNERS_AD tpa
+    INNER JOIN T_USER tp ON tp.user_id = tpa.PARTNERS_ID
+    INNER JOIN T_PROJECT tpp ON tpp.project_id = tpa.project_id
+        /* 최신 status_change_dt 한 건만 JOIN */
+        LEFT JOIN (
+        SELECT user_id, ad_id, MAX(status_change_dt) AS status_change_dt
+        FROM T_PARTNERS_STATUS_HISTORY
+        GROUP BY user_id, ad_id
+        ) latest_tpsh
+        ON latest_tpsh.user_id = tpa.partners_id
+        AND latest_tpsh.ad_id = tpa.ad_id
+        /* 다시 원본 테이블과 최신 이력 기준으로 JOIN */
+        LEFT JOIN T_PARTNERS_STATUS_HISTORY tpsh
+        ON tpsh.user_id = latest_tpsh.user_id
+        AND tpsh.ad_id = latest_tpsh.ad_id
+        AND tpsh.status_change_dt = latest_tpsh.status_change_dt
+        <where>
+            <if test="searchText != null and searchText != ''">
+                <choose>
+                    <when test="searchType == 'partnersName'">
+                        AND tp.name LIKE CONCAT('%', #{searchText}, '%')
+                    </when>
+                    <when test="searchType == 'title'">
+                        AND tpp.title LIKE CONCAT('%', #{searchText}, '%')
+                    </when>
+                    <otherwise>
+                        AND (
+                        tp.name LIKE CONCAT('%', #{searchText}, '%')
+                        OR tpp.title LIKE CONCAT('%', #{searchText}, '%')
+                        )
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="searchDate != null and searchDate != ''">
+                AND DATE_FORMAT(tpa.create_dt, '%Y-%m') = #{searchDate}
+            </if>
+        </where>
+        ORDER BY tpa.create_dt DESC
+    <include refid="common.paging" />
+    </select>
+
+    <select id="selectPartnersAdListCnt" parameterType="BoPartnerDTO" resultType="int">
+        /* com.fw.core.mapper.db1.bo.BoPartnerMapper.selectPartnersAdListCnt, 파트너스 광고 리스트 카운트, 25.03.24, WSH, BoPartnerMapper.xml */
+        SELECT COUNT(1)
+        FROM T_PARTNERS_AD tpa
+    INNER JOIN T_USER tp ON tp.user_id = tpa.PARTNERS_ID
+    INNER JOIN T_PROJECT tpp ON tpp.project_id = tpa.project_id
+        /* 최신 status_change_dt 한 건만 JOIN */
+        LEFT JOIN (
+        SELECT user_id, ad_id, MAX(status_change_dt) AS status_change_dt
+        FROM T_PARTNERS_STATUS_HISTORY
+        GROUP BY user_id, ad_id
+        ) latest_tpsh
+        ON latest_tpsh.user_id = tpa.partners_id
+        AND latest_tpsh.ad_id = tpa.ad_id
+        /* 다시 원본 테이블과 최신 이력 기준으로 JOIN */
+        LEFT JOIN T_PARTNERS_STATUS_HISTORY tpsh
+        ON tpsh.user_id = latest_tpsh.user_id
+        AND tpsh.ad_id = latest_tpsh.ad_id
+        AND tpsh.status_change_dt = latest_tpsh.status_change_dt
+        <where>
+            <if test="searchText != null and searchText != ''">
+                <choose>
+                    <when test="searchType == 'partnersName'">
+                        AND tp.name LIKE CONCAT('%', #{searchText}, '%')
+                    </when>
+                    <when test="searchType == 'title'">
+                        AND tpp.title LIKE CONCAT('%', #{searchText}, '%')
+                    </when>
+                    <otherwise>
+                        AND (
+                        tp.name LIKE CONCAT('%', #{searchText}, '%')
+                        OR tpp.title LIKE CONCAT('%', #{searchText}, '%')
+                        )
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="searchDate != null and searchDate != ''">
+                AND DATE_FORMAT(tpa.create_dt, '%Y-%m') = #{searchDate}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectPartnersAdInfo" resultType="BoPartnerDTO" parameterType="BoPartnerDTO">
+        /* com.fw.core.mapper.db1.bo.BoPartnerMapper.selectPartnersAdInfo, 파트너스 광고 summary, 25.03.24, WSH, BoPartnerMapper.xml */
+        SELECT
+               (SELECT COUNT(*)
+                FROM T_PARTNERS_AD tpa
+                WHERE STATUS = 'BID'
+                <if test="searchDate != null and searchDate != ''">
+                    AND DATE_FORMAT(tpa.create_dt, '%Y-%m') = #{searchDate}
+                </if>
+                ) AS bidCnt
+             , (SELECT COUNT(*)
+              FROM T_PARTNERS_AD tpa
+              WHERE STATUS = 'PROGRESS'
+              <if test="searchDate != null and searchDate != ''">
+                  AND DATE_FORMAT(tpa.create_dt, '%Y-%m') = #{searchDate}
+              </if>
+              ) AS progressCnt
+             , (SELECT COUNT(*)
+              FROM T_PARTNERS_AD tpa
+              WHERE STATUS = 'COMPLETE'
+              <if test="searchDate != null and searchDate != ''">
+                 AND DATE_FORMAT(tpa.create_dt, '%Y-%m') = #{searchDate}
+              </if>
+              ) AS completeCnt
+             , (SELECT COUNT(*)
+              FROM T_PARTNERS_AD tpa
+              WHERE STATUS = 'BILLING'
+              <if test="searchDate != null and searchDate != ''">
+                 AND DATE_FORMAT(tpa.create_dt, '%Y-%m') = #{searchDate}
+              </if>
+              ) AS billingCnt
+             , (SELECT COUNT(*)
+              FROM T_PARTNERS_AD tpa
+              WHERE STATUS = 'CANCEL'
+              <if test="searchDate != null and searchDate != ''">
+                 AND DATE_FORMAT(tpa.create_dt, '%Y-%m') = #{searchDate}
+              </if>
+              ) AS cancelCnt
+    </select>
+
+    <select id="selectPartnersAdAmountInfo" resultType="BoPartnerDTO" parameterType="BoPartnerDTO">
+        /* com.fw.core.mapper.db1.bo.BoPartnerMapper.selectPartnersAdAmountInfo, 파트너스 금액 summary, 25.03.24, WSH, BoPartnerMapper.xml */
+        SELECT
+             (SELECT COALESCE(SUM(amount), 0)
+             FROM T_PARTNERS_AD tpa
+             WHERE STATUS IN ('PROGRESS', 'COMPLETE', 'BILLING')
+             <if test="searchDate != null and searchDate != ''">
+                 AND DATE_FORMAT(tpa.create_dt, '%Y-%m') = #{searchDate}
+             </if>
+             ) AS totalAmount
+             , (SELECT COALESCE(SUM(amount), 0)
+             FROM T_PARTNERS_AD tpa
+             WHERE STATUS = 'BILLING'
+             <if test="searchDate != null and searchDate != ''">
+                 AND DATE_FORMAT(tpa.create_dt, '%Y-%m') = #{searchDate}
+             </if>
+             ) AS billingAmount
+             , (SELECT COALESCE(SUM(amount), 0)
+             FROM T_PARTNERS_AD tpa
+             WHERE STATUS = 'BID'
+             <if test="searchDate != null and searchDate != ''">
+                 AND DATE_FORMAT(tpa.create_dt, '%Y-%m') = #{searchDate}
+             </if>
+             ) AS bidAmount
+             , (SELECT COALESCE(SUM(amount), 0)
+             FROM T_PARTNERS_AD tpa
+             WHERE STATUS = 'PROGRESS'
+             <if test="searchDate != null and searchDate != ''">
+                 AND DATE_FORMAT(tpa.create_dt, '%Y-%m') = #{searchDate}
+             </if>
+             ) AS progressAmount
+    </select>
+
+    <select id="selectPartnersStatusChangeList" resultType="BoPartnerDTO" parameterType="BoPartnerDTO">
+        /* com.fw.core.mapper.db1.bo.BoPartnerMapper.selectPartnersStatusChangeList, 파트너스 상태 변경 일시, 25.03.24, WSH, BoPartnerMapper.xml */
+        SELECT status
+             , CASE WHEN status = 'BID' THEN '입찰중'
+                    WHEN status = 'PROGRESS' THEN '진행중'
+                    WHEN status = 'COMPLETE' THEN '진행완료'
+                    WHEN status = 'BILLING' THEN '정산완료'
+                    WHEN status = 'CANCEL' THEN '결제취소' END AS statusName
+             , DATE_FORMAT(status_change_dt, '%Y-%m-%d %H:%i:%s') AS statusChangeDt
+        FROM T_PARTNERS_STATUS_HISTORY
+        WHERE USER_ID = #{partnersId} AND AD_ID = #{adId}
+    </select>
+
+    <select id="selectPartnersAdDetail" resultType="BoPartnerDTO" parameterType="String">
+        /* com.fw.core.mapper.db1.bo.BoPartnerMapper.selectPartnersAdDetail, 파트너스 광고 상세, 25.03.24, WSH, BoPartnerMapper.xml */
+        SELECT tpa.ad_id
+             , tp.name
+             , tpp.title
+             , tpa.amount
+             , tpp.budget
+             , tpa.status
+             , tpa.memo
+             , tpa.partners_id
+             , tpa.project_id
+             , tpa.report_status
+        FROM T_PARTNERS_AD tpa
+    INNER JOIN T_USER tp ON tp.user_id = tpa.PARTNERS_ID
+    INNER JOIN T_PROJECT tpp ON tpp.project_id = tpa.project_id
+        WHERE tpa.ad_id = #{adId}
+    </select>
+    <!-- status 값 변경 상태 조회 -->
+    <select id="selectCurrentStatus" resultType="String" parameterType="String">
+        SELECT status
+        FROM T_PARTNERS_AD
+        WHERE ad_id = #{adId}
+    </select>
+
+    <update id="updatePartnersAdStatus" parameterType="BoPartnerDTO">
+        /* com.fw.core.mapper.db1.bo.BoPartnerMapper.updatePartnersAdStatus, 파트너스 광고 상태 수정, 25.03.24, WSH, BoPartnerMapper.xml */
+        UPDATE T_PARTNERS_AD
+           SET status = #{status}
+             , report_status = #{reportStatus}
+             , update_id = #{adminSession.adminSeq}
+             , update_dt = NOW()
+        WHERE ad_id = #{adId}
+    </update>
+
+    <insert id="insertPartnersStatusHistory" parameterType="BoPartnerDTO">
+        /* com.fw.core.mapper.db1.bo.BoPartnerMapper.insertPartnersStatusHistory, 파트너스 광고 상태 변경시점 history 등록, 25.03.24, WSH, BoPartnerMapper.xml */
+        INSERT INTO T_PARTNERS_STATUS_HISTORY
+                    (
+                     user_id
+                      , project_id
+                      , ad_id
+                      , status
+                      , status_change_dt
+                    ) VALUES (
+                      #{partnersId}
+                      , #{projectId}
+                      , #{adId}
+                      , #{status}
+                      , NOW()
+                    )
+    </insert>
+
+    <select id="selectReportList" resultType="BoReportDTO" parameterType="BoReportDTO">
+        /* com.fw.core.mapper.db1.bo.BoPartnerMapper.selectReportList, 파트너스 보고서 리스트 조회, 25.03.25, WSH, BoPartnerMapper.xml */
+        SELECT report_id
+             , ad_id
+             , issue_dt
+             , DATE_FORMAT(issue_dt, '%Y-%m-%d %H:%i:%s') AS issueDt
+             , view_count
+             , link_url
+             , keyword
+             , rank
+             , category
+             , etc
+             , create_id
+        FROM T_PARTNERS_REPORT
+        WHERE CREATE_ID = #{createId} AND AD_ID = #{adId}
+    </select>
+
+    <select id="selectReportListCnt" parameterType="BoReportDTO" resultType="int">
+        /* com.fw.core.mapper.db1.bo.BoPartnerMapper.selectReportListCnt, 파트너스 보고서 리스트 개수 조회, 25.03.25, WSH, BoPartnerMapper.xml */
+        SELECT COUNT(1)
+        FROM T_PARTNERS_REPORT
+        WHERE CREATE_ID = #{createId} AND AD_ID = #{adId}
+    </select>
+</mapper>

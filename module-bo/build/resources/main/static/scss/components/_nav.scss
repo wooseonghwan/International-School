@@ -1,0 +1,13 @@
+.nav-tabs{
+  .nav-link{
+    @include media-breakpoint-down(lg){
+      padding: .5rem .75rem;font-size: 13px;
+    }
+    &:hover{
+      text-decoration: none;
+    }
+    &.active{
+      font-weight: 500;
+    }
+  }
+}

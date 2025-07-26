@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layouts/mainLayout}">
+<div layout:fragment="contents" th:remove="tag">
+	<!-- 페이지 상단 메뉴명 작성 시작 -->
+	<div class="page-top">
+		<h1 class="page-title">공지사항 관리</h1>
+		<nav aria-label="breadcrumb">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item">홈페이지 관리</li>
+				<li class="breadcrumb-item">공지사항 관리</li>
+			</ol>
+		</nav>
+	</div>
+	<!-- 페이지 상단 메뉴명 작성 끝 -->
+	<div class="card">
+		<div class="card-body">
+			<div class="table-responsive-xxl">
+				<form id="updateNotice" name="updateNotice">
+					<input type="hidden" id="noticeSeq" name="noticeSeq" th:value="${modify.noticeSeq}" />
+					<input type="hidden" id="noticeFileSeq" name="noticeFileSeq" th:value="${modify.fileSeq}" />
+					<table class="table table-bordered mb-0">
+						<colgroup>
+							<col style="width: 15%" />
+							<col style="width: 35%" />
+							<col style="width: 15%" />
+							<col style="width: 35%" />
+						</colgroup>
+						<tbody>
+						<tr>
+							<th class="text-center">공지 종류</th>
+							<td>
+								<select id="selectType" name="selectType" class="form-select w-auto" data-url="/bo/cd/BOARD_TYPE" th:data-selected="${modify.noticeTypeCd}"></select>
+							</td>
+						</tr>
+						<tr>
+							<th class="text-center">공지 제목</th>
+							<td colspan="3">
+								<div class="form-control-wrapper w-100">
+									<input type="text" class="form-control" id="title" name="title" placeholder="제목을 입력하세요"
+										   th:value="${modify.title}"/>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<th class="text-center">공지 내용</th>
+							<td colspan="3">
+								<textarea  id="noticeContent" name= "noticeContent" placeholder="내용을 입력하세요" class="form-control" rows="13" cols="50" th:field="${modify.content}"></textarea>
+							</td>
+						</tr>
+						<th:block th:if="${file ne null}">
+							<tr th:if="${file.size() ne 0}" class="registered-file-tr">
+								<th class="text-center">첨부 파일</th>
+								<td colspan="3">
+									<th:block th:unless="${#lists.isEmpty(file)}" th:each="list : ${file}">
+										<a th:name="${list.id}" th:text="${list.originName}" th:href="${list.path}" target="_blank" class="mr-1 registered-file"></a>
+										<button type="button" class="btn btn-sm btn-danger" data-role="fileDelete" th:name="${list.id}">파일 삭제</button>
+									</th:block>
+								</td>
+							</tr>
+						</th:block>
+						<tr>
+							<th class="text-center">업로드</th>
+							<td colspan="3">
+								<input type="file" id="notice-upload" multiple="multiple" name="file">
+							</td>
+						</tr>
+						</tbody>
+					</table>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="hstack gap-2 justify-content-end mt-4">
+		<button type="button" class="btn btn-dark" style="width: 100px" data-role="update">저장</button>
+		<button type="button" class="btn btn-outline-dark" style="width: 100px" data-role="detail">취소</button>
+	</div>
+</div>
+</html>

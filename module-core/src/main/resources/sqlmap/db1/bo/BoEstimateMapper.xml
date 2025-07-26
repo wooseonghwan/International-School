@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fw.core.mapper.db1.bo.BoEstimateMapper">
+    <!-- 견적 리스트 -->
+    <select id="selectEstimateList" resultType="BoEstimateDTO" parameterType="BoEstimateDTO">
+        SELECT ROW_NUMBER() OVER(ORDER BY te.create_dt DESC) AS rowNum
+             , te.estimate_id
+             , te.user_id
+             , tu.name
+             , te.platform
+             , te.platform_detail
+             , te.ad_type
+             , te.status
+             , CASE WHEN te.status = 'PENDING' THEN '견적요청'
+                    WHEN te.status = 'PROGRESS' THEN '진행중'
+                    WHEN te.status = 'SUCCESS' THEN '견적완료'
+                    WHEN te.status = 'UPDATE' THEN '수정요청'
+                    WHEN te.status = 'CANCEL' THEN '취소' END AS statusNm
+        FROM T_ESTIMATE te
+    INNER JOIN T_USER tu ON tu.user_id = te.user_id
+        <where>
+            <if test="searchText != null and searchText != ''">
+                (tu.name LIKE CONCAT('%', #{searchText}, '%'))
+            </if>
+            <if test="searchStart != null and searchStart != ''">
+                AND date_format(te.create_dt, '%Y-%m-%d') >= #{searchStart}
+            </if>
+            <if test="searchEnd != null and searchEnd != ''">
+                AND date_format(te.create_dt, '%Y-%m-%d') &lt;= #{searchEnd}
+            </if>
+            <if test="searchType != null and searchType != ''">
+                AND te.status = #{searchType}
+            </if>
+        </where>
+        <include refid="common.paging" />
+    </select>
+    <!-- 견적 리스트 count -->
+    <select id="selectEstimateListCnt" parameterType="BoEstimateDTO" resultType="int">
+        SELECT COUNT(*)
+        FROM T_ESTIMATE te
+    INNER JOIN T_USER tu ON tu.user_id = te.user_id
+        <where>
+            <if test="searchText != null and searchText != ''">
+                (tu.name LIKE CONCAT('%', #{searchText}, '%'))
+            </if>
+            <if test="searchStart != null and searchStart != ''">
+                AND date_format(te.create_dt, '%Y-%m-%d') >= #{searchStart}
+            </if>
+            <if test="searchEnd != null and searchEnd != ''">
+                AND date_format(te.create_dt, '%Y-%m-%d') &lt;= #{searchEnd}
+            </if>
+            <if test="searchType != null and searchType != ''">
+                AND te.status = #{searchType}
+            </if>
+        </where>
+    </select>
+    <!-- 견적 상세 -->
+    <select id="selectEstimateInfo" resultType="BoEstimateDTO" parameterType="String">
+        SELECT te.estimate_id
+             , te.user_id
+             , tu.name
+             , tu.phone
+             , tu.login_id
+             , tu.business_number
+             , te.platform
+             , te.platform_detail
+             , te.ad_type
+             , te.ad_type_etc
+             , te.ad_time
+             , te.ad_time_etc
+             , te.status
+             , CASE WHEN te.status = 'PENDING' THEN '견적요청'
+                    WHEN te.status = 'PROGRESS' THEN '진행중'
+                    WHEN te.status = 'SUCCESS' THEN '견적완료'
+                    WHEN te.status = 'UPDATE' THEN '수정요청'
+                    WHEN te.status = 'CANCEL' THEN '취소' END AS statusNm
+             , tc.category_name
+             , tc.sub_category_name
+             , tl.CITY
+             , tl.DISTRICT
+             , tl.TOWN
+             , (SELECT GROUP_CONCAT(KEYWORD_NAME SEPARATOR ', ')
+                FROM t_keyword tk
+                WHERE tk.ESTIMATE_ID = te.ESTIMATE_ID) AS keywordName
+             , date_format(te.create_dt, '%Y-%m-%d %H:%i') AS createDt
+             , date_format(te.success_dt, '%Y-%m-%d %H:%i') AS successDt
+             , te.estimate_amount
+             , te.category_id
+             , te.location_id
+             , te.memo
+        FROM T_ESTIMATE te
+    INNER JOIN t_user tu ON tu.user_id = te.user_id
+    INNER JOIN t_category tc ON tc.category_id = te.category_id
+    INNER JOIN t_location tl ON tl.location_id = te.location_id
+        WHERE te.estimate_id = #{estimateId}
+    </select>
+    <!-- 견적 수정 -->
+    <update id="updateEstimate" parameterType="BoEstimateDTO">
+        UPDATE T_ESTIMATE
+        SET estimate_amount = #{estimateAmount}
+          , status = #{status}
+          , memo = #{memo}
+          , update_dt = NOW()
+        <if test="status == 'SUCCESS'">
+            , success_dt = NOW()
+        </if>
+        WHERE estimate_id = #{estimateId}
+    </update>
+    <!-- 견적 내역 저장 -->
+    <insert id="insertEstimateHistory" parameterType="BoEstimateDTO">
+        INSERT INTO t_estimate_update_log (
+                                         estimate_id
+                                       , estimate_amount
+                                       , status
+                                       , user_id
+                                       , category_id
+                                       , location_id
+                                       , platform
+                                       , platform_detail
+                                       , ad_type
+                                       , ad_type_etc
+                                       , ad_time
+                                       , ad_time_etc
+                                       , memo
+                                       , create_dt
+                                       , update_id
+        ) VALUES (
+                     #{estimateId}
+                 , #{beforeEstimateAmount}
+                 , #{status}
+                 , #{userId}
+                 , #{categoryId}
+                 , #{locationId}
+                 , #{platform}
+                 , #{platformDetail}
+                 , #{adType}
+                 , #{adTypeEtc}
+                 , #{adTime}
+                 , #{adTimeEtc}
+                 , #{memo}
+                 , NOW()
+                 , '1'
+                 )
+    </insert>
+    <!-- 견적 수정 내역 리스트 -->
+    <select id="selectEstimateHistoryList" resultType="BoEstimateDTO" parameterType="BoEstimateDTO">
+        SELECT date_format(create_dt, '%Y-%m-%d %H:%i') AS createDt
+        FROM t_estimate_update_log
+        WHERE estimate_id = #{estimateId}
+        ORDER BY create_dt DESC
+    </select>
+
+    <select id="selectEstimateHistoryInfo" resultType="BoEstimateDTO" parameterType="BoEstimateDTO">
+        SELECT te.estimate_id
+             , te.user_id
+             , tu.name
+             , tu.phone
+             , tu.login_id
+             , tu.business_number
+             , te.platform
+             , te.platform_detail
+             , te.ad_type
+             , te.ad_type_etc
+             , te.ad_time
+             , te.ad_time_etc
+             , te.status
+             , CASE WHEN te.status = 'PENDING' THEN '견적요청'
+                    WHEN te.status = 'PROGRESS' THEN '진행중'
+                    WHEN te.status = 'SUCCESS' THEN '견적완료'
+                    WHEN te.status = 'UPDATE' THEN '수정요청'
+                    WHEN te.status = 'CANCEL' THEN '취소' END AS statusNm
+             , tc.category_name
+             , tc.sub_category_name
+             , tl.CITY
+             , tl.DISTRICT
+             , tl.TOWN
+             , (SELECT GROUP_CONCAT(KEYWORD_NAME SEPARATOR ', ')
+                FROM t_keyword tk
+                WHERE tk.ESTIMATE_ID = te.ESTIMATE_ID) AS keywordName
+             , date_format(te.create_dt, '%Y-%m-%d %H:%i') AS createDt
+             , te.estimate_amount
+             , te.category_id
+             , te.location_id
+             , te.memo
+             , te.update_id
+             , u.name AS updateUserNm
+             , ta.admin_nm AS updateNm
+        FROM t_estimate_update_log te
+    INNER JOIN t_user tu ON tu.user_id = te.user_id
+    INNER JOIN t_user u ON u.user_id = te.update_id
+    INNER JOIN t_admin ta ON ta.admin_seq = te.update_id
+    INNER JOIN t_category tc ON tc.category_id = te.category_id
+    INNER JOIN t_location tl ON tl.location_id = te.location_id
+        WHERE te.estimate_id = #{estimateId} AND date_format(te.create_dt, '%Y-%m-%d %H:%i') = #{createDt}
+    </select>
+    <insert id="insertPayment" parameterType="BoEstimateDTO">
+        INSERT INTO t_payment (
+                              estimate_id
+                            , user_id
+                            , product_type
+                            , status
+                            , price
+                            , pay_method
+                    ) VALUES (
+                              #{estimateId}
+                            , #{userId}
+                            , 'S'
+                            , 'NO-SUCCESS'
+                            , #{estimateAmount}
+                            , 'TRANSFER'
+                    )
+    </insert>
+</mapper>

@@ -1,0 +1,39 @@
+.navbar-brand{
+  display: flex;align-items: center;justify-content: center;height: var(--navbar-height);
+  img{max-width: 120px;max-height: 24px;}
+  @include media-breakpoint-down(lg){
+    img{max-width: 90px;}
+  }
+  @include media-breakpoint-up(lg){
+    display: none;
+  }
+}
+
+.btn-sidebar-toggler{
+  border: 0;margin: 0;padding: .5rem;background: transparent;margin-left: -.5rem;display: none;
+  @include media-breakpoint-up(lg){
+    display: block;
+  }
+}
+
+.navbar-user-info{
+  font-size: 13px;font-weight: 700;display: none;
+  @include media-breakpoint-up(lg){
+    font-size: 14px;display: block;
+  }
+}
+
+.btn-logout{
+  border: 0;padding: 0;background: transparent;
+  @include media-breakpoint-down(lg){
+    display: none;
+  }
+}
+
+.btn-allmenu{
+  border: 0;padding: 0;background: transparent;
+  .material-icons-outlined{font-size: 28px;color: #fff;}
+  @include media-breakpoint-up(lg){
+    display: none;
+  }
+}

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fw.core.mapper.db1.bo.BoChargingMapper">
+
+    <select id="selectChargingHistoryList" parameterType="BoChargingDTO" resultType="BoChargingDTO">
+        SELECT ROW_NUMBER() OVER(ORDER BY mt.cDate ASC) AS rowNum
+             , mt.fDate
+             , date_format(mt.cDate, '%H:%i:%s') AS cDate
+             , ut.custName
+             , mt.balance
+             , mt.amnt
+        FROM mkt_tb mt
+    INNER JOIN user_tb ut ON ut.custNo = mt.custNo
+        <where>
+            <if test="searchValue != null and searchValue != ''">
+                (ut.custNo LIKE CONCAT('%', #{searchValue}, '%'))
+            </if>
+            <if test="searchStart != null and searchStart != ''">
+                AND date_format(mt.fDate, '%Y-%m-%d') >= #{searchStart}
+            </if>
+            <if test="searchEnd != null and searchEnd != ''">
+                AND date_format(mt.fDate, '%Y-%m-%d') &lt;= #{searchEnd}
+            </if>
+            AND mt.gbn = 'CHARGE' AND mt.rtn = '01'
+        </where>
+        ORDER BY mt.cDate ASC
+        <include refid="common.paging" />
+    </select>
+
+    <select id="countChargingHistoryList" parameterType="BoChargingDTO" resultType="int">
+        SELECT COUNT(*)
+        FROM mkt_tb mt
+    INNER JOIN user_tb ut ON ut.custNo = mt.custNo
+        <where>
+            <if test="searchValue != null and searchValue != ''">
+                (ut.custNo LIKE CONCAT('%', #{searchValue}, '%'))
+            </if>
+            <if test="searchStart != null and searchStart != ''">
+                AND date_format(mt.fDate, '%Y-%m-%d') >= #{searchStart}
+            </if>
+            <if test="searchEnd != null and searchEnd != ''">
+                AND date_format(mt.fDate, '%Y-%m-%d') &lt;= #{searchEnd}
+            </if>
+            AND mt.gbn = 'CHARGE' AND mt.rtn = '01'
+        </where>
+    </select>
+
+    <select id="selectGoodsUseHistoryList" parameterType="BoChargingDTO" resultType="BoChargingDTO">
+        SELECT mdt.fDate
+             , date_format(mdt.cDate, '%H:%i:%s') AS cDate
+             , ut.custName
+             , mdt.custNo
+             , mdt.balance
+             , mdt.amnt
+             , mdt.menuNm
+             , mdt.gbn
+        FROM mkt_desc_tb mdt
+    INNER JOIN user_tb ut ON ut.custNo = mdt.custNo
+        <where>
+            <if test="searchValue != null and searchValue != ''">
+                (ut.custNo LIKE CONCAT('%', #{searchValue}, '%'))
+            </if>
+            <if test="searchStart != null and searchStart != ''">
+                AND date_format(mdt.fDate, '%Y-%m-%d') >= #{searchStart}
+            </if>
+            <if test="searchEnd != null and searchEnd != ''">
+                AND date_format(mdt.fDate, '%Y-%m-%d') &lt;= #{searchEnd}
+            </if>
+            AND mdt.rtn = '01'
+        </where>
+        ORDER BY mdt.cDate ASC
+        <include refid="common.paging" />
+    </select>
+
+    <select id="countGoodsUseHistoryList" parameterType="BoChargingDTO" resultType="int">
+        SELECT COUNT(*)
+        FROM mkt_desc_tb mdt
+    INNER JOIN user_tb ut ON ut.custNo = mdt.custNo
+        <where>
+            <if test="searchValue != null and searchValue != ''">
+                (ut.custNo LIKE CONCAT('%', #{searchValue}, '%'))
+            </if>
+            <if test="searchStart != null and searchStart != ''">
+                AND date_format(mdt.fDate, '%Y-%m-%d') >= #{searchStart}
+            </if>
+            <if test="searchEnd != null and searchEnd != ''">
+                AND date_format(mdt.fDate, '%Y-%m-%d') &lt;= #{searchEnd}
+            </if>
+            AND mdt.rtn = '01'
+        </where>
+    </select>
+
+    <select id="selectTotalChargeAmountGroupedByCustNo" parameterType="BoChargingDTO" resultType="map">
+        SELECT custNo, IFNULL(SUM(amnt), 0) AS totalAmount
+        FROM mkt_desc_tb
+        WHERE gbn = 'CHARGE'
+        AND rtn = '01'
+        <if test="searchValue != null and searchValue != ''">
+            AND custNo LIKE CONCAT('%', #{searchValue}, '%')
+        </if>
+        <if test="searchStart != null and searchStart != ''">
+            AND DATE_FORMAT(fDate, '%Y-%m-%d') &gt;= #{searchStart}
+        </if>
+        <if test="searchEnd != null and searchEnd != ''">
+            AND DATE_FORMAT(fDate, '%Y-%m-%d') &lt;= #{searchEnd}
+        </if>
+        GROUP BY custNo
+    </select>
+
+</mapper>

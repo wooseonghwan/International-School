@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+    <head>
+        <th:block th:include="fragments/head :: commonMetaAndTitle" />
+        <th:block th:include="fragments/head :: commonStyle" />
+        <th:block layout:fragment="head" th:remove="tag" />
+    </head>
+    <body class="util-bg">
+        <th:block layout:fragment="contents" />
+        <th:block th:replace="fragments/javascript :: common" />
+    </body>
+</html>
