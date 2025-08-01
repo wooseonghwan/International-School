@@ -3,13 +3,15 @@
 <mapper namespace="com.fw.core.mapper.db1.bo.BoQnaMapper">
 
     <select id="selectQnaList" parameterType="BoQnaDTO" resultType="BoQnaDTO">
-        SELECT  ROW_NUMBER() OVER (ORDER BY tq.QNA_ID ASC) AS rowNum
+        SELECT  ROW_NUMBER() OVER (ORDER BY tq.QNA_ID DESC) AS rowNum
              , tq.QNA_ID
              , date_format(tq.CREATE_DT, '%Y-%m-%d %H:%i') as createDt
              , tq.CREATE_ID
              , tq.TITLE
              , tq.VIEW_CNT
              , ut.custName
+             , CASE WHEN tq.reply IS NOT NULL THEN '답변완료'
+                    WHEN tq.reply IS NULL THEN '답변대기중' END AS replyStatus
         FROM t_qna tq
     INNER JOIN user_tb ut ON ut.webId = tq.create_id
         <where>
@@ -74,6 +76,8 @@
         SET REPLY = #{reply}
           , REPLY_ID = '1'
           , REPLY_DT = now()
+          , UPDATE_ID = '1'
+          , UPDATE_DT = now()
         WHERE QNA_ID = #{qnaId}
     </update>
 

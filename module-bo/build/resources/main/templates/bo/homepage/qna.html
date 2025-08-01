@@ -48,6 +48,7 @@
                 <table class="table table-hover">
                     <colgroup>
                         <col style="width:5%">
+                        <col style="width:10%">
                         <col style="width:40%">
                         <col style="width:20%">
                         <col style="width:20%">
@@ -56,6 +57,7 @@
                     <thead>
                     <tr class="cursor-pointer">
                         <th class="text-center">번호</th>
+                        <th class="text-center">답변상태</th>
                         <th class="text-center">제목</th>
                         <th class="text-center">작성자</th>
                         <th class="text-center">등록일</th>
@@ -68,9 +70,9 @@
                             <td colspan="6" class="text-center">내역이 없습니다.</td>
                         </tr>
                     </th:block>
-                    <tr th:each="qna : ${qnaList}" th:value="${qna.qnaId}" th:data-seq="${qna.qnaId}"
-                        class="clickable-row">
+                    <tr th:each="qna : ${qnaList}" th:value="${qna.qnaId}" th:data-seq="${qna.qnaId}" class="clickable-row">
                         <td class="text-center" th:text="${qna.rowNum}"></td>
+                        <td class="text-center" th:text="${qna.replyStatus}"></td>
                         <td class="text-center" th:text="${qna.title}"></td>
                         <td class="text-center" th:text="${qna.custName}"></td>
                         <td class="text-center" th:text="${qna.createDt}"></td>

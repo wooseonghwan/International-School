@@ -51,9 +51,16 @@
         <div class="row align-items-center" style="margin-top: 20px;">
             <div class="col-auto ms-0 ms-lg-auto" style="margin-left: auto">
                 <div class="gap-2 hstack">
-                    <button type="button" class="btn btn-dark" data-role="btnReply"
-                            style="min-width: 80px">답변하기
-                    </button>
+                    <th:block th:if="${dto.reply == null}">
+                        <button type="button" class="btn btn-dark" data-role="btnReply"
+                                style="min-width: 80px">답변하기
+                        </button>
+                    </th:block>
+                    <th:block th:if="${dto.reply != null}">
+                        <button type="button" class="btn btn-dark" data-role="btnReply"
+                                style="min-width: 80px">답변수정
+                        </button>
+                    </th:block>
                     <button type="button" class="btn btn-dark" data-role="btnList"
                             style="min-width: 80px">목록
                     </button>
