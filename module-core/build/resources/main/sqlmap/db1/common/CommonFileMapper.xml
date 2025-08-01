@@ -54,4 +54,21 @@
         WHERE FILE_ID = #{fileId}
     </update>
 
+    <!-- 파일 정보 조회 -->
+    <select id="selectFileById" parameterType="long" resultType="com.fw.core.dto.FileDTO">
+        SELECT * FROM T_FILE WHERE FILE_ID = #{fileId}
+    </select>
+
+    <!-- T_MENU 에서 FILE_SEQ 기준으로 삭제 -->
+    <delete id="deleteMenuByFileSeq" parameterType="long">
+        DELETE FROM T_MENU WHERE FILE_SEQ = #{fileId}
+    </delete>
+
+    <!-- T_FILE 삭제 -->
+    <update id="deleteFileById" parameterType="long">
+        UPDATE T_FILE
+           SET DEL_YN = 'Y'
+        WHERE FILE_ID = #{fileId}
+    </update>
+
 </mapper>
