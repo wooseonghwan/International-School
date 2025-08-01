@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/mainLayout}">
+<div layout:fragment="contents" th:remove="tag">
+    <div class="filter d-none d-lg-block">
+        <div class="hstack justify-content-between gap-4">
+            <div class="page-top mb-lg-1">
+                <h1 class="page-title">메뉴 PDF 등록</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="scroll-layout">
+        <div class="scroll-content">
+            <form id="menuUploadForm" enctype="multipart/form-data">
+                <table class="table table-bordered">
+                    <colgroup>
+                        <col style="width: 20%"/>
+                        <col/>
+                    </colgroup>
+                    <tbody>
+                    <!-- Monthly Menu -->
+                    <tr>
+                        <th>Monthly Menu</th>
+                        <td>
+                            <input type="file" name="monthlyMenu" id="fileMonthly" accept=".pdf,image/*" hidden>
+                            <label for="fileMonthly" class="btn btn-outline-dark">파일 선택</label>
+                            <div id="previewMonthly" class="mt-2 text-secondary"></div>
+                            <button type="button" class="btn btn-outline-danger mt-2 btn-sm d-none" id="btnDeleteMonthly">파일 삭제</button>
+                        </td>
+                    </tr>
+
+                    <!-- Catering Menu -->
+                    <tr>
+                        <th>Catering Menu</th>
+                        <td>
+                            <input type="file" name="cateringMenu" id="fileCatering" accept=".pdf,image/*" hidden>
+                            <label for="fileCatering" class="btn btn-outline-dark">파일 선택</label>
+                            <div id="previewCatering" class="mt-2 text-secondary"></div>
+                            <button type="button" class="btn btn-outline-danger mt-2 btn-sm d-none" id="btnDeleteCatering">파일 삭제</button>
+                        </td>
+                    </tr>
+
+                    <!-- Finger Food Menu -->
+                    <tr>
+                        <th>Finger Food Menu</th>
+                        <td>
+                            <input type="file" name="fingerFoodMenu" id="fileFinger" accept=".pdf,image/*" hidden>
+                            <label for="fileFinger" class="btn btn-outline-dark">파일 선택</label>
+                            <div id="previewFinger" class="mt-2 text-secondary"></div>
+                            <button type="button" class="btn btn-outline-danger mt-2 btn-sm d-none" id="btnDeleteFinger">파일 삭제</button>
+                        </td>
+                    </tr>
+
+                    <!-- Deli Menu -->
+                    <tr>
+                        <th>Deli Menu</th>
+                        <td>
+                            <input type="file" name="deliMenu" id="fileDeli" accept=".pdf,image/*" hidden>
+                            <label for="fileDeli" class="btn btn-outline-dark">파일 선택</label>
+                            <div id="previewDeli" class="mt-2 text-secondary"></div>
+                            <button type="button" class="btn btn-outline-danger mt-2 btn-sm d-none" id="btnDeleteDeli">파일 삭제</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </form>
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-dark" id="btnUploadMenu">등록</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('input[type="file"]').forEach(function (input) {
+                input.addEventListener('change', function () {
+                    const span = this.closest('tr').nextElementSibling.querySelector('.filename-display');
+                    if (this.files.length > 0) {
+                        span.textContent = this.files[0].name;
+                    } else {
+                        span.textContent = '';
+                    }
+                });
+            });
+        });
+    </script>
+</div>
+</html>

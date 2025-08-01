@@ -105,4 +105,25 @@ public class CommonFileService {
             throw new RuntimeException(ResponseCode.FILE_UPLOAD_FAIL.getStatusId());
         }
     }
+
+    @Transactional
+    public void deleteFileById(Long fileId) {
+        // DB에서 파일 정보 조회
+        FileDTO fileDTO = commonFileMapper.selectFileById(fileId);
+        if (fileDTO == null) {
+            throw new RuntimeException("해당 파일을 찾을 수 없습니다.");
+        }
+
+        // 실제 파일 삭제 시도
+        try {
+            Path path = Paths.get(fileDTO.getFileSaveNm());
+            Files.deleteIfExists(path); // 파일 존재할 경우 삭제
+        } catch (IOException e) {
+            log.warn("파일 시스템에서 파일 삭제 실패: {}", fileDTO.getFileSaveNm(), e);
+        }
+
+        // DB에서 메뉴(T_MENU)와 파일(T_FILE) 정보 삭제
+        commonFileMapper.deleteMenuByFileSeq(fileId);
+        commonFileMapper.deleteFileById(fileId);
+    }
 }

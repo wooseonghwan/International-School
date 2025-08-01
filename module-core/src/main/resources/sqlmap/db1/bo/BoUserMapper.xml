@@ -4,7 +4,7 @@
 
     <!-- 고객 리스트 -->
     <select id="selectUserList" parameterType="BoUserDTO" resultType="BoUserDTO">
-        SELECT ROW_NUMBER() OVER(ORDER BY cDate ASC) AS rowNum
+        SELECT ROW_NUMBER() OVER(ORDER BY cDate DESC) AS rowNum
              , custNo
              , custName
              , cardId
@@ -33,7 +33,7 @@
                 </choose>
             </if>
         </where>
-        ORDER BY cDate DESC
+        ORDER BY rowNum DESC
         <include refid="common.paging" />
     </select>
 

@@ -28,4 +28,11 @@ public interface CommonFileMapper {
 	/** tb_detail_file list */
 	FileDTO selectFileSeq(String fileId);
 
+	FileDTO selectFileById(Long fileId);
+
+	void deleteFileById(Long fileId);
+
+	void deleteMenuByFileSeq(Long fileId);
+
+
 }

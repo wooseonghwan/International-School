@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fw.core.mapper.db1.bo.BoMenuMapper">
+
+    <insert id="insertMenu" parameterType="BoMenuDTO">
+        INSERT INTO T_MENU (
+                     FILE_ORDER
+                    , FILE_SEQ
+        ) VALUES (
+                     #{fileOrder}
+                    , #{fileSeq}
+                 )
+    </insert>
+
+    <update id="updateMenu" parameterType="BoMenuDTO">
+        UPDATE T_MENU
+        SET FILE_SEQ = #{fileSeq}
+        WHERE FILE_ORDER = #{fileOrder}
+    </update>
+
+    <select id="selectMenuFileName" resultType="BoMenuDTO">
+        SELECT tm.FILE_ORDER
+             , tm.FILE_SEQ
+             , tf.FILE_NM as fileName
+        FROM T_MENU tm
+    INNER JOIN T_FILE tf ON tf.FILE_ID = tm.FILE_SEQ
+    </select>
+
+</mapper>

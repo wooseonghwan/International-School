@@ -102,10 +102,10 @@ bo:
     key-name: BO_SESSION_INFO
 file:
   upload:
-    path: /www/sites/softpuzzle.co.kr/base-modules/upload/module1
+    path: /www/upload/
     editor_path: /www/sites/softpuzzle.co.kr/base-modules/upload/module1
 service:
   upload:
-    path: /upload
+    path: /www/upload
 api:
   url: https://core-smanager.devsp.kr
