@@ -3,7 +3,7 @@
 <mapper namespace="com.fw.core.mapper.db1.bo.BoMenuMapper">
 
     <insert id="insertMenu" parameterType="BoMenuDTO">
-        INSERT INTO T_MENU (
+        INSERT INTO t_menu (
                      FILE_ORDER
                     , FILE_SEQ
         ) VALUES (
@@ -13,7 +13,7 @@
     </insert>
 
     <update id="updateMenu" parameterType="BoMenuDTO">
-        UPDATE T_MENU
+        UPDATE t_menu
         SET FILE_SEQ = #{fileSeq}
         WHERE FILE_ORDER = #{fileOrder}
     </update>
@@ -22,8 +22,8 @@
         SELECT tm.FILE_ORDER
              , tm.FILE_SEQ
              , tf.FILE_NM as fileName
-        FROM T_MENU tm
-    INNER JOIN T_FILE tf ON tf.FILE_ID = tm.FILE_SEQ
+        FROM t_menu tm
+    INNER JOIN t_file tf ON tf.FILE_ID = tm.FILE_SEQ
     </select>
 
 </mapper>

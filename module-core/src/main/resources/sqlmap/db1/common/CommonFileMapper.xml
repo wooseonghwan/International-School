@@ -17,13 +17,13 @@
              , CREATE_DT
              , UPDATE_ID
              , UPDATE_DT
-        FROM T_FILE
+        FROM t_file
         WHERE FILE_ID = #{fileId} AND DEL_YN = 'N'
     </select>
 
     <insert id="insertFile" parameterType="FileDTO" useGeneratedKeys="true" keyProperty="fileId">
         /* 파일 업로드 */
-        INSERT INTO T_FILE
+        INSERT INTO t_file
                 ( PAGE_TYPE
                 , FILE_NM
                 , FILE_SAVE_NM
@@ -49,24 +49,24 @@
 
     <update id="deleteFile" parameterType="Long">
         /* 파일 삭제 */
-        UPDATE T_FILE
+        UPDATE t_file
         SET DEL_YN = 'Y'
         WHERE FILE_ID = #{fileId}
     </update>
 
     <!-- 파일 정보 조회 -->
     <select id="selectFileById" parameterType="long" resultType="com.fw.core.dto.FileDTO">
-        SELECT * FROM T_FILE WHERE FILE_ID = #{fileId}
+        SELECT * FROM t_file WHERE FILE_ID = #{fileId}
     </select>
 
     <!-- T_MENU 에서 FILE_SEQ 기준으로 삭제 -->
     <delete id="deleteMenuByFileSeq" parameterType="long">
-        DELETE FROM T_MENU WHERE FILE_SEQ = #{fileId}
+        DELETE FROM t_menu WHERE FILE_SEQ = #{fileId}
     </delete>
 
     <!-- T_FILE 삭제 -->
     <update id="deleteFileById" parameterType="long">
-        UPDATE T_FILE
+        UPDATE t_file
            SET DEL_YN = 'Y'
         WHERE FILE_ID = #{fileId}
     </update>
