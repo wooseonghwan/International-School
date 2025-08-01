@@ -27,3 +27,9 @@ $('a[data-role=btnGoPage]').click(function () {
     $('form[name=searchForm] input[name=page]').val(page);
     $('form[name=searchForm]').submit();
 });
+function clearDate(inputId) {
+    const input = document.getElementById(inputId);
+    if (input) {
+        input.value = '';
+    }
+}

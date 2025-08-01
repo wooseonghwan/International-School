@@ -26,5 +26,6 @@ public class BoQnaDTO extends CommonDTO implements Serializable {
     private String custName;
     private String adminNm;
     private String viewCnt;
+    private String replyStatus;
 
 }

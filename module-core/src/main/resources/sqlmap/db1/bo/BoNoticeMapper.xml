@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fw.core.mapper.db1.bo.BoNoticeMapper">
     <select id="selectNoticeList" parameterType="BoNoticeDTO" resultType="BoNoticeDTO">
-        SELECT ROW_NUMBER() OVER (ORDER BY tn.NOTICE_ID ASC) AS rowNum
+        SELECT ROW_NUMBER() OVER (ORDER BY tn.NOTICE_ID DESC) AS rowNum
              , tn.NOTICE_ID
              , tn.LANG
              , CASE WHEN tn.LANG = 'KR' THEN '한글공지'

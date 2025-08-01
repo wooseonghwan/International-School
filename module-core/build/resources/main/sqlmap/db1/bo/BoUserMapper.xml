@@ -33,7 +33,7 @@
                 </choose>
             </if>
         </where>
-        ORDER BY rowNum DESC
+        ORDER BY cDate DESC
         <include refid="common.paging" />
     </select>
 

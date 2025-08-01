@@ -23,7 +23,7 @@
             </if>
             AND mt.gbn = 'CHARGE' AND mt.rtn = '01'
         </where>
-        ORDER BY mt.cDate ASC
+        ORDER BY mt.cDate DESC
         <include refid="common.paging" />
     </select>
 
@@ -68,7 +68,7 @@
             </if>
             AND mdt.rtn = '01'
         </where>
-        ORDER BY mdt.cDate ASC
+        ORDER BY mdt.cDate DESC
         <include refid="common.paging" />
     </select>
 

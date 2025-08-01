@@ -104,9 +104,9 @@
                         <td th:text="${list.fDate}"></td>
                         <td th:text="${list.cDate}"></td>
                         <td th:text="${list.custName}"></td>
-                        <td th:text="${list.gbn == 'CHARGE'} ? ${#numbers.formatInteger(list.amnt, 3, 'COMMA')} : ''"></td>
+                        <td th:text="${list.gbn == 'CHARGE' ? (list.amnt != null and list.amnt != 0 ? #numbers.formatInteger(list.amnt, 3, 'COMMA') : '0') : ''}"></td>
                         <td th:text="${list.menuNm}"></td>
-                        <td th:text="${(list.gbn == 'CAFE' || list.gbn == 'FOOD') ? #numbers.formatInteger(list.amnt, 3, 'COMMA') : ''}"></td>
+                        <td th:text="${list.gbn == 'CAFE' or list.gbn == 'FOOD' ? (list.amnt != null and list.amnt != 0 ? #numbers.formatInteger(list.amnt, 3, 'COMMA') : '0') : ''}"></td>
                         <td th:text="${list.menuNm}"></td>
                     </tr>
                     </tbody>

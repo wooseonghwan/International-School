@@ -11,16 +11,13 @@
         <div class="detail-table mt-6">
             <table class="table table-bordered">
                 <colgroup>
-                    <col style="width: 10%;">
                     <col style="width: 30%;">
-                    <col style="width: 10%;">
-                    <col style="width: 30%;">
+                    <col style="width: 70%;">
                 </colgroup>
-
                 <tbody>
                 <tr>
                     <th>문의자</th>
-                    <td th:text="${dto.custName}"></td>
+                    <td colspan="3" th:text="${dto.custName}"></td>
                 </tr>
                 <tr>
                     <th>작성일</th>
@@ -42,7 +39,7 @@
                 </tr>
                 <tr>
                     <th>답변 작성자</th>
-                    <td colspan="3" th:text="${dto.replyId}">1</td>
+                    <td colspan="3" th:text="${dto.adminNm}">1</td>
                 </tr>
                 <tr>
                     <th>답변일시</th>
