@@ -19,7 +19,7 @@
                         webId LIKE CONCAT('%', #{searchValue}, '%')
                     </when>
                     <when test="searchType == 'NAME'">
-                        custName LIKE CONCAT('%', #{searchValue}, '%')
+                        LOWER(REPLACE(custName, ' ', '')) LIKE CONCAT('%', LOWER(REPLACE(#{searchValue}, ' ', '')), '%')
                     </when>
                     <when test="searchType == 'CARDNO'">
                         cardId LIKE CONCAT('%', #{searchValue}, '%')
@@ -48,7 +48,7 @@
                         webId LIKE CONCAT('%', #{searchValue}, '%')
                     </when>
                     <when test="searchType == 'NAME'">
-                        custName LIKE CONCAT('%', #{searchValue}, '%')
+                        LOWER(REPLACE(custName, ' ', '')) LIKE CONCAT('%', LOWER(REPLACE(#{searchValue}, ' ', '')), '%')
                     </when>
                     <when test="searchType == 'CARDNO'">
                         cardId LIKE CONCAT('%', #{searchValue}, '%')
