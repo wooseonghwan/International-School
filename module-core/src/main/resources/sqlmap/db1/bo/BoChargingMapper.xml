@@ -53,10 +53,9 @@
              , mdt.amnt
              , mdt.menuNm
              , mdt.gbn
-             , (bt.ipkm - bt.chkm) as balance
+             , mdt.balance
         FROM mkt_desc_tb mdt
     INNER JOIN user_tb ut ON ut.custNo = mdt.custNo
-    LEFT JOIN balance_tb bt ON bt.custNo = mdt.custNo
         <where>
             <if test="searchValue != null and searchValue != ''">
                 (ut.custNo LIKE CONCAT('%', #{searchValue}, '%'))
@@ -77,7 +76,6 @@
         SELECT COUNT(*)
         FROM mkt_desc_tb mdt
     INNER JOIN user_tb ut ON ut.custNo = mdt.custNo
-    LEFT JOIN balance_tb bt ON bt.custNo = mdt.custNo
         <where>
             <if test="searchValue != null and searchValue != ''">
                 (ut.custNo LIKE CONCAT('%', #{searchValue}, '%'))
