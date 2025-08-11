@@ -63,23 +63,23 @@
         INSERT INTO t_notice
         (
             LANG
-            , TITLE
-            , CONTENT
-            , POPUP_TYPE
-            , OPTION_YN
-            , WIDTH
-            , HEIGHT
-            , `LEFT`
-            , TOP
-            , END_DT
-            , END_NO_LIMIT_YN
-            , POPUP_YN
-            , CREATE_ID
-            , CREATE_DT
-            , DEL_YN
-        )VALUES
-        (
-            #{lang}
+        , TITLE
+        , CONTENT
+        , POPUP_TYPE
+        , OPTION_YN
+        , WIDTH
+        , HEIGHT
+        , `LEFT`
+        , TOP
+        , END_DT
+        , END_NO_LIMIT_YN
+        , POPUP_YN
+        , CREATE_ID
+        , CREATE_DT
+        , DEL_YN
+        ) VALUES
+            (
+                #{lang}
             , #{title}
             , #{content}
             , #{popupType}
@@ -88,13 +88,13 @@
             , #{height}
             , #{left}
             , #{top}
-            , #{endDt}
+            , STR_TO_DATE(NULLIF(#{endDt, jdbcType=VARCHAR}, ''), '%Y-%m-%d %H:%i:%s')
             , #{endNoLimitYn}
             , #{popupYn}
             , '1'
             , NOW()
             , 'N'
-        )
+            )
     </insert>
 
     <select id="selectNoticeDetail" parameterType="String" resultType="BoNoticeDTO">
@@ -129,9 +129,9 @@
           , HEIGHT = #{height}
           , `LEFT` = #{left}
           , TOP = #{top}
-          , END_DT = #{endDt}
+          , END_DT = STR_TO_DATE(NULLIF(#{endDt, jdbcType=VARCHAR}, ''), '%Y-%m-%d %H:%i:%s')
           , END_NO_LIMIT_YN = #{endNoLimitYn}
-          , POPUP_TN = #{popupYn}
+          , POPUP_YN = #{popupYn}
           , UPDATE_DT = NOW()
           , UPDATE_ID = '1'
         WHERE NOTICE_ID = #{noticeId}
