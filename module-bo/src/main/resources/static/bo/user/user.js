@@ -4,6 +4,7 @@ $('.search-form').keyup(function(event) {
     }
 });
 $('button[data-role=btn-search-form]').click(function (){
+    $('input[name="page"]').val(1);
     $('form[name=searchForm]').submit();
 });
 $('a[data-role=btnGoPage]').click(function () {

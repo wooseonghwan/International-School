@@ -2,19 +2,17 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/mainLayout}">
 <div layout:fragment="contents" th:remove="tag">
-    <div class="filter d-none d-lg-block ">
-        <div class="hstack justify-content-between gap-4">
-            <div class="page-top mb-lg-1">
-                <h1 class="page-title">공지사항</h1>
-            </div>
-            <div class="col-auto ms-0 ms-lg-auto" style="margin-left: auto">
-                <button type="button" class="btn btn-dark" data-role="delete"
-                        style="min-width: 80px">삭제
-                </button>
-                <button type="button" class="btn btn-dark" data-role="btnRegister"
-                        style="min-width: 80px">등록
-                </button>
-            </div>
+    <div class="hstack justify-content-between gap-4">
+        <div class="page-top mb-lg-1">
+            <h1 class="page-title">공지사항</h1>
+        </div>
+        <div class="col-auto ms-0 ms-lg-auto" style="margin-left: auto">
+            <button type="button" class="btn btn-dark" data-role="delete"
+                    style="min-width: 80px">삭제
+            </button>
+            <button type="button" class="btn btn-dark" data-role="btnRegister"
+                    style="min-width: 80px">등록
+            </button>
         </div>
     </div>
     <form name="searchForm">

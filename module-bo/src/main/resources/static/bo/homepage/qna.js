@@ -7,6 +7,7 @@ $("a[data-role=btnGoPage]").click(function () {
 
 // 검색
 $('button[data-role=btn-search-form]').click(function(){
+    $('input[name="page"]').val(1);
     $('form[name=searchForm]').submit();
 })
 
