@@ -39,5 +39,20 @@
             </div>
         </div>
     </nav>
+    <nav id="navbar" class="d-block d-lg-none">
+        <div class="d-flex align-items-center h-100">
+            <div class="w-100 hstack justify-content-between pl-4 pr-4">
+                <button type="button" class="btn-allmenu" aria-label="전체메뉴">
+                    <i class="icon-w-menu"></i>
+                </button>
+                <div class="img">
+                    <img src="/static/images/logo.svg" alt="">
+                </div>
+                <div class="sidebar-top">
+                    <button type="button" class="btn-logout" aria-label="로그아웃" onclick="document.location.href='/bo/logout'"></button>
+                </div>
+            </div>
+        </div>
+    </nav>
 </th:block>
 </html>

@@ -3,9 +3,13 @@
       layout:decorate="~{layouts/mainLayout}">
 <div layout:fragment="contents" th:remove="tag">
     <div id="container">
-        <div class="page-top mb-lg-1">
-            <h1 class="page-title">고객게시판 상세</h1>
-            <input type="hidden" th:value="${dto.qnaId}" th:id="qnaId"/>
+        <div class="filter d-none d-lg-block ">
+            <div class="hstack justify-content-between gap-4">
+                <div class="page-top mb-lg-1">
+                    <h1 class="page-title">고객게시판</h1>
+                </div>
+                <input type="hidden" th:value="${dto.qnaId}" th:id="qnaId"/>
+            </div>
         </div>
         <div class="detail-table mt-6">
             <table class="table table-bordered">

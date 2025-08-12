@@ -1835,7 +1835,7 @@ img {
 
 @media (max-width: 991.98px) {
   [data-picker=date] {
-    width: 135px;
+    width: 100%;
   }
   [data-picker=datetime] {
     width: 180px;
@@ -1896,6 +1896,18 @@ input[type=file] {
 .form-field.search {
   position: relative;
   width: 312px;
+}
+
+@media (max-width: 991.98px) {
+  .form-field.search {
+    width: 100%;
+  }
+  .calendar-list{
+    flex-flow: wrap;
+  }
+  .calendar-content{
+    width: 100%;
+  }
 }
 .form-field.search .icon-search {
   position: absolute;
@@ -3009,7 +3021,7 @@ input[type=number] {
   height: 40px;
   cursor: pointer;
 }
-.profile-img img {
+.profile-img button {
   border-radius: 50%;
   width: 100%;
   height: 100%;

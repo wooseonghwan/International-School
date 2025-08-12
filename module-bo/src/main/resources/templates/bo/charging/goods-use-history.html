@@ -15,8 +15,8 @@
         <input type="hidden" name="page" th:value="${searchInfo.page}"/>
         <!-- filter -->
         <div class="filter">
-            <div class="row align-items-center">
-                <div class="col-12 col-lg d-flex flex-wrap gap-4">
+            <div class="row align-items-center gap-4">
+                <div class="col-12 col-lg d-flex gap-4 calendar-list">
                     <div class="form-field search">
                         <div class="input-form">
                             <i class="icon-search"></i>
@@ -25,52 +25,56 @@
                             <button type="button" class="clear-button"><i class="icon-input-close"></i></button>
                         </div>
                     </div>
-                    <div class="col-auto">
-                        <div class="gap-1 hstack">
-                            <div class="input-group">
-                                <input class="form-control form" data-picker="date"
-                                       name="searchStart"
-                                       type="text"
-                                       th:value="${searchInfo.searchStart}"
-                                       id="searchStart">
-                                <div class="col-auto">
-                                    <button type="button" class="btn btn-secondary" onclick="clearDate('searchStart')">
-                                        날짜삭제
-                                    </button>
+                    <div class="col-auto w-lg-auto calendar-content">
+                        <div class="row g-2 align-items-center flex-lg-nowrap">
+                            <!-- 시작일 -->
+                            <div class="col-12 col-lg-auto">
+                                <div class="d-flex align-items-center gap-2">
+                                    <input class="form-control form" data-picker="date"
+                                           name="searchStart"
+                                           type="text"
+                                           th:value="${searchInfo.searchStart}"
+                                           readonly
+                                           id="searchStart">
+                                        <button type="button" class="btn btn-secondary"
+                                                onclick="clearDate('searchStart')">
+                                            날짜삭제
+                                        </button>
                                 </div>
                             </div>
-                            <span>~</span>
-                            <div class="input-group">
-                                <input class="form-control form" data-picker="date"
-                                       name="searchEnd"
-                                       type="text"
-                                       th:value="${searchInfo.searchEnd}"
-                                       id="searchEnd">
-                                <div class="col-auto">
-                                    <button type="button" class="btn btn-secondary" onclick="clearDate('searchEnd')">
-                                        날짜삭제
-                                    </button>
+                            <div class="col-auto d-none d-lg-block">~</div>
+                            <div class="col-12 col-lg-auto">
+                                <div class="d-flex align-items-center gap-2">
+                                    <input class="form-control form" data-picker="date"
+                                           name="searchEnd"
+                                           type="text"
+                                           th:value="${searchInfo.searchEnd}"
+                                           readonly
+                                           id="searchEnd">
+                                        <button type="button" class="btn btn-secondary"
+                                                onclick="clearDate('searchEnd')">
+                                            날짜삭제
+                                        </button>
                                 </div>
+                            </div>
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-dark" data-role="btn-search-form" style="min-width: 80px">
+                                    검색
+                                </button>
                             </div>
                         </div>
                     </div>
-                    <div class="col-auto">
-                        <button type="button" class="btn btn-dark" data-role="btn-search-form" style="min-width: 80px">
-                            검색
-                        </button>
-                    </div>
                 </div>
+
             </div>
         </div>
     </form>
     <!-- //filter -->
-
-
     <!-- table -->
     <div class="scroll-layout">
         <div class="scroll-content">
             <div class="row align-items-center justify-content-between mb-3">
-                <div class="col-auto">Total <strong th:text="${searchInfo.totalCount}">-</strong></div>
+                <div class="col-auto">Total <strong th:text="${#numbers.formatInteger(searchInfo.totalCount, 0, 'COMMA')}">-</strong></div>
             </div>
             <div class="list-table">
                 <table class="table table-hover text-center">

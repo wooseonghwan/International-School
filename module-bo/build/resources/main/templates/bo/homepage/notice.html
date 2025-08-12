@@ -2,18 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/mainLayout}">
 <div layout:fragment="contents" th:remove="tag">
-    <div class="filter d-none d-lg-block ">
+    <div class="filter d-none d-lg-block">
         <div class="hstack justify-content-between gap-4">
             <div class="page-top mb-lg-1">
                 <h1 class="page-title">공지사항</h1>
-            </div>
-            <div class="col-auto ms-0 ms-lg-auto" style="margin-left: auto">
-                <button type="button" class="btn btn-dark" data-role="delete"
-                        style="min-width: 80px">삭제
-                </button>
-                <button type="button" class="btn btn-dark" data-role="btnRegister"
-                        style="min-width: 80px">등록
-                </button>
             </div>
         </div>
     </div>
@@ -22,7 +14,7 @@
         <!-- filter -->
         <div class="filter" style="margin-top: 0.7rem;">
             <div class="row align-items-center">
-                <div class="col-12 col-lg d-flex flex-wrap gap-4">
+                <div class="col-12 col-lg d-flex flex-wrap  gap-2 gap-lg-4">
                     <div class="gap-1 hstack">
                         <select name="searchType" class="form-select">
                             <option value="TITLE" th:selected="${searchInfo.searchType == 'TITLE'}">제목</option>
@@ -39,6 +31,14 @@
                     <div class="col-auto">
                         <button type="button" class="btn btn-dark" data-role="btn-search-form" style="min-width: 80px">검색</button>
                     </div>
+                    <div class="col-auto ms-0 ms-auto d-flex align-items-center gap-2 gap-lg-4" style="margin-left: auto">
+                        <button type="button" class="btn btn-outline-danger" data-role="delete"
+                                style="min-width: 80px">삭제
+                        </button>
+                        <button type="button" class="btn btn-primary" data-role="btnRegister"
+                                style="min-width: 80px">등록
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -48,7 +48,7 @@
     <div class="scroll-layout">
         <div class="scroll-content">
             <div class="row align-items-center justify-content-between mb-3">
-                <div class="col-auto">Total <strong th:text="${searchInfo.totalCount}">-</strong></div>
+                <div class="col-auto">Total <strong th:text="${#numbers.formatInteger(searchInfo.totalCount, 0, 'COMMA')}">-</strong></div>
             </div>
             <div class="list-table">
                 <table class="table table-hover">
