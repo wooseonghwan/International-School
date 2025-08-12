@@ -15,6 +15,18 @@ $('select[name="searchType"], input[name="searchValue"]').on('input change', fun
 
 // 검색 버튼: 무조건 1페이지부터
 $('button[data-role="btn-search-form"]').on('click', function () {
+    const start = document.getElementById('searchStart').value;
+    const end = document.getElementById('searchEnd').value;
+
+    if (start && end) {
+        const startDate = new Date(start);
+        const endDate = new Date(end);
+
+        if (startDate > endDate) {
+            alert('시작일은 종료일보다 클 수 없습니다.');
+            return; // 제출 막기
+        }
+    }
     $('input[name="page"]').val(1);
     searchDirty = false; // 제출했으니 초기화
     $('form[name="searchForm"]').submit();
